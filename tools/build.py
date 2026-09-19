@@ -273,23 +273,24 @@ def validate_article(data: object, path: Path, problems: list[Problem]) -> None:
 
 
 def check_audio_coverage(articles: list[tuple[Path, dict]], problems: list[Problem]) -> None:
-    """音频缺失只警告不拦截：App 会回落到系统 TTS，课文本身仍然可用。"""
+    """音频是硬要求：App 只播预生成音频，缺一句那一句就没声音，所以直接拦下。"""
     for path, data in articles:
         if not isinstance(data, dict) or not isinstance(data.get("lines"), list):
             continue
         available = audio_files(str(data.get("id", "")))
-        if not available:
-            problems.append(warn(path.name, "整篇没有预生成音频，跑 python tools/tts.py 可补上"))
-            continue
         missing = [
             line["id"] for line in data["lines"]
             if isinstance(line, dict) and line.get("id") not in available
         ]
-        if missing:
+        if not missing:
+            continue
+        if len(missing) == len(data["lines"]):
+            problems.append(err(path.name, "整篇没有音频，跑 python tools/publish.py 合成"))
+        else:
             shown = ", ".join(missing[:5]) + ("…" if len(missing) > 5 else "")
-            problems.append(warn(
+            problems.append(err(
                 path.name,
-                f"{len(missing)} 句缺音频（{shown}），跑 python tools/tts.py 可补上",
+                f"{len(missing)} 句缺音频（{shown}），跑 python tools/publish.py 合成",
             ))
 
 
@@ -364,7 +365,6 @@ def build_manifest(articles: list[tuple[Path, dict]]) -> dict:
         payload = json.dumps(data, ensure_ascii=False, sort_keys=True).encode("utf-8")
         entry = {key: data[key] for key in MANIFEST_FIELDS if key in data}
         entry["lineCount"] = len(data.get("lines") or [])
-        entry["audioLineCount"] = len(audio_files(data["id"]))
         entry["contentHash"] = hashlib.sha256(payload).hexdigest()[:16]
         entry["path"] = f"articles/{data['id']}.json"
         entries.append(entry)

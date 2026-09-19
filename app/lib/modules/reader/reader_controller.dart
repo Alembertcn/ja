@@ -5,7 +5,6 @@ import '../../data/repository/content_repository.dart';
 import '../../services/audio_cache_service.dart';
 import '../../services/playback_service.dart';
 import '../../services/settings_service.dart';
-import '../../services/tts_service.dart';
 
 class ReaderController extends GetxController {
   ReaderController(this.summary);
@@ -16,7 +15,6 @@ class ReaderController extends GetxController {
   final ContentRepository _repo = Get.find<ContentRepository>();
   final AudioCacheService _audioCache = Get.find<AudioCacheService>();
   final PlaybackService playback = Get.find<PlaybackService>();
-  final TtsService tts = Get.find<TtsService>();
   final SettingsService settings = Get.find<SettingsService>();
 
   final Rxn<Article> article = Rxn<Article>();
@@ -41,13 +39,9 @@ class ReaderController extends GetxController {
     super.onClose();
   }
 
-  /// 这篇有没有可用的预生成音频。没有的话朗读只能靠系统 TTS。
-  bool get hasGeneratedAudio =>
+  /// 这篇有没有音频。正常发布流程一定有，缺了说明内容还没合成完。
+  bool get hasAudio =>
       article.value?.lines.any((line) => line.audio != null) ?? false;
-
-  /// 既没音频又没日语语音时，点播放不会有任何声音，要如实告诉用户。
-  bool get playbackUnavailable =>
-      !hasGeneratedAudio && !tts.japaneseAvailable.value;
 
   Future<void> load({bool force = false}) async {
     loading.value = article.value == null;

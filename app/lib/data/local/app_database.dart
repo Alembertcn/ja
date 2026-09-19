@@ -50,10 +50,6 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
-  Future<void> deleteDocument(String key) {
-    return (delete(cachedDocuments)..where((t) => t.key.equals(key))).go();
-  }
-
   Future<List<CachedDocument>> allDocuments() => select(cachedDocuments).get();
 
   Future<int> clearAll() => delete(cachedDocuments).go();

@@ -16,13 +16,7 @@ class ProfileView extends GetView<ProfileController> {
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
         children: [
           const _SectionTitle('朗读'),
-          _Panel(children: [
-            _preferAudio(),
-            const _Divider(),
-            _speechSpeed(context),
-            const _Divider(),
-            _previewTile(),
-          ]),
+          _Panel(children: [_speechSpeed(context)]),
           const _SectionTitle('阅读'),
           _Panel(children: [
             _annotationStyle(context),
@@ -50,16 +44,6 @@ class ProfileView extends GetView<ProfileController> {
     );
   }
 
-  Widget _preferAudio() {
-    return Obx(() => SwitchListTile(
-          title: const Text('优先使用预生成音频'),
-          subtitle: const Text('课文自带的真人级配音，音质比系统 TTS 好；关掉则一律用系统朗读'),
-          isThreeLine: true,
-          value: controller.settings.preferGeneratedAudio.value,
-          onChanged: controller.settings.setPreferGeneratedAudio,
-        ));
-  }
-
   Widget _speechSpeed(BuildContext context) {
     return Obx(() {
       final speed = controller.settings.speechSpeed.value;
@@ -83,20 +67,6 @@ class ProfileView extends GetView<ProfileController> {
             ),
           ),
         ],
-      );
-    });
-  }
-
-  Widget _previewTile() {
-    return Obx(() {
-      final available = controller.tts.japaneseAvailable.value;
-      return ListTile(
-        title: const Text('试听'),
-        subtitle: Text(
-          available ? '日本語の発音を確認します。' : '未检测到日语语音，朗读可能无声',
-        ),
-        trailing: const Icon(Icons.volume_up_outlined),
-        onTap: controller.previewSpeech,
       );
     });
   }

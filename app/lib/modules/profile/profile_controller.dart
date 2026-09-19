@@ -3,15 +3,11 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../data/repository/content_repository.dart';
 import '../../services/audio_cache_service.dart';
-import '../../services/playback_service.dart';
 import '../../services/settings_service.dart';
-import '../../services/tts_service.dart';
 import '../library/library_controller.dart';
 
 class ProfileController extends GetxController {
   final SettingsService settings = Get.find<SettingsService>();
-  final TtsService tts = Get.find<TtsService>();
-  final PlaybackService playback = Get.find<PlaybackService>();
   final AudioCacheService _audioCache = Get.find<AudioCacheService>();
   final ContentRepository _repo = Get.find<ContentRepository>();
 
@@ -58,9 +54,6 @@ class ProfileController extends GetxController {
     await _audioCache.clear();
     await clearCache();
   }
-
-  Future<void> previewSpeech() =>
-      playback.previewTts('日本語の発音を確認します。');
 
   static String _readableSize(int bytes) {
     if (bytes < 1024) return '$bytes B';

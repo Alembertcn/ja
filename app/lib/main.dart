@@ -13,7 +13,6 @@ import 'data/repository/content_repository.dart';
 import 'services/audio_cache_service.dart';
 import 'services/playback_service.dart';
 import 'services/settings_service.dart';
-import 'services/tts_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,12 +23,11 @@ Future<void> main() async {
   final api = Get.put(ContentApi(() => settings.contentBaseUrl), permanent: true);
   Get.put(ContentRepository(api, database), permanent: true);
 
-  final tts = await Get.putAsync(() => TtsService(settings).init(), permanent: true);
   final audioCache = await Get.putAsync(
     () => AudioCacheService(api).init(),
     permanent: true,
   );
-  Get.put(PlaybackService(tts, audioCache, settings), permanent: true);
+  Get.put(PlaybackService(audioCache, settings), permanent: true);
 
   runApp(const JaApp());
 }

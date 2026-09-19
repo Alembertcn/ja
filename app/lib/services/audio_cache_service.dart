@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../data/remote/content_api.dart';
 
-/// 预生成音频的本地缓存。首次播放时下载，之后完全离线可用。
+/// 音频的本地缓存。首次播放时下载，之后完全离线可用。
 ///
 /// 目录结构与内容源一致（audio/<课文 id>/<行 id>.mp3），这样清理和排查都直观。
 class AudioCacheService extends GetxService {
@@ -27,16 +27,10 @@ class AudioCacheService extends GetxService {
 
   File _fileFor(String relativePath) => File('${_root.path}/$relativePath');
 
-  /// 已经在本地的直接给路径，不发起网络请求。
-  File? cachedFile(String relativePath) {
-    final file = _fileFor(relativePath);
-    return file.existsSync() ? file : null;
-  }
-
-  /// 取音频文件，本地没有就下载。拿不到返回 null，由调用方回落到 TTS。
+  /// 取音频文件，本地没有就下载。拿不到返回 null。
   Future<File?> resolve(String relativePath) {
-    final existing = cachedFile(relativePath);
-    if (existing != null) return Future.value(existing);
+    final existing = _fileFor(relativePath);
+    if (existing.existsSync()) return Future.value(existing);
 
     return _inFlight.putIfAbsent(relativePath, () async {
       try {

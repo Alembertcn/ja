@@ -60,8 +60,8 @@ void main() {
       final line = article.lines.single;
       expect(line.speaker, isNull);
       expect(line.furigana, isEmpty);
-      expect(line.hasDetail, isFalse);
-      expect(line.audio, isNull, reason: '没有预生成音频时应为 null，播放要回落 TTS');
+      expect(line.grammar, isEmpty);
+      expect(line.audio, isNull, reason: '构建脚本没注入音频时应为 null');
     });
 
     test('读到构建期注入的音频路径', () {

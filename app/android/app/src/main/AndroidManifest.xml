@@ -44,9 +44,5 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
-        <!-- Android 11+ 要显式声明才能查询到系统里的 TTS 引擎 -->
-        <intent>
-            <action android:name="android.intent.action.TTS_SERVICE"/>
-        </intent>
     </queries>
 </manifest>

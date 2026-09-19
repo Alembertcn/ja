@@ -18,13 +18,11 @@ class ContentResult<T> {
   const ContentResult({
     required this.data,
     required this.origin,
-    this.fetchedAt,
     this.networkError,
   });
 
   final T data;
   final ContentOrigin origin;
-  final DateTime? fetchedAt;
 
   /// 回落到缓存时，导致回落的网络错误。界面可据此提示。
   final String? networkError;
@@ -85,7 +83,6 @@ class ContentRepository {
         return ContentResult(
           data: parse(cached.body),
           origin: ContentOrigin.cache,
-          fetchedAt: cached.fetchedAt,
         );
       }
 
@@ -97,7 +94,6 @@ class ContentRepository {
         return ContentResult(
           data: parsed,
           origin: ContentOrigin.network,
-          fetchedAt: DateTime.now(),
         );
       }
 
@@ -108,7 +104,6 @@ class ContentRepository {
         return ContentResult(
           data: parse(cached.body),
           origin: ContentOrigin.cache,
-          fetchedAt: cached.fetchedAt,
           networkError: _message(error),
         );
       }

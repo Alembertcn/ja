@@ -16,7 +16,7 @@
 | [content/](content/) | 课文数据源（JSON），App 的内容源头 |
 | [audio/](audio/) | 逐句预生成的日语音频，由 `tools/tts.py` 产出并入库 |
 | [prompts/](prompts/) | 给 AI 的固定生成模板 |
-| [tools/](tools/) | 构建与合成脚本（Python） |
+| [tools/](tools/) | 合成与构建脚本（Python），入口是 `publish.py` |
 | [app/](app/) | Flutter 客户端工程 |
 | `dist/` | 构建产物，不入库，由 CI 生成并发布到 Pages |
 
@@ -34,12 +34,13 @@
 docs/plan/ 学习计划（模块编号）
       ↓  按 prompts/ 模板让 AI 生成
 content/articles/*.json  ← 结构化课文，人工校对后提交
-      ↓  python tools/tts.py     逐句合成日语音频
-audio/<课文 id>/<行 id>.mp3      ← 一并入库
-      ↓  python tools/build.py   校验 + 注入音频路径
-dist/manifest.json + dist/articles/*.json + dist/audio/
-      ↓  GitHub Actions
-GitHub Pages（公开 CDN）
+      ↓
+      │  python tools/publish.py 一条命令跑完下面三步
+      │    tts.py    逐句合成日语音频 → audio/<课文 id>/<行 id>.mp3（一并入库）
+      │    build.py  校验 + 注入音频路径 → dist/
+      │    git       提交并推送
+      ↓
+GitHub Actions → GitHub Pages（公开 CDN）
       ↓  HTTPS + ETag 增量拉取
 Flutter App（列表 / 详情逐行精讲 / 逐句朗读）
 ```
@@ -49,24 +50,32 @@ Flutter App（列表 / 详情逐行精讲 / 逐句朗读）
 新增一篇课文：
 
 1. 在 Cursor 里按 [prompts/生成课文.md](prompts/生成课文.md) 指定周次与语法模块，让 AI 产出 JSON；
-2. 保存到 `content/articles/<id>.json`，人工校对读音与解析；
-3. 合成音频并构建：
+2. 保存到 `content/articles/<id>.json`，人工校对读音与解析。文件名必须和 JSON 里的 `id` 一致；
+3. 一条命令发布：
 
 ```bash
-pip install edge-tts
-python tools/tts.py              # 只补缺失或文本变过的句子
-python tools/tts.py --list-voices
-python tools/build.py            # 校验 content/ 并生成 dist/
-python tools/build.py --check    # 只校验，不写文件（CI 用）
+pip install edge-tts        # 只需装一次
+python tools/publish.py     # 合成音频 → 校验构建 → 提交推送
 ```
 
-4. 提交推送，GitHub Actions 自动发布，App 下拉刷新即可看到。
+Actions 跑完（约一分钟）后，App 下拉刷新就能看到，**不需要重新打包 App**。
+
+想分步或改音色时用底层脚本：
+
+```bash
+python tools/publish.py --no-push        # 只到构建，自己检查后再提交
+python tools/tts.py --list-voices        # 看有哪些日语音色
+python tools/tts.py --voice ja-JP-KeitaNeural --force
+python tools/build.py --check            # 只校验不写文件（CI 用这条）
+```
 
 ## 关于朗读
 
-App 优先播 `audio/` 里预生成的音频，只有这句没有音频、或者下载失败时才回落到手机系统 TTS。这样即使手机上一个 TTS 引擎都没装（国行 ROM 很常见）也能正常听。详情页右上角可以把整篇音频一次性下到本地，之后断网也能播。
+朗读只播 `audio/` 里预先合成的音频，不用手机系统 TTS——手机上常常一个 TTS 引擎都没装（国行 ROM 很常见），各家引擎的日语音质和语速语义也不一致，不如把声音固定在内容侧。代价是**音频成了硬要求**：`build.py` 发现哪句缺音频会直接报错，不让发布。详情页右上角可以把整篇音频一次性下到本地，之后断网也能播。
 
-音频用 [edge-tts](https://github.com/rany2/edge-tts) 合成，日语可选 `ja-JP-NanamiNeural`（女声）和 `ja-JP-KeitaNeural`（男声）。对话类课文按说话人自动轮换音色。合成刻意放在本地跑而不是放进 CI：edge-tts 是非官方接口，塞进 Actions 会让发布随时可能挂掉；本地生成好提交进仓库，CI 只做搬运。
+音频用 [edge-tts](https://github.com/rany2/edge-tts) 合成，日语可选 `ja-JP-NanamiNeural`（女声）和 `ja-JP-KeitaNeural`（男声），对话类课文按说话人自动轮换。合成按「文本 + 音色 + 语速」的 hash 做增量，改一句只重合成那一句。
+
+合成刻意放在本地跑而不是放进 CI：edge-tts 是非官方接口，塞进 Actions 会让发布随时可能挂掉；本地生成好提交进仓库，CI 只做搬运。
 
 运行 App：
 

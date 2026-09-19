@@ -30,7 +30,7 @@ class ReaderView extends GetView<ReaderController> {
         ),
         actions: [
           Obx(() {
-            if (!controller.hasGeneratedAudio) return const SizedBox.shrink();
+            if (!controller.hasAudio) return const SizedBox.shrink();
             return IconButton(
               tooltip: '把整篇音频下到本地',
               onPressed: controller.prefetching.value ? null : controller.prefetchAudio,
@@ -156,7 +156,7 @@ class _ArticleHeader extends StatelessWidget {
           style: theme.textTheme.bodySmall?.copyWith(color: scheme.outline),
         ),
         Obx(() {
-          if (!controller.playbackUnavailable) return const SizedBox.shrink();
+          if (controller.hasAudio) return const SizedBox.shrink();
           return Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Container(
@@ -166,8 +166,7 @@ class _ArticleHeader extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                '这篇没有预生成音频，系统里也没找到日语语音，朗读会没有声音。\n'
-                'Android：安装「Google 文字转语音」并在 设置 → 系统 → 语言和输入法 → 文字转语音 里下载日语语音包。',
+                '这篇还没有音频，朗读不可用。在仓库里跑一次 tools/publish.py 合成后重新发布即可。',
                 style: TextStyle(fontSize: 12, color: scheme.onErrorContainer, height: 1.5),
               ),
             ),

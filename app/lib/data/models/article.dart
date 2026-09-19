@@ -87,14 +87,11 @@ class ArticleLine {
   final List<VocabItem> vocab;
   final String? note;
 
-  /// 预生成音频相对路径，由构建脚本注入。为空时只能用系统 TTS 朗读。
+  /// 音频相对路径，由构建脚本按 audio/ 目录的实际内容注入。为空则这句无法朗读。
   final String? audio;
 
   /// 完整句结尾才显示播放图标。
   final bool isSentenceEnd;
-
-  bool get hasDetail =>
-      grammar.isNotEmpty || vocab.isNotEmpty || (note?.isNotEmpty ?? false);
 
   factory ArticleLine.fromJson(Map<String, dynamic> json) => ArticleLine(
         id: json['id'] as String,
@@ -181,7 +178,6 @@ class ArticleSummary {
     this.vocabTopic,
     required this.updatedAt,
     required this.lineCount,
-    this.audioLineCount = 0,
     required this.contentHash,
     required this.path,
   });
@@ -199,9 +195,6 @@ class ArticleSummary {
   final String? vocabTopic;
   final String updatedAt;
   final int lineCount;
-
-  /// 有几句带预生成音频。为 0 说明这篇只能靠系统 TTS 朗读。
-  final int audioLineCount;
 
   /// 内容指纹，变了才需要重新拉正文。
   final String contentHash;
@@ -221,28 +214,19 @@ class ArticleSummary {
         vocabTopic: json['vocabTopic'] as String?,
         updatedAt: json['updatedAt'] as String? ?? '',
         lineCount: (json['lineCount'] as num?)?.toInt() ?? 0,
-        audioLineCount: (json['audioLineCount'] as num?)?.toInt() ?? 0,
         contentHash: json['contentHash'] as String? ?? '',
         path: json['path'] as String? ?? 'articles/${json['id']}.json',
       );
 }
 
 class ContentManifest {
-  const ContentManifest({
-    required this.schemaVersion,
-    required this.generatedAt,
-    required this.articles,
-  });
+  const ContentManifest({required this.articles});
 
-  final int schemaVersion;
-  final String generatedAt;
   final List<ArticleSummary> articles;
 
   factory ContentManifest.parse(String body) {
     final json = jsonDecode(body) as Map<String, dynamic>;
     return ContentManifest(
-      schemaVersion: (json['schemaVersion'] as num?)?.toInt() ?? 0,
-      generatedAt: json['generatedAt'] as String? ?? '',
       articles: _mapList(json['articles'], ArticleSummary.fromJson),
     );
   }

@@ -6,6 +6,3 @@
 # sqlite3_flutter_libs 通过 JNI 加载原生库
 -keep class com.tekartik.** { *; }
 -keep class io.github.simolus3.** { *; }
-
-# flutter_tts 回调依赖方法名
--keep class com.tundralabs.fluttertts.** { *; }
