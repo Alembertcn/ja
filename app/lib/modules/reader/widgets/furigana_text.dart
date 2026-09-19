@@ -83,6 +83,8 @@ class _Unit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 这里不能用 Center 包 ruby：在 Wrap 给的宽松约束下它会撑满整行宽度，
+    // 每个带注音的汉字块都会独占一行。Column 默认就会把两个子节点横向居中。
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -90,14 +92,12 @@ class _Unit extends StatelessWidget {
           height: rubyHeight,
           child: ruby == null
               ? null
-              : Center(
-                  child: Text(
-                    ruby!,
-                    style: rubyStyle,
-                    locale: japaneseLocale,
-                    textHeightBehavior: const TextHeightBehavior(
-                      applyHeightToFirstAscent: false,
-                    ),
+              : Text(
+                  ruby!,
+                  style: rubyStyle,
+                  locale: japaneseLocale,
+                  textHeightBehavior: const TextHeightBehavior(
+                    applyHeightToFirstAscent: false,
                   ),
                 ),
         ),

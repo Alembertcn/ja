@@ -86,32 +86,69 @@ void main() {
     });
   });
 
-  testWidgets('FuriganaText 把注音渲染在汉字上方', (tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: FuriganaText(
-            text: '中国から来ました。',
-            spans: [
-              RubySpan(start: 0, len: 2, ruby: 'ちゅうごく'),
-              RubySpan(start: 4, len: 1, ruby: 'き'),
-            ],
-            baseStyle: TextStyle(fontSize: 18),
-            rubyStyle: TextStyle(fontSize: 10),
+  group('FuriganaText', () {
+    Future<void> pumpSample(WidgetTester tester, {double width = 400}) {
+      return tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                width: width,
+                child: const FuriganaText(
+                  text: '中国から来ました。',
+                  spans: [
+                    RubySpan(start: 0, len: 2, ruby: 'ちゅうごく'),
+                    RubySpan(start: 4, len: 1, ruby: 'き'),
+                  ],
+                  baseStyle: TextStyle(fontSize: 18),
+                  rubyStyle: TextStyle(fontSize: 10),
+                ),
+              ),
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
 
-    expect(find.text('中国'), findsOneWidget);
-    expect(find.text('ちゅうごく'), findsOneWidget);
-    expect(find.text('来'), findsOneWidget);
-    expect(find.text('き'), findsOneWidget);
-    // 无注音的部分被拆成单字，便于按字换行
-    expect(find.text('か'), findsOneWidget);
+    testWidgets('注音渲染在汉字上方', (tester) async {
+      await pumpSample(tester);
 
-    final ruby = tester.getTopLeft(find.text('ちゅうごく'));
-    final base = tester.getTopLeft(find.text('中国'));
-    expect(ruby.dy, lessThan(base.dy));
+      expect(find.text('中国'), findsOneWidget);
+      expect(find.text('ちゅうごく'), findsOneWidget);
+      expect(find.text('来'), findsOneWidget);
+      expect(find.text('き'), findsOneWidget);
+      // 无注音的部分被拆成单字，便于按字换行
+      expect(find.text('か'), findsOneWidget);
+
+      expect(
+        tester.getTopLeft(find.text('ちゅうごく')).dy,
+        lessThan(tester.getTopLeft(find.text('中国')).dy),
+      );
+    });
+
+    testWidgets('宽度够时整句排在同一行', (tester) async {
+      // 曾经用 Center 包 ruby，它在宽松约束下会撑满整行，
+      // 导致每个带注音的汉字块各占一行，整句被拆成四行。
+      await pumpSample(tester);
+
+      final kanji = tester.getTopLeft(find.text('中国')).dy;
+      for (final char in ['か', 'ら', 'ま', 'し', 'た']) {
+        expect(
+          tester.getTopLeft(find.text(char)).dy,
+          kanji,
+          reason: '「$char」应当和「中国」在同一行',
+        );
+      }
+      expect(tester.getTopLeft(find.text('来')).dy, kanji);
+    });
+
+    testWidgets('宽度不够时按字换行', (tester) async {
+      await pumpSample(tester, width: 60);
+
+      final first = tester.getTopLeft(find.text('中国')).dy;
+      final last = tester.getTopLeft(find.text('。')).dy;
+      expect(last, greaterThan(first), reason: '窄容器里应当折行');
+    });
   });
 }
