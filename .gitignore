@@ -22,6 +22,8 @@ app/ios/Flutter/Flutter.framework
 app/ios/Flutter/Flutter.podspec
 app/ios/Flutter/ephemeral/
 app/android/.gradle/
+app/android/build/
+app/android/app/build/
 app/android/local.properties
 app/android/app/debug/
 app/android/app/profile/
