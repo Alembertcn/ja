@@ -22,6 +22,7 @@ class SettingsService extends GetxService {
   static const _kFontScale = 'font_scale';
   static const _kExpandSingle = 'expand_single';
   static const _kBaseUrl = 'content_base_url';
+  static const _kPreferAudio = 'prefer_generated_audio';
 
   final _box = GetStorage();
 
@@ -39,6 +40,10 @@ class SettingsService extends GetxService {
 
   /// true 表示同时只展开一行，false 允许多行同时展开。
   late final RxBool expandSingle = (_box.read<bool>(_kExpandSingle) ?? true).obs;
+
+  /// 优先播放仓库预生成的音频；关掉则一律用系统 TTS。
+  late final RxBool preferGeneratedAudio =
+      (_box.read<bool>(_kPreferAudio) ?? true).obs;
 
   late final RxString contentBaseUrlRx =
       (_box.read<String>(_kBaseUrl) ?? AppConfig.defaultContentBaseUrl).obs;
@@ -78,6 +83,11 @@ class SettingsService extends GetxService {
   void setExpandSingle(bool value) {
     expandSingle.value = value;
     _box.write(_kExpandSingle, value);
+  }
+
+  void setPreferGeneratedAudio(bool value) {
+    preferGeneratedAudio.value = value;
+    _box.write(_kPreferAudio, value);
   }
 
   void setContentBaseUrl(String value) {

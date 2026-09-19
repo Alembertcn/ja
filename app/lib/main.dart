@@ -10,6 +10,8 @@ import 'app/theme.dart';
 import 'data/local/app_database.dart';
 import 'data/remote/content_api.dart';
 import 'data/repository/content_repository.dart';
+import 'services/audio_cache_service.dart';
+import 'services/playback_service.dart';
 import 'services/settings_service.dart';
 import 'services/tts_service.dart';
 
@@ -21,7 +23,13 @@ Future<void> main() async {
   final database = Get.put(AppDatabase(), permanent: true);
   final api = Get.put(ContentApi(() => settings.contentBaseUrl), permanent: true);
   Get.put(ContentRepository(api, database), permanent: true);
-  await Get.putAsync(() => TtsService(settings).init(), permanent: true);
+
+  final tts = await Get.putAsync(() => TtsService(settings).init(), permanent: true);
+  final audioCache = await Get.putAsync(
+    () => AudioCacheService(api).init(),
+    permanent: true,
+  );
+  Get.put(PlaybackService(tts, audioCache, settings), permanent: true);
 
   runApp(const JaApp());
 }

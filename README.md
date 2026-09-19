@@ -14,8 +14,9 @@
 | [docs/plan/](docs/plan/) | 学习计划与知识点大纲（模块编号 `G2-E01` 等是 AI 生成课文的索引） |
 | [docs/lessons/](docs/lessons/) | 人工整理的精讲笔记（Markdown） |
 | [content/](content/) | 课文数据源（JSON），App 的内容源头 |
+| [audio/](audio/) | 逐句预生成的日语音频，由 `tools/tts.py` 产出并入库 |
 | [prompts/](prompts/) | 给 AI 的固定生成模板 |
-| [tools/](tools/) | 构建与转换脚本（Python） |
+| [tools/](tools/) | 构建与合成脚本（Python） |
 | [app/](app/) | Flutter 客户端工程 |
 | `dist/` | 构建产物，不入库，由 CI 生成并发布到 Pages |
 
@@ -33,12 +34,14 @@
 docs/plan/ 学习计划（模块编号）
       ↓  按 prompts/ 模板让 AI 生成
 content/articles/*.json  ← 结构化课文，人工校对后提交
-      ↓  python tools/build.py
-dist/manifest.json + dist/articles/*.json
+      ↓  python tools/tts.py     逐句合成日语音频
+audio/<课文 id>/<行 id>.mp3      ← 一并入库
+      ↓  python tools/build.py   校验 + 注入音频路径
+dist/manifest.json + dist/articles/*.json + dist/audio/
       ↓  GitHub Actions
 GitHub Pages（公开 CDN）
       ↓  HTTPS + ETag 增量拉取
-Flutter App（列表 / 详情逐行精讲 / 日语朗读）
+Flutter App（列表 / 详情逐行精讲 / 逐句朗读）
 ```
 
 ## 常用命令
@@ -47,14 +50,23 @@ Flutter App（列表 / 详情逐行精讲 / 日语朗读）
 
 1. 在 Cursor 里按 [prompts/生成课文.md](prompts/生成课文.md) 指定周次与语法模块，让 AI 产出 JSON；
 2. 保存到 `content/articles/<id>.json`，人工校对读音与解析；
-3. 本地校验并构建：
+3. 合成音频并构建：
 
 ```bash
+pip install edge-tts
+python tools/tts.py              # 只补缺失或文本变过的句子
+python tools/tts.py --list-voices
 python tools/build.py            # 校验 content/ 并生成 dist/
 python tools/build.py --check    # 只校验，不写文件（CI 用）
 ```
 
 4. 提交推送，GitHub Actions 自动发布，App 下拉刷新即可看到。
+
+## 关于朗读
+
+App 优先播 `audio/` 里预生成的音频，只有这句没有音频、或者下载失败时才回落到手机系统 TTS。这样即使手机上一个 TTS 引擎都没装（国行 ROM 很常见）也能正常听。详情页右上角可以把整篇音频一次性下到本地，之后断网也能播。
+
+音频用 [edge-tts](https://github.com/rany2/edge-tts) 合成，日语可选 `ja-JP-NanamiNeural`（女声）和 `ja-JP-KeitaNeural`（男声）。对话类课文按说话人自动轮换音色。合成刻意放在本地跑而不是放进 CI：edge-tts 是非官方接口，塞进 Actions 会让发布随时可能挂掉；本地生成好提交进仓库，CI 只做搬运。
 
 运行 App：
 

@@ -7,17 +7,11 @@ import 'package:get/get.dart';
 
 import 'settings_service.dart';
 
-class SpeakItem {
-  const SpeakItem(this.lineId, this.text);
-
-  final String lineId;
-  final String text;
-}
-
-/// 日语朗读。全局常驻，避免每次进详情页都重新初始化引擎。
+/// 系统 TTS 朗读。只负责「把一句话读出来」这一件事，
+/// 播放到第几行、是否在播这类状态由 [PlaybackService] 统管，避免两处各记一份。
 ///
-/// 语速在两端的含义不同：iOS 的 0.5 约等于正常语速，Android 的 1.0 才是正常，
-/// 所以对外统一用「倍率」，进引擎前按平台换算。
+/// 语速在两端的含义不同：iOS 的 0.5 约等于正常语速，Android 的 1.0 才是，
+/// 所以对外统一用倍率，进引擎前按平台换算。
 class TtsService extends GetxService {
   TtsService(this._settings);
 
@@ -26,15 +20,9 @@ class TtsService extends GetxService {
   final SettingsService _settings;
   final FlutterTts _tts = FlutterTts();
 
-  final RxnString currentLineId = RxnString();
-  final RxBool isSpeaking = false.obs;
-
   /// 设备上是否装了日语语音。Android 常见缺失，需要引导用户去装。
   final RxBool japaneseAvailable = true.obs;
   final RxnString initError = RxnString();
-
-  /// 每次开始新的播放都自增，老的播放循环靠它自行退出。
-  int _token = 0;
 
   Future<TtsService> init() async {
     try {
@@ -50,79 +38,41 @@ class TtsService extends GetxService {
       final available = await _tts.isLanguageAvailable(_language);
       japaneseAvailable.value = available == true || available == 1;
 
-      _tts.setCancelHandler(_clear);
-      _tts.setErrorHandler((message) {
-        debugPrint('TTS 出错：$message');
-        _clear();
-      });
+      _tts.setErrorHandler((message) => debugPrint('TTS 出错：$message'));
     } catch (e) {
       initError.value = '朗读引擎初始化失败：$e';
+      japaneseAvailable.value = false;
       debugPrint(initError.value!);
     }
 
-    // 设置里改语速后立即生效
     ever<double>(_settings.speechSpeed, _applySpeed);
     return this;
   }
 
   Future<void> _applySpeed(double speed) async {
     final rate = Platform.isIOS ? speed * 0.5 : speed;
-    await _tts.setSpeechRate(rate.clamp(0.1, 1.5));
+    try {
+      await _tts.setSpeechRate(rate.clamp(0.1, 1.5));
+    } catch (e) {
+      debugPrint('设置语速失败：$e');
+    }
   }
 
-  Future<void> speakLine(String lineId, String text) async {
-    if (currentLineId.value == lineId && isSpeaking.value) {
-      await stop();
-      return;
-    }
-    await stop();
-    final token = ++_token;
-    currentLineId.value = lineId;
-    isSpeaking.value = true;
+  /// 读一句，Future 在读完后才完成。
+  Future<void> speak(String text) async {
     try {
       await _tts.speak(text);
     } catch (e) {
       debugPrint('朗读失败：$e');
     }
-    if (token == _token) _clear();
-  }
-
-  /// 连续朗读整篇。句间留一点间隔，跟读时不至于赶。
-  Future<void> speakAll(
-    List<SpeakItem> items, {
-    Duration gap = const Duration(milliseconds: 350),
-  }) async {
-    await stop();
-    final token = ++_token;
-    isSpeaking.value = true;
-    for (final item in items) {
-      if (token != _token) return;
-      currentLineId.value = item.lineId;
-      try {
-        await _tts.speak(item.text);
-      } catch (e) {
-        debugPrint('朗读失败：$e');
-        break;
-      }
-      if (token != _token) return;
-      await Future<void>.delayed(gap);
-    }
-    if (token == _token) _clear();
   }
 
   Future<void> stop() async {
-    _token++;
     try {
       await _tts.stop();
     } catch (_) {
       // 引擎没在播时 stop 可能抛错，忽略即可
     }
-    _clear();
-  }
-
-  void _clear() {
-    currentLineId.value = null;
-    isSpeaking.value = false;
   }
 
   @override

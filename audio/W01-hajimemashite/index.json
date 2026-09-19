@@ -1,0 +1,25 @@
+{
+  "articleId": "W01-hajimemashite",
+  "rate": "-10%",
+  "voices": {
+    "李": "ja-JP-NanamiNeural",
+    "田中": "ja-JP-KeitaNeural"
+  },
+  "lines": {
+    "l01": "8f910b485831a240",
+    "l02": "8dd17045b4e9c301",
+    "l03": "ca84a42061e096a6",
+    "l04": "ff98291e3995e5e3",
+    "l05": "6a722b7d242b1e37",
+    "l06": "0a3c503851767384",
+    "l07": "7aa7437fc48ae7bc",
+    "l08": "4ed33cc49f6368b2",
+    "l09": "f0e6f1c8d38bebd7",
+    "l10": "125c2875c9505136",
+    "l11": "7ac7f6a97b2191df",
+    "l12": "3c331dec1ba57c2d",
+    "l13": "959f6a0c46cff3ab",
+    "l14": "7954f87fbb406057",
+    "l15": "a4aa885464b868ce"
+  }
+}

@@ -1,6 +1,9 @@
 # 构建产物（由 tools/build.py 生成，CI 发布到 Pages）
 /dist/
 
+# TTS 试听样音，只用来选音色，不入库
+/.tts-samples/
+
 # Python
 __pycache__/
 *.py[cod]

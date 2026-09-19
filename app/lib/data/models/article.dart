@@ -70,6 +70,7 @@ class ArticleLine {
     this.grammar = const [],
     this.vocab = const [],
     this.note,
+    this.audio,
     this.isSentenceEnd = true,
   });
 
@@ -85,6 +86,9 @@ class ArticleLine {
   final List<GrammarPoint> grammar;
   final List<VocabItem> vocab;
   final String? note;
+
+  /// 预生成音频相对路径，由构建脚本注入。为空时只能用系统 TTS 朗读。
+  final String? audio;
 
   /// 完整句结尾才显示播放图标。
   final bool isSentenceEnd;
@@ -103,6 +107,7 @@ class ArticleLine {
         grammar: _mapList(json['grammar'], GrammarPoint.fromJson),
         vocab: _mapList(json['vocab'], VocabItem.fromJson),
         note: json['note'] as String?,
+        audio: json['audio'] as String?,
         isSentenceEnd: json['isSentenceEnd'] as bool? ?? true,
       );
 }
@@ -176,6 +181,7 @@ class ArticleSummary {
     this.vocabTopic,
     required this.updatedAt,
     required this.lineCount,
+    this.audioLineCount = 0,
     required this.contentHash,
     required this.path,
   });
@@ -193,6 +199,9 @@ class ArticleSummary {
   final String? vocabTopic;
   final String updatedAt;
   final int lineCount;
+
+  /// 有几句带预生成音频。为 0 说明这篇只能靠系统 TTS 朗读。
+  final int audioLineCount;
 
   /// 内容指纹，变了才需要重新拉正文。
   final String contentHash;
@@ -212,6 +221,7 @@ class ArticleSummary {
         vocabTopic: json['vocabTopic'] as String?,
         updatedAt: json['updatedAt'] as String? ?? '',
         lineCount: (json['lineCount'] as num?)?.toInt() ?? 0,
+        audioLineCount: (json['audioLineCount'] as num?)?.toInt() ?? 0,
         contentHash: json['contentHash'] as String? ?? '',
         path: json['path'] as String? ?? 'articles/${json['id']}.json',
       );

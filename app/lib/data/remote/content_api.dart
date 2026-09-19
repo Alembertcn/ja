@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 import '../../app/app_config.dart';
@@ -73,6 +75,25 @@ class ContentApi {
         etag: response.headers.value('etag') ?? etag,
       );
     } on DioException catch (e) {
+      throw ContentFetchException(_describe(e, url));
+    }
+  }
+
+  /// 下载二进制文件（音频）。先写临时文件再改名，避免中断留下半截文件被当成有效缓存。
+  Future<void> download(String path, File target) async {
+    final url = _resolve(path).toString();
+    final temp = File('${target.path}.part');
+    try {
+      await target.parent.create(recursive: true);
+      await _dio.download(url, temp.path);
+      if (await target.exists()) {
+        await target.delete();
+      }
+      await temp.rename(target.path);
+    } on DioException catch (e) {
+      if (await temp.exists()) {
+        await temp.delete();
+      }
       throw ContentFetchException(_describe(e, url));
     }
   }

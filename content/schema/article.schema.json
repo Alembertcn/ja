@@ -101,6 +101,10 @@
           "items": { "$ref": "#/$defs/vocabItem" }
         },
         "note": { "type": "string", "description": "额外补充说明" },
+        "audio": {
+          "type": "string",
+          "description": "预生成音频的相对路径。源文件不写这个字段，由 tools/build.py 在构建时按 audio/ 目录的实际内容注入。"
+        },
         "isSentenceEnd": {
           "type": "boolean",
           "description": "是否为完整句子的结尾，决定该行是否显示播放图标。缺省视为 true。",

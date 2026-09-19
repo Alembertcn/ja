@@ -30,6 +30,20 @@ class ReaderView extends GetView<ReaderController> {
         ),
         actions: [
           Obx(() {
+            if (!controller.hasGeneratedAudio) return const SizedBox.shrink();
+            return IconButton(
+              tooltip: '把整篇音频下到本地',
+              onPressed: controller.prefetching.value ? null : controller.prefetchAudio,
+              icon: controller.prefetching.value
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.download_for_offline_outlined),
+            );
+          }),
+          Obx(() {
             final hasExpanded = controller.expandedLineIds.isNotEmpty;
             return IconButton(
               tooltip: hasExpanded ? '全部收起' : '全部展开',
@@ -78,7 +92,7 @@ class ReaderView extends GetView<ReaderController> {
                         line: line,
                         isDialogue: article.isDialogue,
                         expanded: controller.isExpanded(line.id),
-                        playing: controller.tts.currentLineId.value == line.id,
+                        playing: controller.playback.currentLineId.value == line.id,
                         fontScale: controller.settings.fontScale.value,
                         annotationStyle: controller.settings.annotationStyle.value,
                         inlineFurigana: controller.settings.inlineFurigana.value,
@@ -92,7 +106,7 @@ class ReaderView extends GetView<ReaderController> {
       }),
       floatingActionButton: Obx(() {
         if (controller.article.value == null) return const SizedBox.shrink();
-        final speaking = controller.tts.isSpeaking.value;
+        final speaking = controller.playback.isPlaying.value;
         return FloatingActionButton.extended(
           onPressed: speaking ? controller.stop : controller.playAll,
           icon: Icon(speaking ? Icons.stop : Icons.play_arrow),
@@ -112,7 +126,7 @@ class _ArticleHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final ttsWarning = !Get.find<ReaderController>().tts.japaneseAvailable.value;
+    final controller = Get.find<ReaderController>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,21 +155,24 @@ class _ArticleHeader extends StatelessWidget {
           '点击任意一行展开注音、翻译与解析',
           style: theme.textTheme.bodySmall?.copyWith(color: scheme.outline),
         ),
-        if (ttsWarning) ...[
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color: scheme.errorContainer,
-              borderRadius: BorderRadius.circular(10),
+        Obx(() {
+          if (!controller.playbackUnavailable) return const SizedBox.shrink();
+          return Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(
+                color: scheme.errorContainer,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                '这篇没有预生成音频，系统里也没找到日语语音，朗读会没有声音。\n'
+                'Android：安装「Google 文字转语音」并在 设置 → 系统 → 语言和输入法 → 文字转语音 里下载日语语音包。',
+                style: TextStyle(fontSize: 12, color: scheme.onErrorContainer, height: 1.5),
+              ),
             ),
-            child: Text(
-              '系统里没找到日语语音，朗读可能无声。\n'
-              'Android：安装「Google 文字转语音」并在 设置 → 系统 → 语言和输入法 → 文字转语音 里下载日语语音包。',
-              style: TextStyle(fontSize: 12, color: scheme.onErrorContainer, height: 1.5),
-            ),
-          ),
-        ],
+          );
+        }),
       ],
     );
   }

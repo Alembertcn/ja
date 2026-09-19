@@ -16,7 +16,13 @@ class ProfileView extends GetView<ProfileController> {
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
         children: [
           const _SectionTitle('朗读'),
-          _Panel(children: [_speechSpeed(context), const _Divider(), _previewTile()]),
+          _Panel(children: [
+            _preferAudio(),
+            const _Divider(),
+            _speechSpeed(context),
+            const _Divider(),
+            _previewTile(),
+          ]),
           const _SectionTitle('阅读'),
           _Panel(children: [
             _annotationStyle(context),
@@ -28,7 +34,13 @@ class ProfileView extends GetView<ProfileController> {
             _expandMode(),
           ]),
           const _SectionTitle('内容'),
-          _Panel(children: [_contentSource(context), const _Divider(), _cache(context)]),
+          _Panel(children: [
+            _contentSource(context),
+            const _Divider(),
+            _cache(context),
+            const _Divider(),
+            _audioCache(context),
+          ]),
           const _SectionTitle('学习数据'),
           const _PhaseTwoCard(),
           const _SectionTitle('关于'),
@@ -36,6 +48,16 @@ class ProfileView extends GetView<ProfileController> {
         ],
       ),
     );
+  }
+
+  Widget _preferAudio() {
+    return Obx(() => SwitchListTile(
+          title: const Text('优先使用预生成音频'),
+          subtitle: const Text('课文自带的真人级配音，音质比系统 TTS 好；关掉则一律用系统朗读'),
+          isThreeLine: true,
+          value: controller.settings.preferGeneratedAudio.value,
+          onChanged: controller.settings.setPreferGeneratedAudio,
+        ));
   }
 
   Widget _speechSpeed(BuildContext context) {
@@ -217,6 +239,30 @@ class ProfileView extends GetView<ProfileController> {
           onPressed: () => _confirmClear(context),
           child: const Text('清除'),
         ),
+      );
+    });
+  }
+
+  Widget _audioCache(BuildContext context) {
+    return Obx(() {
+      final count = controller.audioFileCount.value;
+      return ListTile(
+        title: const Text('音频缓存'),
+        subtitle: Text(
+          count == 0
+              ? '还没下载过音频，播放时会自动缓存'
+              : '$count 句 · ${controller.audioSizeText}',
+        ),
+        trailing: count == 0
+            ? null
+            : TextButton(
+                onPressed: () async {
+                  await controller.clearAudioCache();
+                  Get.snackbar('已清除', '音频缓存已清空',
+                      snackPosition: SnackPosition.BOTTOM);
+                },
+                child: const Text('清除'),
+              ),
       );
     });
   }

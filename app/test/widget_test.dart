@@ -61,6 +61,28 @@ void main() {
       expect(line.speaker, isNull);
       expect(line.furigana, isEmpty);
       expect(line.hasDetail, isFalse);
+      expect(line.audio, isNull, reason: '没有预生成音频时应为 null，播放要回落 TTS');
+    });
+
+    test('读到构建期注入的音频路径', () {
+      final article = Article.parse('''
+{
+  "id": "T03-audio",
+  "title": "音声",
+  "titleZh": "音频",
+  "stage": "P0",
+  "week": 1,
+  "level": "N5",
+  "type": "article",
+  "updatedAt": "2026-09-19",
+  "lines": [{
+    "id": "l01", "jp": "本文。", "reading": "ほんぶん。", "zh": "正文。",
+    "audio": "audio/T03-audio/l01.mp3"
+  }]
+}
+''');
+
+      expect(article.lines.single.audio, 'audio/T03-audio/l01.mp3');
     });
   });
 

@@ -15,6 +15,7 @@ import argparse
 import hashlib
 import json
 import re
+import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,6 +23,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
 SCHEMA_PATH = ROOT / "content" / "schema" / "article.schema.json"
+# 预生成音频由 tools/tts.py 产出并入库，构建时只做搬运
+AUDIO_DIR = ROOT / "audio"
 
 MANIFEST_SCHEMA_VERSION = 1
 
@@ -269,6 +272,27 @@ def validate_article(data: object, path: Path, problems: list[Problem]) -> None:
         ))
 
 
+def check_audio_coverage(articles: list[tuple[Path, dict]], problems: list[Problem]) -> None:
+    """音频缺失只警告不拦截：App 会回落到系统 TTS，课文本身仍然可用。"""
+    for path, data in articles:
+        if not isinstance(data, dict) or not isinstance(data.get("lines"), list):
+            continue
+        available = audio_files(str(data.get("id", "")))
+        if not available:
+            problems.append(warn(path.name, "整篇没有预生成音频，跑 python tools/tts.py 可补上"))
+            continue
+        missing = [
+            line["id"] for line in data["lines"]
+            if isinstance(line, dict) and line.get("id") not in available
+        ]
+        if missing:
+            shown = ", ".join(missing[:5]) + ("…" if len(missing) > 5 else "")
+            problems.append(warn(
+                path.name,
+                f"{len(missing)} 句缺音频（{shown}），跑 python tools/tts.py 可补上",
+            ))
+
+
 def run_jsonschema(articles: list[tuple[Path, dict]], problems: list[Problem]) -> bool:
     """装了 jsonschema 就再跑一遍完整校验，没装就跳过。"""
     try:
@@ -301,6 +325,32 @@ def load_articles(problems: list[Problem]) -> list[tuple[Path, dict]]:
     return articles
 
 
+def audio_files(article_id: str) -> dict[str, Path]:
+    """返回该课文已有的逐句音频：行 id -> 文件路径。"""
+    folder = AUDIO_DIR / article_id
+    if not folder.is_dir():
+        return {}
+    return {mp3.stem: mp3 for mp3 in folder.glob("*.mp3")}
+
+
+def with_audio(data: dict) -> tuple[dict, int]:
+    """把音频相对路径注入到输出用的副本里。源文件保持干净，不记录构建期信息。"""
+    available = audio_files(data["id"])
+    if not available:
+        return data, 0
+
+    output = dict(data)
+    lines = []
+    count = 0
+    for line in data["lines"]:
+        if line["id"] in available:
+            line = {**line, "audio": f"audio/{data['id']}/{line['id']}.mp3"}
+            count += 1
+        lines.append(line)
+    output["lines"] = lines
+    return output, count
+
+
 def stage_sort_key(data: dict) -> tuple:
     stage = data.get("stage", "")
     stage_index = STAGES.index(stage) if stage in STAGES else len(STAGES)
@@ -314,6 +364,7 @@ def build_manifest(articles: list[tuple[Path, dict]]) -> dict:
         payload = json.dumps(data, ensure_ascii=False, sort_keys=True).encode("utf-8")
         entry = {key: data[key] for key in MANIFEST_FIELDS if key in data}
         entry["lineCount"] = len(data.get("lines") or [])
+        entry["audioLineCount"] = len(audio_files(data["id"]))
         entry["contentHash"] = hashlib.sha256(payload).hexdigest()[:16]
         entry["path"] = f"articles/{data['id']}.json"
         entries.append(entry)
@@ -369,17 +420,26 @@ def render_index_html(manifest: dict) -> str:
 def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict) -> None:
     articles_out = out_dir / "articles"
     articles_out.mkdir(parents=True, exist_ok=True)
+    audio_out = out_dir / "audio"
 
-    # 清掉上一次构建残留的课文，避免删了源文件但产物还挂在 Pages 上
+    # 清掉上一次构建的残留，避免删了源文件但产物还挂在 Pages 上
     for stale in articles_out.glob("*.json"):
         stale.unlink()
+    if audio_out.exists():
+        shutil.rmtree(audio_out)
 
     for _, data in articles:
-        target = articles_out / f"{data['id']}.json"
+        payload, _ = with_audio(data)
+        target = articles_out / f"{payload['id']}.json"
         target.write_text(
-            json.dumps(data, ensure_ascii=False, separators=(",", ":")),
+            json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
             encoding="utf-8",
         )
+
+        for line_id, mp3 in audio_files(data["id"]).items():
+            dest = audio_out / data["id"] / f"{line_id}.mp3"
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(mp3, dest)
 
     (out_dir / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, separators=(",", ":")),
@@ -406,6 +466,7 @@ def main() -> int:
                 problems.append(err(path.name, f"id 与 {seen_ids[data['id']].name} 重复"))
             seen_ids[data["id"]] = path
 
+    check_audio_coverage(articles, problems)
     used_jsonschema = run_jsonschema(articles, problems)
 
     errors = [p for p in problems if p.level == "error"]
