@@ -144,7 +144,8 @@ class LineTile extends StatelessWidget {
     };
     if (text.isEmpty) return const SizedBox.shrink();
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6, right: 40),
+      // 注音行在播放键上方，不用给它让位；留太多右边距会把最后一个假名挤到下一行
+      padding: const EdgeInsets.only(bottom: 6, right: 4),
       child: Text(
         text,
         style: TextStyle(

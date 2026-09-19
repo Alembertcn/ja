@@ -87,39 +87,36 @@ void main() {
   });
 
   group('FuriganaText', () {
-    Future<void> pumpSample(WidgetTester tester, {double width = 400}) {
-      return tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Align(
-              alignment: Alignment.topLeft,
-              child: SizedBox(
-                width: width,
-                child: const FuriganaText(
-                  text: '中国から来ました。',
-                  spans: [
-                    RubySpan(start: 0, len: 2, ruby: 'ちゅうごく'),
-                    RubySpan(start: 4, len: 1, ruby: 'き'),
-                  ],
-                  baseStyle: TextStyle(fontSize: 18),
-                  rubyStyle: TextStyle(fontSize: 10),
-                ),
-              ),
-            ),
-          ),
+    const sentence = '中国から来ました。';
+    const baseStyle = TextStyle(fontSize: 18);
+    const rubyStyle = TextStyle(fontSize: 10);
+
+    Future<void> pumpAt(WidgetTester tester, Widget child) {
+      return tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: Align(alignment: Alignment.topLeft, child: child),
         ),
-      );
+      ));
     }
 
+    const sample = FuriganaText(
+      text: sentence,
+      spans: [
+        // ちゅうごく 比「中国」宽得多，正是会把正文戳出空隙的那种情况
+        RubySpan(start: 0, len: 2, ruby: 'ちゅうごく'),
+        RubySpan(start: 4, len: 1, ruby: 'き'),
+      ],
+      baseStyle: baseStyle,
+      rubyStyle: rubyStyle,
+    );
+
     testWidgets('注音渲染在汉字上方', (tester) async {
-      await pumpSample(tester);
+      await pumpAt(tester, sample);
 
       expect(find.text('中国'), findsOneWidget);
       expect(find.text('ちゅうごく'), findsOneWidget);
       expect(find.text('来'), findsOneWidget);
       expect(find.text('き'), findsOneWidget);
-      // 无注音的部分被拆成单字，便于按字换行
-      expect(find.text('か'), findsOneWidget);
 
       expect(
         tester.getTopLeft(find.text('ちゅうごく')).dy,
@@ -127,28 +124,40 @@ void main() {
       );
     });
 
-    testWidgets('宽度够时整句排在同一行', (tester) async {
-      // 曾经用 Center 包 ruby，它在宽松约束下会撑满整行，
-      // 导致每个带注音的汉字块各占一行，整句被拆成四行。
-      await pumpSample(tester);
+    testWidgets('汉字与周围文字排在同一行', (tester) async {
+      // Stack 的基线若被浮在上面的 ruby 抢走，汉字会掉到正文下一行，
+      // 整体高度会从一行变成两行。
+      await pumpAt(tester, sample);
 
-      final kanji = tester.getTopLeft(find.text('中国')).dy;
-      for (final char in ['か', 'ら', 'ま', 'し', 'た']) {
-        expect(
-          tester.getTopLeft(find.text(char)).dy,
-          kanji,
-          reason: '「$char」应当和「中国」在同一行',
-        );
-      }
-      expect(tester.getTopLeft(find.text('来')).dy, kanji);
+      final oneLine = 18 * 1.5 + 10 * 1.3;
+      expect(
+        tester.getSize(find.byType(FuriganaText)).height,
+        closeTo(oneLine, 2),
+      );
     });
 
-    testWidgets('宽度不够时按字换行', (tester) async {
-      await pumpSample(tester, width: 60);
+    testWidgets('注音比汉字宽时不撑宽正文', (tester) async {
+      // 早先的实现让 ruby 参与宽度计算，「中国」「上手」两侧会被顶出空隙，
+      // 整句还会因为逐字取整误差提前折行。现在 ruby 向两侧探出，正文宽度
+      // 应当与不带注音的同一句话完全一致。
+      await pumpAt(tester, sample);
+      final withRuby = tester.getSize(find.byType(FuriganaText)).width;
 
-      final first = tester.getTopLeft(find.text('中国')).dy;
-      final last = tester.getTopLeft(find.text('。')).dy;
-      expect(last, greaterThan(first), reason: '窄容器里应当折行');
+      await pumpAt(tester, const Text(sentence, style: baseStyle));
+      final plain = tester.getSize(find.byType(Text).first).width;
+
+      expect(withRuby, closeTo(plain, 0.5));
+    });
+
+    testWidgets('宽度不够时正常折行', (tester) async {
+      await pumpAt(tester, const SizedBox(width: 60, child: sample));
+
+      final oneLine = 18 * 1.5 + 10 * 1.3;
+      expect(
+        tester.getSize(find.byType(FuriganaText)).height,
+        greaterThan(oneLine * 1.5),
+        reason: '窄容器里应当折成多行',
+      );
     });
   });
 }
