@@ -1,0 +1,56 @@
+name: 构建并发布课文数据
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/**"
+      - "tools/**"
+      - ".github/workflows/publish.yml"
+  pull_request:
+    paths:
+      - "content/**"
+      - "tools/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 安装校验依赖
+        run: pip install -r tools/requirements.txt
+
+      - name: 校验并构建
+        run: python tools/build.py --out dist
+
+      - name: 上传 Pages 产物
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Alembertcn/ja/content/schema/article.schema.json",
+  "title": "日语课文（Article）",
+  "description": "App 的课文数据契约。一篇课文由若干可逐行展开的 line 组成，每行自带读音、翻译、语法解析与生词。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "titleZh", "stage", "week", "level", "type", "updatedAt", "lines"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "全局唯一，同时用作文件名与 App 内路由参数。建议 W<周次>-<罗马字短名>。",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+      "minLength": 3,
+      "maxLength": 64
+    },
+    "title": { "type": "string", "description": "日语标题", "minLength": 1 },
+    "titleZh": { "type": "string", "description": "中文标题", "minLength": 1 },
+    "stage": {
+      "type": "string",
+      "description": "对应学习计划的四个阶段，列表页按此分组",
+      "enum": ["P0", "P1", "P2", "P3"]
+    },
+    "week": {
+      "type": "integer",
+      "description": "对应学习计划的周次 W01–W42",
+      "minimum": 1,
+      "maximum": 42
+    },
+    "level": {
+      "type": "string",
+      "description": "难度等级徽标",
+      "enum": ["N5", "N4", "N3", "N2", "N1"]
+    },
+    "type": {
+      "type": "string",
+      "description": "article=短文（无 speaker）；dialogue=对话（每行带 speaker）",
+      "enum": ["article", "dialogue"]
+    },
+    "scene": { "type": "string", "description": "场景说明，详情页副标题展示" },
+    "grammarModules": {
+      "type": "array",
+      "description": "本篇覆盖的语法模块号，来自学习计划（如 G2-E01）",
+      "items": { "type": "string", "pattern": "^[A-Z]+[0-9]?(-[A-Z0-9]+)*$" },
+      "uniqueItems": true
+    },
+    "vocabTopic": { "type": "string", "description": "词汇主题号，如 V2-T1" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "source": { "type": "string", "description": "人工笔记来源路径，便于回溯校对" },
+    "updatedAt": {
+      "type": "string",
+      "description": "内容最后更新日期 YYYY-MM-DD",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "lines": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/line" }
+    }
+  },
+  "$defs": {
+    "line": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "jp", "reading", "zh"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "篇内唯一，用作展开态与播放状态的 key",
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "speaker": {
+          "type": ["string", "null"],
+          "description": "对话说话人；短文为 null 或省略"
+        },
+        "jp": { "type": "string", "description": "日语原文，折叠态展示", "minLength": 1 },
+        "reading": {
+          "type": "string",
+          "description": "整句假名读音，展开后显示在原文上方",
+          "minLength": 1
+        },
+        "romaji": { "type": "string", "description": "罗马音，注音样式可切换到此" },
+        "furigana": {
+          "type": "array",
+          "description": "汉字上方 ruby 标注的区间，start/len 以 jp 的 UTF-16 码元为单位",
+          "items": { "$ref": "#/$defs/rubySpan" }
+        },
+        "zh": { "type": "string", "description": "中文翻译", "minLength": 1 },
+        "grammar": {
+          "type": "array",
+          "description": "本行语法解析",
+          "items": { "$ref": "#/$defs/grammarPoint" }
+        },
+        "vocab": {
+          "type": "array",
+          "description": "本行生词",
+          "items": { "$ref": "#/$defs/vocabItem" }
+        },
+        "note": { "type": "string", "description": "额外补充说明" },
+        "isSentenceEnd": {
+          "type": "boolean",
+          "description": "是否为完整句子的结尾，决定该行是否显示播放图标。缺省视为 true。",
+          "default": true
+        }
+      }
+    },
+    "rubySpan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "len", "ruby"],
+      "properties": {
+        "start": { "type": "integer", "minimum": 0 },
+        "len": { "type": "integer", "minimum": 1 },
+        "ruby": { "type": "string", "minLength": 1 }
+      }
+    },
+    "grammarPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["point", "explain"],
+      "properties": {
+        "module": {
+          "type": "string",
+          "description": "学习计划模块号，App 里做成可点 chip",
+          "pattern": "^[A-Z]+[0-9]?(-[A-Z0-9]+)*$"
+        },
+        "point": { "type": "string", "description": "语法形式本身，如「～ても」", "minLength": 1 },
+        "explain": { "type": "string", "description": "中文解释", "minLength": 1 }
+      }
+    },
+    "vocabItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["word", "reading", "zh"],
+      "properties": {
+        "word": { "type": "string", "minLength": 1 },
+        "reading": { "type": "string", "minLength": 1 },
+        "pos": { "type": "string", "description": "词性，如 名詞 / 動詞 / い形容詞" },
+        "zh": { "type": "string", "minLength": 1 },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

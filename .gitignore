@@ -1,0 +1,35 @@
+# 构建产物（由 tools/build.py 生成，CI 发布到 Pages）
+/dist/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Flutter / Dart
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/build/
+app/.idea/
+app/ios/Pods/
+app/ios/.symlinks/
+app/ios/Flutter/Flutter.framework
+app/ios/Flutter/Flutter.podspec
+app/ios/Flutter/ephemeral/
+app/android/.gradle/
+app/android/local.properties
+app/android/app/debug/
+app/android/app/profile/
+app/android/app/release/
+*.iml
+
+# Android 签名（绝不入库）
+app/android/key.properties
+**/*.jks
+**/*.keystore
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
