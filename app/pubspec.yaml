@@ -1,5 +1,5 @@
 name: ja
-description: "JA 日语精读：按学习计划逐句精读日语课文"
+description: "学JA：按学习计划逐句精读日语课文"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -60,6 +60,15 @@ dev_dependencies:
   drift_dev: 2.34.0
   build_runner: any
   sqlparser: 0.44.2
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/brand/app_icon.png
+  remove_alpha_ios: true
+  adaptive_icon_background: "#FF2D55"
+  adaptive_icon_foreground: assets/brand/app_icon_foreground.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

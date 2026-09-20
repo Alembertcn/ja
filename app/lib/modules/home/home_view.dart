@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../library/library_view.dart';
+import '../plan/plan_view.dart';
 import '../player/player_bar.dart';
 import '../profile/profile_view.dart';
 import 'home_cubit.dart';
@@ -16,7 +17,7 @@ class HomeView extends StatelessWidget {
         return Scaffold(
           body: IndexedStack(
             index: state.tabIndex,
-            children: const [LibraryView(), ProfileView()],
+            children: const [LibraryView(), PlanView(), ProfileView()],
           ),
           bottomNavigationBar: Column(
             mainAxisSize: MainAxisSize.min,
@@ -30,6 +31,11 @@ class HomeView extends StatelessWidget {
                     icon: Icon(Icons.menu_book_outlined),
                     selectedIcon: Icon(Icons.menu_book),
                     label: '课文',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.calendar_month_outlined),
+                    selectedIcon: Icon(Icons.calendar_month),
+                    label: '计划',
                   ),
                   NavigationDestination(
                     icon: Icon(Icons.person_outline),

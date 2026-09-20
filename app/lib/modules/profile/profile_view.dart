@@ -301,7 +301,7 @@ class _AboutTile extends StatelessWidget {
       buildWhen: (a, b) => a.appVersion != b.appVersion,
       builder: (context, state) {
         return ListTile(
-          title: const Text('JA 日语精读'),
+          title: const Text('学JA'),
           subtitle: Text(
             state.appVersion.isEmpty ? '版本读取中…' : '版本 ${state.appVersion}',
           ),
@@ -356,7 +356,7 @@ class _ProfileBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'JA 日语精读 · 本地学习',
+                  '学JA · 日语精读',
                   style: TextStyle(
                     fontSize: 13,
                     color: scheme.onSurfaceVariant,

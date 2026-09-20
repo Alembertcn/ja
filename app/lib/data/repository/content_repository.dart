@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../app/app_config.dart';
 import '../local/app_database.dart';
 import '../models/article.dart';
+import '../models/plan.dart';
 import '../remote/content_api.dart';
 
 /// 数据来源，用于在界面上如实告诉用户看到的是不是离线内容。
@@ -31,8 +32,10 @@ class ContentResult<T> {
 }
 
 const String _manifestKey = 'manifest';
+const String _planWeeksKey = 'plan:weeks';
 
 String _articleKey(String id) => 'article:$id';
+String _planWeekKey(String id) => 'plan:week:$id';
 
 /// 远端优先、离线回落。任何网络问题都不应该让已经缓存过的课文读不了。
 class ContentRepository {
@@ -61,6 +64,36 @@ class ContentRepository {
       path: summary.path,
       forceRefresh: forceRefresh,
       parse: Article.parse,
+    );
+  }
+
+  Future<ContentResult<PlanCatalog>> loadPlanWeeks({
+    bool forceRefresh = false,
+  }) async {
+    return _load(
+      key: _planWeeksKey,
+      path: 'plan/weeks.json',
+      forceRefresh: forceRefresh,
+      parse: PlanCatalog.parse,
+    );
+  }
+
+  Future<ContentResult<PlanWeekDetail>> loadPlanWeek(
+    PlanWeekSummary summary, {
+    bool forceRefresh = false,
+  }) async {
+    final path = summary.detailPath;
+    if (path == null || path.isEmpty) {
+      return ContentResult(
+        data: PlanWeekDetail.fromSummary(summary),
+        origin: ContentOrigin.cache,
+      );
+    }
+    return _load(
+      key: _planWeekKey(summary.id),
+      path: path,
+      forceRefresh: forceRefresh,
+      parse: PlanWeekDetail.parse,
     );
   }
 

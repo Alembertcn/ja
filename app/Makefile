@@ -1,4 +1,4 @@
-# JA 日语精读 · Flutter 常用命令
+# 学JA · Flutter 常用命令
 # 用法：cd app && make <目标>
 # 一览：make help
 

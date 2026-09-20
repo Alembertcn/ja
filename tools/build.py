@@ -22,6 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
+PLAN_DIR = ROOT / "content" / "plan"
 SCHEMA_PATH = ROOT / "content" / "schema" / "article.schema.json"
 # 预生成音频由 tools/tts.py 产出并入库，构建时只做搬运与注入
 AUDIO_DIR = ROOT / "audio"
@@ -446,12 +447,15 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
     articles_out = out_dir / "articles"
     articles_out.mkdir(parents=True, exist_ok=True)
     audio_out = out_dir / "audio"
+    plan_out = out_dir / "plan"
 
     # 清掉上一次构建的残留，避免删了源文件但产物还挂在 Pages 上
     for stale in articles_out.glob("*.json"):
         stale.unlink()
     if audio_out.exists():
         shutil.rmtree(audio_out)
+    if plan_out.exists():
+        shutil.rmtree(plan_out)
 
     for _, data in articles:
         payload = with_audio(data)
@@ -467,12 +471,67 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(mp3, dest)
 
+    if PLAN_DIR.is_dir():
+        shutil.copytree(PLAN_DIR, plan_out)
+
     (out_dir / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8",
     )
     (out_dir / "index.html").write_text(render_index_html(manifest), encoding="utf-8")
     (out_dir / ".nojekyll").write_text("", encoding="utf-8")
+
+
+def validate_plan(problems: list[Problem]) -> None:
+    """轻量校验学习计划 JSON，不阻断无 plan 目录的旧仓库。"""
+    weeks_path = PLAN_DIR / "weeks.json"
+    if not weeks_path.exists():
+        return
+
+    try:
+        data = json.loads(weeks_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        problems.append(err("plan/weeks.json", f"JSON 无法解析：{e}"))
+        return
+
+    if not isinstance(data, dict) or not isinstance(data.get("weeks"), list):
+        problems.append(err("plan/weeks.json", "需要对象且含 weeks 数组"))
+        return
+
+    weeks = data["weeks"]
+    if len(weeks) == 0:
+        problems.append(err("plan/weeks.json", "weeks 不能为空"))
+        return
+
+    seen: set[str] = set()
+    for i, week in enumerate(weeks):
+        where = f"plan/weeks.json[{i}]"
+        if not isinstance(week, dict):
+            problems.append(err(where, "周条目必须是对象"))
+            continue
+        wid = week.get("id")
+        if not isinstance(wid, str) or not wid:
+            problems.append(err(where, "缺少 id"))
+            continue
+        if wid in seen:
+            problems.append(err(where, f"周 id 重复：{wid}"))
+        seen.add(wid)
+        stage = week.get("stage")
+        if stage not in STAGES:
+            problems.append(err(where, f"stage 非法：{stage}"))
+        detail = week.get("detailPath")
+        if isinstance(detail, str) and detail:
+            detail_file = ROOT / "content" / detail
+            if not detail_file.exists():
+                problems.append(err(where, f"detailPath 不存在：{detail}"))
+            else:
+                try:
+                    detail_data = json.loads(detail_file.read_text(encoding="utf-8"))
+                except json.JSONDecodeError as e:
+                    problems.append(err(detail, f"JSON 无法解析：{e}"))
+                    continue
+                if detail_data.get("id") != wid:
+                    problems.append(err(detail, f"详情 id 应为 {wid}"))
 
 
 def main() -> int:
@@ -493,6 +552,7 @@ def main() -> int:
             seen_ids[data["id"]] = path
 
     check_audio_coverage(articles, problems)
+    validate_plan(problems)
     used_jsonschema = run_jsonschema(articles, problems)
 
     errors = [p for p in problems if p.level == "error"]
@@ -515,8 +575,12 @@ def main() -> int:
 
     out_dir = (ROOT / args.out) if not Path(args.out).is_absolute() else Path(args.out)
     write_dist(out_dir, articles, manifest)
+    plan_note = ""
+    if (out_dir / "plan").is_dir():
+        plan_files = list((out_dir / "plan").glob("*.json"))
+        plan_note = f" / plan/({len(plan_files)})"
     print(f"\n构建完成：{len(articles)} 篇 → {out_dir.relative_to(ROOT) if out_dir.is_relative_to(ROOT) else out_dir}")
-    print(f"  manifest.json / articles/*.json / index.html，{len(warnings)} 个警告")
+    print(f"  manifest.json / articles/*.json / index.html{plan_note}，{len(warnings)} 个警告")
     return 0
 
 

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- 学JA · 主图标：书 + JA · 品牌色 #FF2D55 -->
+  <rect width="1024" height="1024" fill="#FF2D55"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="36" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M512 290 C430 250 320 250 250 280 L250 520 C330 480 430 480 512 520 C594 480 694 480 774 520 L774 280 C704 250 594 250 512 290 Z"/>
+    <path d="M512 290 L512 520"/>
+  </g>
+  <!-- JA 由构建脚本用 Arial Black 栅格化；SVG 仅作矢量稿参考 -->
+  <text x="512" y="780" text-anchor="middle"
+        font-family="Arial Black, Helvetica, Arial, sans-serif"
+        font-size="300" font-weight="900" fill="#FFFFFF">JA</text>
+</svg>

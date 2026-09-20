@@ -1,0 +1,345 @@
+{
+  "title": "N2 学习计划",
+  "target": "2027年7月 JLPT N2",
+  "updatedAt": "2026-09-20",
+  "weeks": [
+    {
+      "id": "W01",
+      "stage": "P0",
+      "week": 1,
+      "title": "假名·发音·寒暄",
+      "modules": ["K0", "G0", "V0", "S0"],
+      "deliverable": "50 音表过关；自我介绍 5 句",
+      "detailPath": "plan/W01.json",
+      "articleId": "W01-hajimemashite"
+    },
+    {
+      "id": "W02",
+      "stage": "P0",
+      "week": 2,
+      "title": "这是/有/在·基本助词",
+      "modules": ["G0-01～05", "V0"],
+      "deliverable": "助词填空 30 题；对话 1 篇"
+    },
+    {
+      "id": "W03",
+      "stage": "P0",
+      "week": 3,
+      "title": "形容词·喜欢讨厌·存在",
+      "modules": ["G0-06～10", "V0"],
+      "deliverable": "描述人物/房间短文"
+    },
+    {
+      "id": "W04",
+      "stage": "P0",
+      "week": 4,
+      "title": "动词ます形·时间·邀请",
+      "modules": ["G0-11～16", "V0"],
+      "deliverable": "「週末の予定」对话"
+    },
+    {
+      "id": "W05",
+      "stage": "P0",
+      "week": 5,
+      "title": "て形·请求·进行·并列",
+      "modules": ["G0-17～22"],
+      "deliverable": "て形变形表；请求类对话"
+    },
+    {
+      "id": "W06",
+      "stage": "P0",
+      "week": 6,
+      "title": "た形·たことある·比较",
+      "modules": ["G0-23～28"],
+      "deliverable": "旅行经历短文"
+    },
+    {
+      "id": "W07",
+      "stage": "P0",
+      "week": 7,
+      "title": "ない形·禁止·条件·意向",
+      "modules": ["G0-29～36"],
+      "deliverable": "N5 语法小测；错题本"
+    },
+    {
+      "id": "W08",
+      "stage": "P0",
+      "week": 8,
+      "title": "N4 核心：可能·受身·敬语入门·意向推量",
+      "modules": ["G0-37～50"],
+      "deliverable": "P0 出口测"
+    },
+    {
+      "id": "W09",
+      "stage": "P1",
+      "week": 9,
+      "title": "N3 词汇主题：生活·交通·购物",
+      "modules": ["V1-A", "K1"],
+      "deliverable": "主题短文 + 词汇测"
+    },
+    {
+      "id": "W10",
+      "stage": "P1",
+      "week": 10,
+      "title": "授受·使役·被动使役",
+      "modules": ["G1-01～08"],
+      "deliverable": "授受辨析 20 题"
+    },
+    {
+      "id": "W11",
+      "stage": "P1",
+      "week": 11,
+      "title": "样态·传闻·推量（そう/よう/らしい）",
+      "modules": ["G1-09～16"],
+      "deliverable": "新闻简讯改写"
+    },
+    {
+      "id": "W12",
+      "stage": "P1",
+      "week": 12,
+      "title": "条件·假定（ば/たら/と/なら）深化",
+      "modules": ["G1-17～22"],
+      "deliverable": "条件句作文"
+    },
+    {
+      "id": "W13",
+      "stage": "P1",
+      "week": 13,
+      "title": "原因理由·目的（ため/ように/おかげ）",
+      "modules": ["G1-23～30"],
+      "deliverable": "说明文 300 字"
+    },
+    {
+      "id": "W14",
+      "stage": "P1",
+      "week": 14,
+      "title": "逆接·对比·限定",
+      "modules": ["G1-31～38"],
+      "deliverable": "议论文段落"
+    },
+    {
+      "id": "W15",
+      "stage": "P1",
+      "week": 15,
+      "title": "敬语体系（尊敬·谦让·礼貌）",
+      "modules": ["G1-39～45", "S1"],
+      "deliverable": "职场电话/邮件各 1"
+    },
+    {
+      "id": "W16",
+      "stage": "P1",
+      "week": 16,
+      "title": "N3 阅读策略：指示词·接续",
+      "modules": ["R1"],
+      "deliverable": "短篇 8 篇限时"
+    },
+    {
+      "id": "W17",
+      "stage": "P1",
+      "week": 17,
+      "title": "N3 听力：课题理解·要点",
+      "modules": ["L1"],
+      "deliverable": "听写脚本 5 段"
+    },
+    {
+      "id": "W18",
+      "stage": "P1",
+      "week": 18,
+      "title": "N3 总复习 + 模考",
+      "modules": ["综合"],
+      "deliverable": "P1 出口测"
+    },
+    {
+      "id": "W19",
+      "stage": "P2",
+      "week": 19,
+      "title": "N2 考试题型认知·错题方法",
+      "modules": ["EXAM"],
+      "deliverable": "做官方样题摸底"
+    },
+    {
+      "id": "W20",
+      "stage": "P2",
+      "week": 20,
+      "title": "语法：添加·递进·并列",
+      "modules": ["G2-A"],
+      "deliverable": "每条造句 + 短文嵌入"
+    },
+    {
+      "id": "W21",
+      "stage": "P2",
+      "week": 21,
+      "title": "语法：限定·强调·程度",
+      "modules": ["G2-B"],
+      "deliverable": "易混组辨析表"
+    },
+    {
+      "id": "W22",
+      "stage": "P2",
+      "week": 22,
+      "title": "语法：条件·契机·时间",
+      "modules": ["G2-C"],
+      "deliverable": "时间轴记叙文"
+    },
+    {
+      "id": "W23",
+      "stage": "P2",
+      "week": 23,
+      "title": "语法：原因·依据·关联",
+      "modules": ["G2-D"],
+      "deliverable": "说明文 400–600 字"
+    },
+    {
+      "id": "W24",
+      "stage": "P2",
+      "week": 24,
+      "title": "语法：逆接·让步·对比",
+      "modules": ["G2-E"],
+      "deliverable": "议论文 1 篇"
+    },
+    {
+      "id": "W25",
+      "stage": "P2",
+      "week": 25,
+      "title": "语法：判断·主张·义务·可能",
+      "modules": ["G2-F"],
+      "deliverable": "意见文（賛成/反対）"
+    },
+    {
+      "id": "W26",
+      "stage": "P2",
+      "week": 26,
+      "title": "语法：样态·倾向·传闻·评价",
+      "modules": ["G2-G"],
+      "deliverable": "评论短文 2 篇"
+    },
+    {
+      "id": "W27",
+      "stage": "P2",
+      "week": 27,
+      "title": "语法：固定句型·文末表现",
+      "modules": ["G2-H"],
+      "deliverable": "「文章语法」专项 20 题"
+    },
+    {
+      "id": "W28",
+      "stage": "P2",
+      "week": 28,
+      "title": "词汇：漢語·複合·派生",
+      "modules": ["V2-A", "K2"],
+      "deliverable": "词语构成题 40"
+    },
+    {
+      "id": "W29",
+      "stage": "P2",
+      "week": 29,
+      "title": "词汇：近义·用法·搭配",
+      "modules": ["V2-B"],
+      "deliverable": "用法选择题 + 造句"
+    },
+    {
+      "id": "W30",
+      "stage": "P2",
+      "week": 30,
+      "title": "词汇主题包① 社会·工作·媒体",
+      "modules": ["V2-T1"],
+      "deliverable": "主题阅读 4 篇"
+    },
+    {
+      "id": "W31",
+      "stage": "P2",
+      "week": 31,
+      "title": "词汇主题包② 自然·科学·环境",
+      "modules": ["V2-T2"],
+      "deliverable": "说明文精读"
+    },
+    {
+      "id": "W32",
+      "stage": "P2",
+      "week": 32,
+      "title": "阅读：短中篇·信息检索",
+      "modules": ["R2-A"],
+      "deliverable": "限时套题"
+    },
+    {
+      "id": "W33",
+      "stage": "P2",
+      "week": 33,
+      "title": "阅读：综合理解·论点理解",
+      "modules": ["R2-B"],
+      "deliverable": "长篇论点题 6 套"
+    },
+    {
+      "id": "W34",
+      "stage": "P2",
+      "week": 34,
+      "title": "听力：课题·要点·概要·即时应答",
+      "modules": ["L2"],
+      "deliverable": "听力错因分类本"
+    },
+    {
+      "id": "W35",
+      "stage": "P3",
+      "week": 35,
+      "title": "真题/模考① 全真计时",
+      "modules": ["MOCK"],
+      "deliverable": "全科错题归因"
+    },
+    {
+      "id": "W36",
+      "stage": "P3",
+      "week": 36,
+      "title": "弱项周：语法+词汇",
+      "modules": ["G2", "V2"],
+      "deliverable": "薄弱 30 条清零"
+    },
+    {
+      "id": "W37",
+      "stage": "P3",
+      "week": 37,
+      "title": "弱项周：阅读提速",
+      "modules": ["R2"],
+      "deliverable": "阅读正确率追踪"
+    },
+    {
+      "id": "W38",
+      "stage": "P3",
+      "week": 38,
+      "title": "弱项周：听力",
+      "modules": ["L2"],
+      "deliverable": "精听 10 段"
+    },
+    {
+      "id": "W39",
+      "stage": "P3",
+      "week": 39,
+      "title": "模考② + 时间分配定稿",
+      "modules": ["MOCK"],
+      "deliverable": "第二套全真"
+    },
+    {
+      "id": "W40",
+      "stage": "P3",
+      "week": 40,
+      "title": "高频易混语法/词汇速记",
+      "modules": ["G2-X", "V2-X"],
+      "deliverable": "速查卡"
+    },
+    {
+      "id": "W41",
+      "stage": "P3",
+      "week": 41,
+      "title": "模考③ + 心态与入场清单",
+      "modules": ["MOCK"],
+      "deliverable": "第三套；报名/准考证确认"
+    },
+    {
+      "id": "W42",
+      "stage": "P3",
+      "week": 42,
+      "title": "轻量保持·睡眠·查漏",
+      "modules": ["综合"],
+      "deliverable": "只做错题与听力热身"
+    }
+  ]
+}

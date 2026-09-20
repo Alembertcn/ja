@@ -38,6 +38,11 @@ app/android/key.properties
 **/*.jks
 **/*.keystore
 
+# 本地草稿 / 截图 / 对照 Demo（不入库）
+/tmp/
+/demos/
+
 # 编辑器 / 系统
 .DS_Store
 Thumbs.db
+app/.vscode/

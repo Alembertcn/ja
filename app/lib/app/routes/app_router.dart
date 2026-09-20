@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/article.dart';
+import '../../data/models/plan.dart';
 import '../../modules/explain/explain_args.dart';
 import '../../modules/explain/explain_view.dart';
 import '../../modules/home/home_view.dart';
+import '../../modules/plan/plan_week_cubit.dart';
+import '../../modules/plan/plan_week_view.dart';
 import '../../modules/reader/reader_cubit.dart';
 import '../../modules/reader/reader_view.dart';
 import '../../services/audio_cache_service.dart';
@@ -47,6 +50,21 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ExplainView(args: args),
+        );
+      case Routes.planWeek:
+        final week = settings.arguments;
+        if (week is! PlanWeekSummary) {
+          return _errorRoute('PlanWeek 需要 PlanWeekSummary');
+        }
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (ctx) => PlanWeekCubit(
+              summary: week,
+              repo: ctx.read<ContentRepository>(),
+            ),
+            child: const PlanWeekView(),
+          ),
         );
       default:
         return _errorRoute('未知路由 ${settings.name}');

@@ -11,6 +11,7 @@ import 'data/remote/content_api.dart';
 import 'data/repository/content_repository.dart';
 import 'modules/home/home_cubit.dart';
 import 'modules/library/library_cubit.dart';
+import 'modules/plan/plan_cubit.dart';
 import 'modules/profile/profile_cubit.dart';
 import 'services/audio_cache_service.dart';
 import 'services/playback_cubit.dart';
@@ -27,6 +28,7 @@ Future<void> main() async {
   final audioCache = await AudioCacheService(api).init();
   final playback = PlaybackCubit(audioCache, settings);
   final library = LibraryCubit(repo);
+  final plan = PlanCubit(repo);
   final home = HomeCubit();
   final profile = ProfileCubit(
     settings: settings,
@@ -43,6 +45,7 @@ Future<void> main() async {
     audioCache: audioCache,
     playback: playback,
     library: library,
+    plan: plan,
     home: home,
     profile: profile,
   ));
@@ -58,6 +61,7 @@ class JaApp extends StatelessWidget {
     required this.audioCache,
     required this.playback,
     required this.library,
+    required this.plan,
     required this.home,
     required this.profile,
   });
@@ -69,6 +73,7 @@ class JaApp extends StatelessWidget {
   final AudioCacheService audioCache;
   final PlaybackCubit playback;
   final LibraryCubit library;
+  final PlanCubit plan;
   final HomeCubit home;
   final ProfileCubit profile;
 
@@ -87,10 +92,11 @@ class JaApp extends StatelessWidget {
           BlocProvider.value(value: playback),
           BlocProvider.value(value: home),
           BlocProvider.value(value: library),
+          BlocProvider.value(value: plan),
           BlocProvider.value(value: profile),
         ],
         child: MaterialApp(
-          title: 'JA 日语精读',
+          title: '学JA',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light(),
           darkTheme: AppTheme.dark(),
