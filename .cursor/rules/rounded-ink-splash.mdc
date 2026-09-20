@@ -1,0 +1,45 @@
+---
+description: 圆角/描边可点击组件的水波纹必须贴合轮廓
+globs: "**/*.dart"
+alwaysApply: false
+---
+
+# 圆角按压水波纹
+
+带 `borderRadius` / `shape` / 圆角 `BoxDecoration` 的可点击或可展开组件，若有 Ink 按压反馈，水波纹必须贴合该轮廓，禁止直角溢出。
+
+## 原因
+
+`InkWell` / `ListTile` / `ExpansionTile` 的水波纹画在**最近的 `Material` 祖先**上。外层 `Container`/`DecoratedBox` 的 `clipBehavior` **裁不到**祖先上的墨水。
+
+## 必须
+
+- 可点击圆角面：用 `AppInkSurface`（`lib/modules/shared/app_surface.dart`），或本地 `Material(borderRadius/shape: …, clipBehavior: Clip.antiAlias)` + `InkWell(borderRadius/customBorder: 同形状)`。
+- 圆角分组里的 `ListTile`：外层用 `AppPanel` / 同形状 `Material`，不要只靠 `Container` clip。
+- `ExpansionTile`、Card、BottomSheet、Dialog、PopupMenu：走 `AppTheme` / `AppRadii` 的 shape；自定义时同样设置 `shape`/`collapsedShape`。
+- 圆形按钮：`Material(shape: CircleBorder())` + `InkWell(customBorder: CircleBorder())`。
+
+## 禁止
+
+```dart
+// ❌ Container 圆角 + InkWell（水波纹在路由 Material 上，呈直角）
+Container(
+  decoration: BoxDecoration(borderRadius: radius, color: color),
+  clipBehavior: Clip.antiAlias,
+  child: InkWell(onTap: onTap, child: child),
+)
+```
+
+```dart
+// ✅ 本地 Material 承载水波纹
+AppInkSurface(onTap: onTap, borderRadius: radius, child: child)
+// 或
+Material(
+  color: color,
+  borderRadius: radius,
+  clipBehavior: Clip.antiAlias,
+  child: InkWell(onTap: onTap, borderRadius: radius, child: child),
+)
+```
+
+无按压反馈（纯展示）的圆角块不受此限。圆角刻度优先 `AppRadii`。
