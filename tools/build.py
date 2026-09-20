@@ -23,6 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
 PLAN_DIR = ROOT / "content" / "plan"
+LESSONS_DIR = ROOT / "docs" / "lessons"
 SCHEMA_PATH = ROOT / "content" / "schema" / "article.schema.json"
 # 预生成音频由 tools/tts.py 产出并入库，构建时只做搬运与注入
 AUDIO_DIR = ROOT / "audio"
@@ -448,6 +449,7 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
     articles_out.mkdir(parents=True, exist_ok=True)
     audio_out = out_dir / "audio"
     plan_out = out_dir / "plan"
+    lessons_out = out_dir / "lessons"
 
     # 清掉上一次构建的残留，避免删了源文件但产物还挂在 Pages 上
     for stale in articles_out.glob("*.json"):
@@ -456,6 +458,8 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
         shutil.rmtree(audio_out)
     if plan_out.exists():
         shutil.rmtree(plan_out)
+    if lessons_out.exists():
+        shutil.rmtree(lessons_out)
 
     for _, data in articles:
         payload = with_audio(data)
@@ -474,12 +478,28 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
     if PLAN_DIR.is_dir():
         shutil.copytree(PLAN_DIR, plan_out)
 
+    # 精讲笔记：docs/lessons/*.md → dist/lessons/，供 App「打开精讲笔记」拉取
+    if LESSONS_DIR.is_dir():
+        lessons_out.mkdir(parents=True, exist_ok=True)
+        for md in LESSONS_DIR.glob("*.md"):
+            shutil.copyfile(md, lessons_out / md.name)
+
     (out_dir / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8",
     )
     (out_dir / "index.html").write_text(render_index_html(manifest), encoding="utf-8")
     (out_dir / ".nojekyll").write_text("", encoding="utf-8")
+
+
+def _lesson_source_path(lesson_path: str) -> Path | None:
+    """lessonPath 形如 lessons/xxx.md，对应仓库 docs/lessons/xxx.md。"""
+    if not lesson_path.startswith("lessons/") or ".." in lesson_path:
+        return None
+    name = lesson_path.removeprefix("lessons/")
+    if not name or "/" in name or not name.endswith(".md"):
+        return None
+    return LESSONS_DIR / name
 
 
 def validate_plan(problems: list[Problem]) -> None:
@@ -532,6 +552,20 @@ def validate_plan(problems: list[Problem]) -> None:
                     continue
                 if detail_data.get("id") != wid:
                     problems.append(err(detail, f"详情 id 应为 {wid}"))
+                lesson = detail_data.get("lessonPath") or week.get("lessonPath")
+                if isinstance(lesson, str) and lesson:
+                    src = _lesson_source_path(lesson)
+                    if src is None:
+                        problems.append(err(detail, f"lessonPath 非法：{lesson}"))
+                    elif not src.exists():
+                        problems.append(err(detail, f"精讲笔记不存在：docs/{lesson}"))
+        lesson = week.get("lessonPath")
+        if isinstance(lesson, str) and lesson:
+            src = _lesson_source_path(lesson)
+            if src is None:
+                problems.append(err(where, f"lessonPath 非法：{lesson}"))
+            elif not src.exists():
+                problems.append(err(where, f"精讲笔记不存在：docs/{lesson}"))
 
 
 def main() -> int:
@@ -579,8 +613,12 @@ def main() -> int:
     if (out_dir / "plan").is_dir():
         plan_files = list((out_dir / "plan").glob("*.json"))
         plan_note = f" / plan/({len(plan_files)})"
+    lessons_note = ""
+    if (out_dir / "lessons").is_dir():
+        n = len(list((out_dir / "lessons").glob("*.md")))
+        lessons_note = f" / lessons/({n})"
     print(f"\n构建完成：{len(articles)} 篇 → {out_dir.relative_to(ROOT) if out_dir.is_relative_to(ROOT) else out_dir}")
-    print(f"  manifest.json / articles/*.json / index.html{plan_note}，{len(warnings)} 个警告")
+    print(f"  manifest.json / articles/*.json / index.html{plan_note}{lessons_note}，{len(warnings)} 个警告")
     return 0
 
 

@@ -44,7 +44,19 @@ class ContentApi {
   Uri _resolve(String path) {
     final base = _baseUrl().trim();
     final normalized = base.endsWith('/') ? base : '$base/';
-    return Uri.parse(normalized).resolve(path);
+    final baseUri = Uri.parse(normalized);
+    // 按段编码，中文文件名（精讲笔记）才能正确请求
+    final extra = path
+        .split('/')
+        .where((s) => s.isNotEmpty)
+        .map(Uri.encodeComponent)
+        .toList(growable: false);
+    return baseUri.replace(
+      pathSegments: [
+        ...baseUri.pathSegments.where((s) => s.isNotEmpty),
+        ...extra,
+      ],
+    );
   }
 
   Future<RemoteDocument> fetch(String path, {String? etag}) async {

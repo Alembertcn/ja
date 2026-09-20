@@ -5,6 +5,7 @@ import '../../app/routes/app_router.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/theme.dart';
 import '../../data/models/plan.dart';
+import '../lesson/lesson_args.dart';
 import '../library/library_cubit.dart';
 import '../shared/state_views.dart';
 import 'plan_week_cubit.dart';
@@ -140,7 +141,7 @@ class PlanWeekView extends StatelessWidget {
           _SectionCard(
             title: '资料待补充',
             child: Text(
-              '本周暂无细化知识点，可先按主题与交付物推进；完整笔记见仓库 docs/lessons。',
+              '本周暂无细化知识点摘要；完整内容请打开精讲笔记。',
               style: TextStyle(
                 fontSize: 14,
                 height: 1.5,
@@ -153,19 +154,55 @@ class PlanWeekView extends StatelessWidget {
             _TopicTile(topic: topic),
             const SizedBox(height: 10),
           ],
-        if (articleId != null && articleId.isNotEmpty) ...[
+        if (_hasLesson(detail, state) ||
+            (articleId != null && articleId.isNotEmpty)) ...[
           const SizedBox(height: 12),
-          FilledButton.icon(
-            onPressed: () => _openArticle(context, articleId),
-            icon: const Icon(Icons.menu_book),
-            label: const Text('打开精读课文'),
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.brand,
-              minimumSize: const Size.fromHeight(48),
+          if (_hasLesson(detail, state))
+            FilledButton.tonalIcon(
+              onPressed: () => _openLesson(context, detail, state),
+              icon: const Icon(Icons.article_outlined),
+              label: const Text('打开精讲笔记'),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+              ),
             ),
-          ),
+          if (_hasLesson(detail, state) &&
+              articleId != null &&
+              articleId.isNotEmpty)
+            const SizedBox(height: 10),
+          if (articleId != null && articleId.isNotEmpty)
+            FilledButton.icon(
+              onPressed: () => _openArticle(context, articleId),
+              icon: const Icon(Icons.menu_book),
+              label: const Text('打开精读课文'),
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.brand,
+                minimumSize: const Size.fromHeight(48),
+              ),
+            ),
         ],
       ],
+    );
+  }
+
+  bool _hasLesson(PlanWeekDetail detail, PlanWeekState state) {
+    final path = detail.lessonPath ?? state.summary.lessonPath;
+    return path != null && path.isNotEmpty;
+  }
+
+  void _openLesson(
+    BuildContext context,
+    PlanWeekDetail detail,
+    PlanWeekState state,
+  ) {
+    final path = detail.lessonPath ?? state.summary.lessonPath;
+    if (path == null || path.isEmpty) return;
+    Navigator.of(context).pushNamed(
+      Routes.lesson,
+      arguments: LessonArgs(
+        path: path,
+        title: '${detail.id} 精讲笔记',
+      ),
     );
   }
 

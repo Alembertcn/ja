@@ -6,8 +6,9 @@
   "modules": ["K0", "G0", "V0", "S0"],
   "goal": "五十音表过关；能流利说出自介绍 5 句；掌握基础寒暄",
   "hoursHint": "每天 1.5～2.5 小时 × 7 天",
-  "articleId": "W01-hajimemashite",
-  "days": [
+    "articleId": "W01-hajimemashite",
+    "lessonPath": "lessons/W01_第一周_假名发音寒暄.md",
+    "days": [
     {
       "day": 1,
       "focus": "平假名あ行～な行 + 发音",

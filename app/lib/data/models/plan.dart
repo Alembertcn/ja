@@ -11,6 +11,7 @@ class PlanWeekSummary {
     required this.deliverable,
     this.detailPath,
     this.articleId,
+    this.lessonPath,
   });
 
   final String id;
@@ -21,6 +22,7 @@ class PlanWeekSummary {
   final String deliverable;
   final String? detailPath;
   final String? articleId;
+  final String? lessonPath;
 
   bool get hasDetail => detailPath != null && detailPath!.isNotEmpty;
 
@@ -33,6 +35,7 @@ class PlanWeekSummary {
         deliverable: json['deliverable'] as String? ?? '',
         detailPath: json['detailPath'] as String?,
         articleId: json['articleId'] as String?,
+        lessonPath: json['lessonPath'] as String?,
       );
 }
 
@@ -104,6 +107,7 @@ class PlanWeekDetail {
     required this.goal,
     this.hoursHint,
     this.articleId,
+    this.lessonPath,
     this.days = const [],
     this.deliverables = const [],
     this.topics = const [],
@@ -117,6 +121,7 @@ class PlanWeekDetail {
   final String goal;
   final String? hoursHint;
   final String? articleId;
+  final String? lessonPath;
   final List<PlanDay> days;
   final List<String> deliverables;
   final List<PlanTopic> topics;
@@ -135,6 +140,7 @@ class PlanWeekDetail {
         goal: json['goal'] as String? ?? '',
         hoursHint: json['hoursHint'] as String?,
         articleId: json['articleId'] as String?,
+        lessonPath: json['lessonPath'] as String?,
         days: _mapList(json['days'], PlanDay.fromJson),
         deliverables: _stringList(json['deliverables']),
         topics: _mapList(json['topics'], PlanTopic.fromJson),
@@ -149,6 +155,7 @@ class PlanWeekDetail {
         modules: summary.modules,
         goal: summary.deliverable,
         articleId: summary.articleId,
+        lessonPath: summary.lessonPath,
         deliverables: summary.deliverable.isEmpty ? const [] : [summary.deliverable],
       );
 }

@@ -6,6 +6,9 @@ import '../../data/models/plan.dart';
 import '../../modules/explain/explain_args.dart';
 import '../../modules/explain/explain_view.dart';
 import '../../modules/home/home_view.dart';
+import '../../modules/lesson/lesson_args.dart';
+import '../../modules/lesson/lesson_cubit.dart';
+import '../../modules/lesson/lesson_view.dart';
 import '../../modules/plan/plan_week_cubit.dart';
 import '../../modules/plan/plan_week_view.dart';
 import '../../modules/reader/reader_cubit.dart';
@@ -64,6 +67,21 @@ class AppRouter {
               repo: ctx.read<ContentRepository>(),
             ),
             child: const PlanWeekView(),
+          ),
+        );
+      case Routes.lesson:
+        final args = settings.arguments;
+        if (args is! LessonArgs) {
+          return _errorRoute('Lesson 需要 LessonArgs');
+        }
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (ctx) => LessonCubit(
+              path: args.path,
+              repo: ctx.read<ContentRepository>(),
+            ),
+            child: LessonView(args: args),
           ),
         );
       default:

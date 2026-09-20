@@ -36,6 +36,7 @@ const String _planWeeksKey = 'plan:weeks';
 
 String _articleKey(String id) => 'article:$id';
 String _planWeekKey(String id) => 'plan:week:$id';
+String _lessonKey(String path) => 'lesson:$path';
 
 /// 远端优先、离线回落。任何网络问题都不应该让已经缓存过的课文读不了。
 class ContentRepository {
@@ -94,6 +95,19 @@ class ContentRepository {
       path: path,
       forceRefresh: forceRefresh,
       parse: PlanWeekDetail.parse,
+    );
+  }
+
+  /// 拉取精讲笔记 Markdown（发布在内容源 lessons/ 下）。
+  Future<ContentResult<String>> loadLesson(
+    String lessonPath, {
+    bool forceRefresh = false,
+  }) {
+    return _load(
+      key: _lessonKey(lessonPath),
+      path: lessonPath,
+      forceRefresh: forceRefresh,
+      parse: (body) => body,
     );
   }
 
