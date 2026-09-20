@@ -45,16 +45,12 @@ class ContentApi {
     final base = _baseUrl().trim();
     final normalized = base.endsWith('/') ? base : '$base/';
     final baseUri = Uri.parse(normalized);
-    // 按段编码，中文文件名（精讲笔记）才能正确请求
-    final extra = path
-        .split('/')
-        .where((s) => s.isNotEmpty)
-        .map(Uri.encodeComponent)
-        .toList(growable: false);
+    // pathSegments 要传未编码段，Uri 组装时会自行 percent-encode；
+    // 若先 encodeComponent 再塞进去会二次编码，中文文件名 404。
     return baseUri.replace(
       pathSegments: [
         ...baseUri.pathSegments.where((s) => s.isNotEmpty),
-        ...extra,
+        ...path.split('/').where((s) => s.isNotEmpty),
       ],
     );
   }
