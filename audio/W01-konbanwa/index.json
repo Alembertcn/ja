@@ -1,0 +1,127 @@
+{
+  "articleId": "W01-konbanwa",
+  "rate": "-10%",
+  "gapMs": 350,
+  "voices": {
+    "王": "ja-JP-NanamiNeural",
+    "佐藤": "ja-JP-KeitaNeural"
+  },
+  "lines": {
+    "l01": "53a66e89a6d05e46",
+    "l02": "201ecbefae46c894",
+    "l03": "615d8f1154d9c264",
+    "l04": "624326d7a0f30513",
+    "l05": "c4b97dabd6605825",
+    "l06": "e1953705c4ecbf3e",
+    "l07": "1d92d41f49c60eb1",
+    "l08": "0d2b6322ea1ab05c",
+    "l09": "da7fac15ac963ddb",
+    "l10": "aff00d19b7152fc9",
+    "l11": "1f57798624c03b1e",
+    "l12": "fd3e1519fbb59378",
+    "l13": "6a6d74fc8de6e5be",
+    "l14": "329fcafa725ca4cc",
+    "l15": "a80be49fb359e128",
+    "l16": "7954f87fbb406057",
+    "l17": "d60ae7fb9de33deb",
+    "l18": "ab8881ff538e2f96",
+    "l19": "bf4ce07cd61f4f0e"
+  },
+  "cues": [
+    {
+      "id": "l01",
+      "startMs": 0,
+      "endMs": 1896
+    },
+    {
+      "id": "l02",
+      "startMs": 2304,
+      "endMs": 5520
+    },
+    {
+      "id": "l03",
+      "startMs": 5928,
+      "endMs": 10200
+    },
+    {
+      "id": "l04",
+      "startMs": 10608,
+      "endMs": 12744
+    },
+    {
+      "id": "l05",
+      "startMs": 13152,
+      "endMs": 16368
+    },
+    {
+      "id": "l06",
+      "startMs": 16776,
+      "endMs": 22272
+    },
+    {
+      "id": "l07",
+      "startMs": 22680,
+      "endMs": 25608
+    },
+    {
+      "id": "l08",
+      "startMs": 26016,
+      "endMs": 31128
+    },
+    {
+      "id": "l09",
+      "startMs": 31536,
+      "endMs": 34488
+    },
+    {
+      "id": "l10",
+      "startMs": 34896,
+      "endMs": 39456
+    },
+    {
+      "id": "l11",
+      "startMs": 39864,
+      "endMs": 42576
+    },
+    {
+      "id": "l12",
+      "startMs": 42984,
+      "endMs": 46992
+    },
+    {
+      "id": "l13",
+      "startMs": 47400,
+      "endMs": 49896
+    },
+    {
+      "id": "l14",
+      "startMs": 50304,
+      "endMs": 52944
+    },
+    {
+      "id": "l15",
+      "startMs": 53352,
+      "endMs": 58536
+    },
+    {
+      "id": "l16",
+      "startMs": 58944,
+      "endMs": 61488
+    },
+    {
+      "id": "l17",
+      "startMs": 61896,
+      "endMs": 64032
+    },
+    {
+      "id": "l18",
+      "startMs": 64440,
+      "endMs": 66456
+    },
+    {
+      "id": "l19",
+      "startMs": 66864,
+      "endMs": 70368
+    }
+  ]
+}

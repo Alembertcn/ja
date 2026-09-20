@@ -10,8 +10,8 @@
   "grammarModules": ["G0-01", "G0-03", "G0-11", "G0-13", "G0-16", "G0-22"],
   "vocabTopic": "V0",
   "tags": ["寒暄", "自我介绍", "职场"],
-  "source": "docs/lessons/第一次见面_对话精讲.md",
-  "updatedAt": "2026-09-19",
+  "source": "docs/lessons/W01_第一周_假名发音寒暄.md",
+  "updatedAt": "2026-09-20",
   "lines": [
     {
       "id": "l01",

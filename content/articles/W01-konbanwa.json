@@ -1,0 +1,468 @@
+{
+  "id": "W01-konbanwa",
+  "title": "こんばんは",
+  "titleZh": "晚上好（教室里）",
+  "stage": "P0",
+  "week": 1,
+  "level": "N5",
+  "type": "dialogue",
+  "scene": "日语教室傍晚，学生小王向佐藤老师确认物品与身份用语",
+  "grammarModules": ["G0", "V0", "S0"],
+  "vocabTopic": "V0",
+  "tags": ["寒暄", "疑问", "否定", "指示词", "教室"],
+  "source": "docs/lessons/W01_第一周_假名发音寒暄.md",
+  "updatedAt": "2026-09-20",
+  "lines": [
+    {
+      "id": "l01",
+      "speaker": "王",
+      "jp": "こんばんは。",
+      "reading": "こんばんは。",
+      "romaji": "konbanwa.",
+      "furigana": [],
+      "zh": "晚上好。",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "こんばんは",
+          "explain": "傍晚至夜间的问候。句中的「は」读 wa，不是 ha。与「おはようございます」「こんにちは」构成一天的三套礼貌问候。"
+        }
+      ],
+      "vocab": [
+        { "word": "こんばんは", "reading": "こんばんは", "pos": "感動詞", "zh": "晚上好" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l02",
+      "speaker": "佐藤",
+      "jp": "こんばんは。どうぞ。",
+      "reading": "こんばんは。どうぞ。",
+      "romaji": "konbanwa. dōzo.",
+      "furigana": [],
+      "zh": "晚上好。请进。／请。",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "どうぞ",
+          "explain": "请对方做某事或收下某物。这里是请对方进教室／落座，比单独说「はい」更客气。"
+        }
+      ],
+      "vocab": [
+        { "word": "どうぞ", "reading": "どうぞ", "pos": "副詞", "zh": "请" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l03",
+      "speaker": "王",
+      "jp": "すみません。これは何ですか。",
+      "reading": "すみません。これはなんですか。",
+      "romaji": "sumimasen. kore wa nan desu ka.",
+      "furigana": [
+        { "start": 9, "len": 1, "ruby": "なん" }
+      ],
+      "zh": "不好意思。这是什么？",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "すみません",
+          "explain": "劳驾、对不起、借光。这里用来引起对方注意，比突然发问更礼貌。"
+        },
+        {
+          "module": "G0",
+          "point": "これは何ですか",
+          "explain": "指示词「これ」＋主题「は」＋「何」＋「ですか」。问眼前近物是什么；回答去掉「か」，换成「です」。"
+        }
+      ],
+      "vocab": [
+        { "word": "すみません", "reading": "すみません", "pos": "感動詞", "zh": "对不起／劳驾" },
+        { "word": "これ", "reading": "これ", "pos": "代名詞", "zh": "这个（近说话人）" },
+        { "word": "何", "reading": "なん", "pos": "代名詞", "zh": "什么", "note": "后接「です／の」时多读 なん" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l04",
+      "speaker": "佐藤",
+      "jp": "それはペンです。",
+      "reading": "それはぺんです。",
+      "romaji": "sore wa pen desu.",
+      "furigana": [],
+      "zh": "那是钢笔。／那是笔。",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "それは～です",
+          "explain": "对方说「これ」时，自己那边用「それ」指同一物（靠近对方）。句型仍是 Aは Bです。"
+        }
+      ],
+      "vocab": [
+        { "word": "それ", "reading": "それ", "pos": "代名詞", "zh": "那个（近听话人）" },
+        { "word": "ペン", "reading": "ぺん", "pos": "名詞", "zh": "笔", "note": "片假名外来语" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l05",
+      "speaker": "王",
+      "jp": "この本は中国語ですか。",
+      "reading": "このほんはちゅうごくごですか。",
+      "romaji": "kono hon wa Chūgokugo desu ka.",
+      "furigana": [
+        { "start": 2, "len": 1, "ruby": "ほん" },
+        { "start": 4, "len": 3, "ruby": "ちゅうごくご" }
+      ],
+      "zh": "这本书是中文的吗？",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "この＋名詞",
+          "explain": "「この／その／あの」必须直接接名词。「これ」单独用，「この本」不能说成「これの本」。"
+        },
+        {
+          "module": "G0",
+          "point": "～ですか",
+          "explain": "在「です」后加「か」构成是非问句。回答用「はい／いいえ」。"
+        }
+      ],
+      "vocab": [
+        { "word": "この", "reading": "この", "pos": "連体詞", "zh": "这个～" },
+        { "word": "本", "reading": "ほん", "pos": "名詞", "zh": "书" },
+        { "word": "中国語", "reading": "ちゅうごくご", "pos": "名詞", "zh": "中文" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l06",
+      "speaker": "佐藤",
+      "jp": "いいえ、中国語ではありません。日本語です。",
+      "reading": "いいえ、ちゅうごくごではありません。にほんごです。",
+      "romaji": "iie, Chūgokugo de wa arimasen. Nihongo desu.",
+      "furigana": [
+        { "start": 4, "len": 3, "ruby": "ちゅうごくご" },
+        { "start": 15, "len": 3, "ruby": "にほんご" }
+      ],
+      "zh": "不是，不是中文。是日语。",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "Aは Bではありません",
+          "explain": "名词句否定。口语常说「じゃありません」。先否定再给出正确说明，是课堂里极常见的纠错方式。"
+        },
+        {
+          "module": "V0",
+          "point": "いいえ",
+          "explain": "否定回答。肯定则用「はい」。"
+        }
+      ],
+      "vocab": [
+        { "word": "いいえ", "reading": "いいえ", "pos": "感動詞", "zh": "不、不是" },
+        { "word": "日本語", "reading": "にほんご", "pos": "名詞", "zh": "日语" }
+      ],
+      "note": "「ではありません」里的「は」读 wa。",
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l07",
+      "speaker": "佐藤",
+      "jp": "王さんは中国人ですか。",
+      "reading": "わんさんはちゅうごくじんですか。",
+      "romaji": "Wan-san wa Chūgokujin desu ka.",
+      "furigana": [
+        { "start": 0, "len": 1, "ruby": "わん" },
+        { "start": 4, "len": 3, "ruby": "ちゅうごくじん" }
+      ],
+      "zh": "小王，你是中国人吗？",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "～さん",
+          "explain": "称呼对方用「姓／名＋さん」，不能加在自己名字后面。"
+        },
+        {
+          "module": "G0",
+          "point": "は",
+          "explain": "主题助词，读 wa：关于王さん……"
+        }
+      ],
+      "vocab": [
+        { "word": "中国人", "reading": "ちゅうごくじん", "pos": "名詞", "zh": "中国人" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l08",
+      "speaker": "王",
+      "jp": "はい、中国人です。学生です。",
+      "reading": "はい、ちゅうごくじんです。がくせいです。",
+      "romaji": "hai, Chūgokujin desu. gakusei desu.",
+      "furigana": [
+        { "start": 3, "len": 3, "ruby": "ちゅうごくじん" },
+        { "start": 9, "len": 2, "ruby": "がくせい" }
+      ],
+      "zh": "是的，我是中国人。我是学生。",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "Aは Bです",
+          "explain": "第二句省略了「わたしは」，承前主语。职业、身份介绍的基本骨架。"
+        }
+      ],
+      "vocab": [
+        { "word": "はい", "reading": "はい", "pos": "感動詞", "zh": "是、对" },
+        { "word": "学生", "reading": "がくせい", "pos": "名詞", "zh": "学生" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l09",
+      "speaker": "王",
+      "jp": "わたしの名前は王です。",
+      "reading": "わたしのなまえはわんです。",
+      "romaji": "watashi no namae wa Wan desu.",
+      "furigana": [
+        { "start": 4, "len": 2, "ruby": "なまえ" },
+        { "start": 7, "len": 1, "ruby": "わん" }
+      ],
+      "zh": "我的名字是王。",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "の",
+          "explain": "所属、所有：わたしの名前＝我的名字。本周助词预习重点之一。"
+        }
+      ],
+      "vocab": [
+        { "word": "わたし", "reading": "わたし", "pos": "代名詞", "zh": "我" },
+        { "word": "名前", "reading": "なまえ", "pos": "名詞", "zh": "名字" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l10",
+      "speaker": "佐藤",
+      "jp": "わたしは日本人です。先生です。",
+      "reading": "わたしはにほんじんです。せんせいです。",
+      "romaji": "watashi wa Nihonjin desu. sensei desu.",
+      "furigana": [
+        { "start": 4, "len": 3, "ruby": "にほんじん" },
+        { "start": 10, "len": 2, "ruby": "せんせい" }
+      ],
+      "zh": "我是日本人。我是老师。",
+      "grammar": [
+        {
+          "module": "V0",
+          "point": "日本人／先生",
+          "explain": "与「中国人／学生」成对记忆，方便做身份问答练习。"
+        }
+      ],
+      "vocab": [
+        { "word": "日本人", "reading": "にほんじん", "pos": "名詞", "zh": "日本人" },
+        { "word": "先生", "reading": "せんせい", "pos": "名詞", "zh": "老师" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l11",
+      "speaker": "王",
+      "jp": "あの人はだれですか。",
+      "reading": "あのひとはだれですか。",
+      "romaji": "ano hito wa dare desu ka.",
+      "furigana": [
+        { "start": 2, "len": 1, "ruby": "ひと" }
+      ],
+      "zh": "那个人是谁？",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "あの＋名詞",
+          "explain": "离双方都较远时用「あれ／あの」。问人用「だれ（誰）」。"
+        },
+        {
+          "module": "G0",
+          "point": "だれですか",
+          "explain": "问身份／是谁。回答用「～です／～さんです」。"
+        }
+      ],
+      "vocab": [
+        { "word": "あの", "reading": "あの", "pos": "連体詞", "zh": "那个～（远）" },
+        { "word": "人", "reading": "ひと", "pos": "名詞", "zh": "人" },
+        { "word": "だれ", "reading": "だれ", "pos": "代名詞", "zh": "谁" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l12",
+      "speaker": "佐藤",
+      "jp": "山田くんです。友だちです。",
+      "reading": "やまだくんです。ともだちです。",
+      "romaji": "Yamada-kun desu. tomodachi desu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "やまだ" },
+        { "start": 7, "len": 1, "ruby": "とも" }
+      ],
+      "zh": "是山田。是（我的）朋友。",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "～くん",
+          "explain": "多用于男性晚辈或同学，比「さん」更亲近。自称不用。"
+        }
+      ],
+      "vocab": [
+        { "word": "友だち", "reading": "ともだち", "pos": "名詞", "zh": "朋友" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l13",
+      "speaker": "佐藤",
+      "jp": "友だちは五人です。",
+      "reading": "ともだちはごにんです。",
+      "romaji": "tomodachi wa gonin desu.",
+      "furigana": [
+        { "start": 0, "len": 1, "ruby": "とも" },
+        { "start": 4, "len": 2, "ruby": "ごにん" }
+      ],
+      "zh": "朋友有五个人。",
+      "grammar": [
+        {
+          "module": "V0",
+          "point": "五人",
+          "explain": "人数用「～人（にん／り）」。一～十是本周认读重点：いち、に、さん、よん、ご、ろく、なな、はち、きゅう、じゅう。"
+        }
+      ],
+      "vocab": [
+        { "word": "五人", "reading": "ごにん", "pos": "名詞", "zh": "五个人" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l14",
+      "speaker": "王",
+      "jp": "英語もわかりますか。",
+      "reading": "えいごもわかりますか。",
+      "romaji": "Eigo mo wakarimasu ka.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "えいご" }
+      ],
+      "zh": "英语也懂吗？",
+      "grammar": [
+        {
+          "module": "V0",
+          "point": "英語",
+          "explain": "与「日本語／中国語」一起记语言名。本句「も」＝也，属轻量预习，理解即可。"
+        }
+      ],
+      "vocab": [
+        { "word": "英語", "reading": "えいご", "pos": "名詞", "zh": "英语" },
+        { "word": "わかる", "reading": "わかる", "pos": "動詞", "zh": "明白、懂", "note": "ます形：わかります" }
+      ],
+      "note": "「わかります」略超本周骨架，作听懂大意即可。",
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l15",
+      "speaker": "佐藤",
+      "jp": "いいえ、英語ではありません。日本語です。",
+      "reading": "いいえ、えいごではありません。にほんごです。",
+      "romaji": "iie, Eigo de wa arimasen. Nihongo desu.",
+      "furigana": [
+        { "start": 4, "len": 2, "ruby": "えいご" },
+        { "start": 14, "len": 3, "ruby": "にほんご" }
+      ],
+      "zh": "不，不是（教）英语。是日语。",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "ではありません",
+          "explain": "再次练习否定断定。可对比上一处「中国語ではありません」。"
+        }
+      ],
+      "vocab": [],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l16",
+      "speaker": "王",
+      "jp": "ありがとうございます。",
+      "reading": "ありがとうございます。",
+      "romaji": "arigatō gozaimasu.",
+      "furigana": [],
+      "zh": "谢谢。",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "ありがとうございます",
+          "explain": "礼貌道谢。熟人之间可缩短为「ありがとう」。"
+        }
+      ],
+      "vocab": [
+        { "word": "ありがとうございます", "reading": "ありがとうございます", "pos": "感動詞", "zh": "谢谢（礼貌）" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l17",
+      "speaker": "佐藤",
+      "jp": "どういたしまして。",
+      "reading": "どういたしまして。",
+      "romaji": "dō itashimashite.",
+      "furigana": [],
+      "zh": "不客气。",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "どういたしまして",
+          "explain": "回应「ありがとう」的固定说法。寒暄应答对练本周必背。"
+        }
+      ],
+      "vocab": [
+        { "word": "どういたしまして", "reading": "どういたしまして", "pos": "感動詞", "zh": "不客气" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l18",
+      "speaker": "王",
+      "jp": "さようなら。",
+      "reading": "さようなら。",
+      "romaji": "sayōnara.",
+      "furigana": [],
+      "zh": "再见。",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "さようなら",
+          "explain": "较正式的道别。朋友间更常说「じゃあね／またね」。"
+        }
+      ],
+      "vocab": [
+        { "word": "さようなら", "reading": "さようなら", "pos": "感動詞", "zh": "再见" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l19",
+      "speaker": "佐藤",
+      "jp": "さようなら。またあした。",
+      "reading": "さようなら。またあした。",
+      "romaji": "sayōnara. mata ashita.",
+      "furigana": [],
+      "zh": "再见。明天见。",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "またあした",
+          "explain": "「また」＝再、「あした」＝明天。道别时可叠一句，比单说「さようなら」自然。"
+        }
+      ],
+      "vocab": [
+        { "word": "また", "reading": "また", "pos": "副詞", "zh": "再、又" },
+        { "word": "あした", "reading": "あした", "pos": "名詞", "zh": "明天" }
+      ],
+      "isSentenceEnd": true
+    }
+  ]
+}
