@@ -559,6 +559,7 @@ def validate_plan(problems: list[Problem]) -> None:
                         problems.append(err(detail, f"lessonPath 非法：{lesson}"))
                     elif not src.exists():
                         problems.append(err(detail, f"精讲笔记不存在：docs/{lesson}"))
+                _validate_article_ids(detail_data, detail, problems)
         lesson = week.get("lessonPath")
         if isinstance(lesson, str) and lesson:
             src = _lesson_source_path(lesson)
@@ -566,6 +567,22 @@ def validate_plan(problems: list[Problem]) -> None:
                 problems.append(err(where, f"lessonPath 非法：{lesson}"))
             elif not src.exists():
                 problems.append(err(where, f"精讲笔记不存在：docs/{lesson}"))
+        _validate_article_ids(week, where, problems)
+
+
+def _validate_article_ids(obj: dict, where: str, problems: list[Problem]) -> None:
+    ids: list[str] = []
+    raw_list = obj.get("articleIds")
+    if isinstance(raw_list, list):
+        ids = [x for x in raw_list if isinstance(x, str) and x]
+    single = obj.get("articleId")
+    if isinstance(single, str) and single:
+        if single not in ids:
+            ids.append(single)
+    for aid in ids:
+        path = ARTICLES_DIR / f"{aid}.json"
+        if not path.exists():
+            problems.append(err(where, f"精读课文不存在：content/articles/{aid}.json"))
 
 
 def main() -> int:

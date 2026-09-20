@@ -10,7 +10,7 @@ class PlanWeekSummary {
     required this.modules,
     required this.deliverable,
     this.detailPath,
-    this.articleId,
+    this.articleIds = const [],
     this.lessonPath,
   });
 
@@ -21,7 +21,7 @@ class PlanWeekSummary {
   final List<String> modules;
   final String deliverable;
   final String? detailPath;
-  final String? articleId;
+  final List<String> articleIds;
   final String? lessonPath;
 
   bool get hasDetail => detailPath != null && detailPath!.isNotEmpty;
@@ -34,7 +34,7 @@ class PlanWeekSummary {
         modules: _stringList(json['modules']),
         deliverable: json['deliverable'] as String? ?? '',
         detailPath: json['detailPath'] as String?,
-        articleId: json['articleId'] as String?,
+        articleIds: _articleIds(json),
         lessonPath: json['lessonPath'] as String?,
       );
 }
@@ -106,7 +106,7 @@ class PlanWeekDetail {
     required this.modules,
     required this.goal,
     this.hoursHint,
-    this.articleId,
+    this.articleIds = const [],
     this.lessonPath,
     this.days = const [],
     this.deliverables = const [],
@@ -120,7 +120,7 @@ class PlanWeekDetail {
   final List<String> modules;
   final String goal;
   final String? hoursHint;
-  final String? articleId;
+  final List<String> articleIds;
   final String? lessonPath;
   final List<PlanDay> days;
   final List<String> deliverables;
@@ -139,7 +139,7 @@ class PlanWeekDetail {
         modules: _stringList(json['modules']),
         goal: json['goal'] as String? ?? '',
         hoursHint: json['hoursHint'] as String?,
-        articleId: json['articleId'] as String?,
+        articleIds: _articleIds(json),
         lessonPath: json['lessonPath'] as String?,
         days: _mapList(json['days'], PlanDay.fromJson),
         deliverables: _stringList(json['deliverables']),
@@ -154,7 +154,7 @@ class PlanWeekDetail {
         title: summary.title,
         modules: summary.modules,
         goal: summary.deliverable,
-        articleId: summary.articleId,
+        articleIds: summary.articleIds,
         lessonPath: summary.lessonPath,
         deliverables: summary.deliverable.isEmpty ? const [] : [summary.deliverable],
       );
@@ -171,4 +171,13 @@ List<T> _mapList<T>(Object? raw, T Function(Map<String, dynamic>) fromJson) {
 List<String> _stringList(Object? raw) {
   if (raw is! List) return const [];
   return raw.map((e) => e.toString()).toList(growable: false);
+}
+
+/// 支持 `articleIds: [...]`，兼容旧字段 `articleId`。
+List<String> _articleIds(Map<String, dynamic> json) {
+  final fromList = _stringList(json['articleIds']);
+  if (fromList.isNotEmpty) return fromList;
+  final single = json['articleId'];
+  if (single is String && single.isNotEmpty) return [single];
+  return const [];
 }

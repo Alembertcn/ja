@@ -11,7 +11,7 @@
       "modules": ["K0", "G0", "V0", "S0"],
       "deliverable": "50 音表过关；自我介绍 5 句",
       "detailPath": "plan/W01.json",
-      "articleId": "W01-hajimemashite",
+      "articleIds": ["W01-hajimemashite", "W01-konbanwa"],
       "lessonPath": "lessons/W01_第一周_假名发音寒暄.md"
     },
     {
