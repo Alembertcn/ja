@@ -1,3 +1,11 @@
-# 可选依赖：装了之后 build.py 会额外跑一遍完整的 JSON Schema 校验。
+# TTS / 构建脚本依赖
+edge-tts>=6.1
+mutagen>=1.47
+
+# 可选：装了之后 build.py 会额外跑一遍完整的 JSON Schema 校验。
 # 不装也能用，脚本内置了针对本项目契约的校验逻辑。
 jsonschema>=4.21
+
+# 系统依赖（不在 pip 里）：
+# - lame：句间静音编码（ffmpeg 不可用时的回退路径需要）
+# - ffmpeg：优先用于合并（可选，坏了会自动回退到 MP3 字节拼接）

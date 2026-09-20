@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
 SCHEMA_PATH = ROOT / "content" / "schema" / "article.schema.json"
-# 预生成音频由 tools/tts.py 产出并入库，构建时只做搬运
+# 预生成音频由 tools/tts.py 产出并入库，构建时只做搬运与注入
 AUDIO_DIR = ROOT / "audio"
 
 MANIFEST_SCHEMA_VERSION = 1
@@ -273,25 +273,76 @@ def validate_article(data: object, path: Path, problems: list[Problem]) -> None:
 
 
 def check_audio_coverage(articles: list[tuple[Path, dict]], problems: list[Problem]) -> None:
-    """音频是硬要求：App 只播预生成音频，缺一句那一句就没声音，所以直接拦下。"""
+    """音频是硬要求：App 只播整篇预生成音频，缺文件或 cues 对不齐就拦下。"""
     for path, data in articles:
         if not isinstance(data, dict) or not isinstance(data.get("lines"), list):
             continue
-        available = audio_files(str(data.get("id", "")))
-        missing = [
-            line["id"] for line in data["lines"]
-            if isinstance(line, dict) and line.get("id") not in available
-        ]
-        if not missing:
+        article_id = data.get("id")
+        if not isinstance(article_id, str):
             continue
-        if len(missing) == len(data["lines"]):
-            problems.append(err(path.name, "整篇没有音频，跑 python tools/publish.py 合成"))
-        else:
-            shown = ", ".join(missing[:5]) + ("…" if len(missing) > 5 else "")
+        article_mp3, cues = article_audio(article_id)
+        if article_mp3 is None:
+            problems.append(err(path.name, "缺少 audio/<id>/article.mp3，跑 python tools/publish.py 合成"))
+            continue
+        if not cues:
+            problems.append(err(path.name, "index.json 缺少 cues，跑 python tools/tts.py 重新合并"))
+            continue
+        line_ids = [
+            line["id"] for line in data["lines"]
+            if isinstance(line, dict) and isinstance(line.get("id"), str)
+        ]
+        cue_ids = [c["id"] for c in cues if isinstance(c, dict) and isinstance(c.get("id"), str)]
+        if cue_ids != line_ids:
             problems.append(err(
                 path.name,
-                f"{len(missing)} 句缺音频（{shown}），跑 python tools/publish.py 合成",
+                f"cues 与 lines 不一致（cues={len(cue_ids)} lines={len(line_ids)}），跑 python tools/tts.py --force",
             ))
+
+
+def article_audio(article_id: str) -> tuple[Path | None, list[dict]]:
+    """返回整篇音频路径与 cues。"""
+    folder = AUDIO_DIR / article_id
+    mp3 = folder / "article.mp3"
+    if not mp3.is_file():
+        return None, []
+    index_path = folder / "index.json"
+    cues: list[dict] = []
+    if index_path.is_file():
+        try:
+            raw = json.loads(index_path.read_text(encoding="utf-8")).get("cues") or []
+            if isinstance(raw, list):
+                cues = [c for c in raw if isinstance(c, dict)]
+        except json.JSONDecodeError:
+            cues = []
+    return mp3, cues
+
+
+def with_audio(data: dict) -> dict:
+    """把篇级 audio / cues 注入到输出副本。源文件保持干净。"""
+    mp3, cues = article_audio(data["id"])
+    if mp3 is None:
+        return data
+    output = dict(data)
+    output["audio"] = f"audio/{data['id']}/article.mp3"
+    output["cues"] = [
+        {
+            "id": c["id"],
+            "startMs": int(c["startMs"]),
+            "endMs": int(c["endMs"]),
+        }
+        for c in cues
+        if "id" in c and "startMs" in c and "endMs" in c
+    ]
+    # 确保不把旧的逐句 audio 带出去
+    lines = []
+    for line in data.get("lines") or []:
+        if not isinstance(line, dict):
+            lines.append(line)
+            continue
+        cleaned = {k: v for k, v in line.items() if k != "audio"}
+        lines.append(cleaned)
+    output["lines"] = lines
+    return output
 
 
 def run_jsonschema(articles: list[tuple[Path, dict]], problems: list[Problem]) -> bool:
@@ -324,32 +375,6 @@ def load_articles(problems: list[Problem]) -> list[tuple[Path, dict]]:
             continue
         articles.append((path, data))
     return articles
-
-
-def audio_files(article_id: str) -> dict[str, Path]:
-    """返回该课文已有的逐句音频：行 id -> 文件路径。"""
-    folder = AUDIO_DIR / article_id
-    if not folder.is_dir():
-        return {}
-    return {mp3.stem: mp3 for mp3 in folder.glob("*.mp3")}
-
-
-def with_audio(data: dict) -> tuple[dict, int]:
-    """把音频相对路径注入到输出用的副本里。源文件保持干净，不记录构建期信息。"""
-    available = audio_files(data["id"])
-    if not available:
-        return data, 0
-
-    output = dict(data)
-    lines = []
-    count = 0
-    for line in data["lines"]:
-        if line["id"] in available:
-            line = {**line, "audio": f"audio/{data['id']}/{line['id']}.mp3"}
-            count += 1
-        lines.append(line)
-    output["lines"] = lines
-    return output, count
 
 
 def stage_sort_key(data: dict) -> tuple:
@@ -429,15 +454,16 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
         shutil.rmtree(audio_out)
 
     for _, data in articles:
-        payload, _ = with_audio(data)
+        payload = with_audio(data)
         target = articles_out / f"{payload['id']}.json"
         target.write_text(
             json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
             encoding="utf-8",
         )
 
-        for line_id, mp3 in audio_files(data["id"]).items():
-            dest = audio_out / data["id"] / f"{line_id}.mp3"
+        mp3, _ = article_audio(data["id"])
+        if mp3 is not None:
+            dest = audio_out / data["id"] / "article.mp3"
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(mp3, dest)
 
