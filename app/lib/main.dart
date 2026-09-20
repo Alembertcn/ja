@@ -1,58 +1,114 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'app/bindings/initial_binding.dart';
-import 'app/routes/app_pages.dart';
+import 'app/routes/app_router.dart';
 import 'app/routes/app_routes.dart';
 import 'app/theme.dart';
 import 'data/local/app_database.dart';
 import 'data/remote/content_api.dart';
 import 'data/repository/content_repository.dart';
+import 'modules/home/home_cubit.dart';
+import 'modules/library/library_cubit.dart';
+import 'modules/profile/profile_cubit.dart';
 import 'services/audio_cache_service.dart';
-import 'services/playback_service.dart';
-import 'services/settings_service.dart';
+import 'services/playback_cubit.dart';
+import 'services/settings_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
 
-  final settings = Get.put(SettingsService(), permanent: true);
-  final database = Get.put(AppDatabase(), permanent: true);
-  final api = Get.put(ContentApi(() => settings.contentBaseUrl), permanent: true);
-  Get.put(ContentRepository(api, database), permanent: true);
-
-  final audioCache = await Get.putAsync(
-    () => AudioCacheService(api).init(),
-    permanent: true,
+  final settings = SettingsCubit();
+  final database = AppDatabase();
+  final api = ContentApi(() => settings.contentBaseUrl);
+  final repo = ContentRepository(api, database);
+  final audioCache = await AudioCacheService(api).init();
+  final playback = PlaybackCubit(audioCache, settings);
+  final library = LibraryCubit(repo);
+  final home = HomeCubit();
+  final profile = ProfileCubit(
+    settings: settings,
+    audioCache: audioCache,
+    repo: repo,
+    library: library,
   );
-  Get.put(PlaybackService(audioCache, settings), permanent: true);
 
-  runApp(const JaApp());
+  runApp(JaApp(
+    settings: settings,
+    database: database,
+    api: api,
+    repo: repo,
+    audioCache: audioCache,
+    playback: playback,
+    library: library,
+    home: home,
+    profile: profile,
+  ));
 }
 
 class JaApp extends StatelessWidget {
-  const JaApp({super.key});
+  const JaApp({
+    super.key,
+    required this.settings,
+    required this.database,
+    required this.api,
+    required this.repo,
+    required this.audioCache,
+    required this.playback,
+    required this.library,
+    required this.home,
+    required this.profile,
+  });
+
+  final SettingsCubit settings;
+  final AppDatabase database;
+  final ContentApi api;
+  final ContentRepository repo;
+  final AudioCacheService audioCache;
+  final PlaybackCubit playback;
+  final LibraryCubit library;
+  final HomeCubit home;
+  final ProfileCubit profile;
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'JA 日语精读',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
-      initialRoute: Routes.home,
-      initialBinding: InitialBinding(),
-      getPages: AppPages.pages,
-      locale: const Locale('zh', 'CN'),
-      fallbackLocale: const Locale('zh', 'CN'),
-      supportedLocales: const [Locale('zh', 'CN'), japaneseLocale, Locale('en')],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: database),
+        RepositoryProvider.value(value: api),
+        RepositoryProvider.value(value: repo),
+        RepositoryProvider.value(value: audioCache),
       ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: settings),
+          BlocProvider.value(value: playback),
+          BlocProvider.value(value: home),
+          BlocProvider.value(value: library),
+          BlocProvider.value(value: profile),
+        ],
+        child: MaterialApp(
+          title: 'JA 日语精读',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
+          initialRoute: Routes.home,
+          onGenerateRoute: AppRouter.onGenerateRoute,
+          locale: const Locale('zh', 'CN'),
+          supportedLocales: const [
+            Locale('zh', 'CN'),
+            japaneseLocale,
+            Locale('en'),
+          ],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+        ),
+      ),
     );
   }
 }

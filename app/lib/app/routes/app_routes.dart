@@ -3,4 +3,5 @@ abstract class Routes {
 
   static const String home = '/';
   static const String reader = '/reader';
+  static const String explain = '/explain';
 }

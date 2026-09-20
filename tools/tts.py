@@ -82,19 +82,27 @@ async def synth(text: str, voice: str, rate: str) -> bytes:
     return bytes(buf)
 
 
-def require_ffmpeg() -> str | None:
+def require_ffmpeg() -> str:
+    """合并必须用 ffmpeg；字节拼接会导致 cues 越往后越漂。"""
     path = shutil.which("ffmpeg")
     if not path:
-        return None
+        raise RuntimeError(
+            "找不到 ffmpeg。请安装：brew install ffmpeg\n"
+            "不要用 MP3 字节拼接替代，句级时间轴会对不齐。"
+        )
     try:
         subprocess.run(
             [path, "-hide_banner", "-version"],
             check=True,
             capture_output=True,
         )
-        return path
-    except (subprocess.CalledProcessError, OSError):
-        return None
+    except (subprocess.CalledProcessError, OSError) as e:
+        raise RuntimeError(
+            "ffmpeg 无法运行（常见原因：Homebrew 依赖断链，如 libvpx）。\n"
+            "处理：brew reinstall libvpx ffmpeg\n"
+            f"原始错误：{e}"
+        ) from e
+    return path
 
 
 def mp3_duration_ms(path: Path) -> int:
@@ -253,38 +261,59 @@ def merge_binary(segments: list[Path], silence: Path, out: Path) -> None:
 
 
 def merge_article(segments: list[Path], out: Path, gap_ms: int) -> list[dict]:
-    """合并片段，返回 cues（startMs/endMs，不含句间静音区间的高亮）。"""
+    """合并片段，返回与成品 article.mp3 对齐的 cues。
+
+    注意：请求的 gap_ms 和静音文件/拼接后的真实时长常有偏差；
+    必须用实测时长写 cues，并在合并后再按成品总长校准，
+    否则越往后的句子 startMs 会越漂。
+    """
     if not segments:
         raise RuntimeError("没有可合并的片段")
 
-    cues: list[dict] = []
-    t = 0
-    for i, seg in enumerate(segments):
-        dur = mp3_duration_ms(seg)
-        cues.append({
-            "id": seg.stem,
-            "startMs": t,
-            "endMs": t + dur,
-        })
-        t += dur
-        if i < len(segments) - 1:
-            t += gap_ms
-
     silence = out.parent / ".silence.mp3"
     make_silence_mp3(silence, gap_ms)
-
-    ffmpeg = require_ffmpeg()
     try:
-        if ffmpeg:
-            merge_with_ffmpeg(ffmpeg, segments, silence, out)
-        else:
-            print("  · ffmpeg 不可用，改用 MP3 字节拼接", flush=True)
-            merge_binary(segments, silence, out)
+        silence_ms = mp3_duration_ms(silence)
+        if silence_ms != gap_ms:
+            print(
+                f"  · 句间静音请求 {gap_ms}ms，文件实测 {silence_ms}ms（按实测写 cues）",
+                flush=True,
+            )
+
+        cues: list[dict] = []
+        t = 0
+        for i, seg in enumerate(segments):
+            dur = mp3_duration_ms(seg)
+            cues.append({
+                "id": seg.stem,
+                "startMs": t,
+                "endMs": t + dur,
+            })
+            t += dur
+            if i < len(segments) - 1:
+                t += silence_ms
+
+        ffmpeg = require_ffmpeg()
+        merge_with_ffmpeg(ffmpeg, segments, silence, out)
+
+        # 拼接可能在帧边界丢掉一点时间，按成品总长等比校准
+        actual = mp3_duration_ms(out)
+        expected = cues[-1]["endMs"]
+        if expected > 0 and abs(actual - expected) > 40:
+            scale = actual / expected
+            print(
+                f"  · 合并后时长校准 {expected}ms → {actual}ms（scale={scale:.5f}）",
+                flush=True,
+            )
+            for cue in cues:
+                cue["startMs"] = int(round(cue["startMs"] * scale))
+                cue["endMs"] = int(round(cue["endMs"] * scale))
+            cues[-1]["endMs"] = actual
+
+        return cues
     finally:
         if silence.exists():
             silence.unlink()
-
-    return cues
 
 
 async def process_article(

@@ -61,10 +61,12 @@ void main() {
       expect(line.speaker, isNull);
       expect(line.furigana, isEmpty);
       expect(line.grammar, isEmpty);
-      expect(line.audio, isNull, reason: '构建脚本没注入音频时应为 null');
+      expect(article.audio, isNull, reason: '构建脚本没注入音频时应为 null');
+      expect(article.cues, isEmpty);
+      expect(article.hasAudio, isFalse);
     });
 
-    test('读到构建期注入的音频路径', () {
+    test('读到构建期注入的整篇音频与 cues', () {
       final article = Article.parse('''
 {
   "id": "T03-audio",
@@ -75,14 +77,18 @@ void main() {
   "level": "N5",
   "type": "article",
   "updatedAt": "2026-09-19",
+  "audio": "audio/T03-audio/article.mp3",
+  "cues": [{"id": "l01", "startMs": 0, "endMs": 1200}],
   "lines": [{
-    "id": "l01", "jp": "本文。", "reading": "ほんぶん。", "zh": "正文。",
-    "audio": "audio/T03-audio/l01.mp3"
+    "id": "l01", "jp": "本文。", "reading": "ほんぶん。", "zh": "正文。"
   }]
 }
 ''');
 
-      expect(article.lines.single.audio, 'audio/T03-audio/l01.mp3');
+      expect(article.audio, 'audio/T03-audio/article.mp3');
+      expect(article.cues.single.id, 'l01');
+      expect(article.cues.single.endMs, 1200);
+      expect(article.hasAudio, isTrue);
     });
   });
 

@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../data/remote/content_api.dart';
 
 /// 音频的本地缓存。首次播放时下载，之后完全离线可用。
 ///
-/// 目录结构与内容源一致（audio/<课文 id>/<行 id>.mp3），这样清理和排查都直观。
-class AudioCacheService extends GetxService {
+/// 目录结构与内容源一致（audio/<课文 id>/article.mp3）。
+class AudioCacheService {
   AudioCacheService(this._api);
 
   final ContentApi _api;

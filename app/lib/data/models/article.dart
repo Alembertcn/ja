@@ -70,7 +70,6 @@ class ArticleLine {
     this.grammar = const [],
     this.vocab = const [],
     this.note,
-    this.audio,
     this.isSentenceEnd = true,
   });
 
@@ -78,7 +77,7 @@ class ArticleLine {
   final String? speaker;
   final String jp;
 
-  /// 整句假名读音，展开后显示在原文上方。
+  /// 整句假名读音。
   final String reading;
   final String? romaji;
   final List<RubySpan> furigana;
@@ -87,10 +86,7 @@ class ArticleLine {
   final List<VocabItem> vocab;
   final String? note;
 
-  /// 音频相对路径，由构建脚本按 audio/ 目录的实际内容注入。为空则这句无法朗读。
-  final String? audio;
-
-  /// 完整句结尾才显示播放图标。
+  /// 完整句结尾才显示 AI 讲解入口。
   final bool isSentenceEnd;
 
   factory ArticleLine.fromJson(Map<String, dynamic> json) => ArticleLine(
@@ -104,8 +100,29 @@ class ArticleLine {
         grammar: _mapList(json['grammar'], GrammarPoint.fromJson),
         vocab: _mapList(json['vocab'], VocabItem.fromJson),
         note: json['note'] as String?,
-        audio: json['audio'] as String?,
         isSentenceEnd: json['isSentenceEnd'] as bool? ?? true,
+      );
+}
+
+/// 整篇音频中一句的起止时间（毫秒）。
+class AudioCue {
+  const AudioCue({
+    required this.id,
+    required this.startMs,
+    required this.endMs,
+  });
+
+  final String id;
+  final int startMs;
+  final int endMs;
+
+  Duration get start => Duration(milliseconds: startMs);
+  Duration get end => Duration(milliseconds: endMs);
+
+  factory AudioCue.fromJson(Map<String, dynamic> json) => AudioCue(
+        id: json['id'] as String,
+        startMs: (json['startMs'] as num).toInt(),
+        endMs: (json['endMs'] as num).toInt(),
       );
 }
 
@@ -123,6 +140,8 @@ class Article {
     this.vocabTopic,
     this.tags = const [],
     required this.updatedAt,
+    this.audio,
+    this.cues = const [],
     required this.lines,
   });
 
@@ -138,9 +157,18 @@ class Article {
   final String? vocabTopic;
   final List<String> tags;
   final String updatedAt;
+
+  /// 整篇音频相对路径，构建期注入。
+  final String? audio;
+
+  /// 句级时间轴，与 lines 顺序一致。
+  final List<AudioCue> cues;
+
   final List<ArticleLine> lines;
 
   bool get isDialogue => type == 'dialogue';
+
+  bool get hasAudio => audio != null && audio!.isNotEmpty && cues.isNotEmpty;
 
   factory Article.fromJson(Map<String, dynamic> json) => Article(
         id: json['id'] as String,
@@ -155,6 +183,8 @@ class Article {
         vocabTopic: json['vocabTopic'] as String?,
         tags: _stringList(json['tags']),
         updatedAt: json['updatedAt'] as String,
+        audio: json['audio'] as String?,
+        cues: _mapList(json['cues'], AudioCue.fromJson),
         lines: _mapList(json['lines'], ArticleLine.fromJson),
       );
 

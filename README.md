@@ -94,7 +94,7 @@ flutter build apk --release --split-per-abi
 
 内容源已上线：<https://alembertcn.github.io/ja/>（App 默认读这个地址）。
 
-每次 push 到 `main` 且改动了 `content/` 或 `tools/`，[publish.yml](.github/workflows/publish.yml) 会自动校验、构建并发布到 Pages。仓库必须保持 public，否则 Pages 需要 GitHub Pro。Pages 的 Source 已经是 `GitHub Actions`（首次 `deploy-pages` 运行时自动设置的），一般不用再去 Settings 里动。
+每次 push 到 `main` 且改动了 `content/`、`audio/` 或 `tools/`，[publish.yml](.github/workflows/publish.yml) 会自动校验、构建并发布到 Pages。仓库必须保持 public，否则 Pages 需要 GitHub Pro。Pages 的 Source 已经是 `GitHub Actions`（首次 `deploy-pages` 运行时自动设置的），一般不用再去 Settings 里动。
 
 想临时换内容源（比如本地 `python -m http.server`），在 App 的「我的 → 内容源」里改，不用重新打包。
 

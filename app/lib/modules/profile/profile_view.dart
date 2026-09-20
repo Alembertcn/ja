@@ -1,156 +1,188 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/app_config.dart';
-import '../../services/settings_service.dart';
-import 'profile_controller.dart';
+import '../../app/routes/app_router.dart';
+import '../../app/theme.dart';
+import '../../services/settings_cubit.dart';
+import '../player/playback_settings_sheet.dart';
+import 'profile_cubit.dart';
 
-class ProfileView extends GetView<ProfileController> {
+class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(title: const Text('我的')),
+      backgroundColor: AppColors.pageBg(scheme),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+        padding: EdgeInsets.zero,
         children: [
-          const _SectionTitle('朗读'),
-          _Panel(children: [_speechSpeed(context)]),
-          const _SectionTitle('阅读'),
-          _Panel(children: [
-            _annotationStyle(context),
-            const _Divider(),
-            _inlineFurigana(),
-            const _Divider(),
-            _fontScale(context),
-            const _Divider(),
-            _expandMode(),
-          ]),
-          const _SectionTitle('内容'),
-          _Panel(children: [
-            _contentSource(context),
-            const _Divider(),
-            _cache(context),
-            const _Divider(),
-            _audioCache(context),
-          ]),
-          const _SectionTitle('学习数据'),
-          const _PhaseTwoCard(),
-          const _SectionTitle('关于'),
-          _Panel(children: [_about()]),
+          const _ProfileBanner(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _SectionTitle('朗读'),
+                _Panel(children: [_PlaybackSettingsTile()]),
+                const _SectionTitle('阅读'),
+                _Panel(children: [
+                  const _AnnotationStyleTile(),
+                  const _Divider(),
+                  const _InlineFuriganaTile(),
+                  const _Divider(),
+                  const _FontScaleTile(),
+                ]),
+                const _SectionTitle('内容'),
+                _Panel(children: [
+                  const _ContentSourceTile(),
+                  const _Divider(),
+                  const _CacheTile(),
+                ]),
+                const _SectionTitle('学习数据'),
+                const _PhaseTwoCard(),
+                const _SectionTitle('关于'),
+                _Panel(children: [const _AboutTile()]),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
+}
 
-  Widget _speechSpeed(BuildContext context) {
-    return Obx(() {
-      final speed = controller.settings.speechSpeed.value;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
-            title: const Text('语速'),
-            subtitle: const Text('1.0 为正常语速，跟读建议 0.7–0.9'),
-            trailing: Text('${speed.toStringAsFixed(2)}×'),
+class _PlaybackSettingsTile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (a, b) =>
+          a.speechSpeed != b.speechSpeed || a.loopMode != b.loopMode,
+      builder: (context, settings) {
+        return ListTile(
+          leading: const Icon(Icons.graphic_eq, color: AppColors.brand),
+          title: const Text('循环与倍速'),
+          subtitle: Text(
+            '${settings.loopMode.label} · ${settings.speechSpeed.toStringAsFixed(1)}×',
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Slider(
-              value: speed,
-              min: 0.5,
-              max: 1.5,
-              divisions: 20,
-              label: '${speed.toStringAsFixed(2)}×',
-              onChanged: controller.settings.setSpeechSpeed,
-            ),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () => PlaybackSettingsSheet.open(context),
+        );
+      },
+    );
+  }
+}
+
+class _AnnotationStyleTile extends StatelessWidget {
+  const _AnnotationStyleTile();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (a, b) => a.annotationStyle != b.annotationStyle,
+      builder: (context, settings) {
+        return ListTile(
+          title: const Text('AI讲解页的整句注音'),
+          subtitle: Text('未开 ruby 时，在原文上方显示 ${settings.annotationStyle.label}'),
+          trailing: DropdownButton<AnnotationStyle>(
+            value: settings.annotationStyle,
+            underline: const SizedBox.shrink(),
+            items: [
+              for (final style in AnnotationStyle.values)
+                DropdownMenuItem(value: style, child: Text(style.label)),
+            ],
+            onChanged: (style) {
+              if (style != null) {
+                context.read<SettingsCubit>().setAnnotationStyle(style);
+              }
+            },
           ),
-        ],
-      );
-    });
+        );
+      },
+    );
   }
+}
 
-  Widget _annotationStyle(BuildContext context) {
-    return Obx(() {
-      final current = controller.settings.annotationStyle.value;
-      return ListTile(
-        title: const Text('展开后的注音'),
-        subtitle: Text('原文上方那一行显示 ${current.label}'),
-        trailing: DropdownButton<AnnotationStyle>(
-          value: current,
-          underline: const SizedBox.shrink(),
-          items: [
-            for (final style in AnnotationStyle.values)
-              DropdownMenuItem(value: style, child: Text(style.label)),
-          ],
-          onChanged: (style) {
-            if (style != null) controller.settings.setAnnotationStyle(style);
-          },
-        ),
-      );
-    });
-  }
+class _InlineFuriganaTile extends StatelessWidget {
+  const _InlineFuriganaTile();
 
-  Widget _inlineFurigana() {
-    return Obx(() => SwitchListTile(
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (a, b) => a.inlineFurigana != b.inlineFurigana,
+      builder: (context, settings) {
+        return SwitchListTile(
           title: const Text('汉字上方标注假名'),
-          subtitle: const Text('展开时在汉字头顶叠加 ruby 注音'),
-          value: controller.settings.inlineFurigana.value,
-          onChanged: controller.settings.setInlineFurigana,
-        ));
+          subtitle: const Text('仅作用于 AI讲解详情页的句子卡片'),
+          value: settings.inlineFurigana,
+          activeThumbColor: AppColors.brand,
+          onChanged: context.read<SettingsCubit>().setInlineFurigana,
+        );
+      },
+    );
   }
+}
 
-  Widget _fontScale(BuildContext context) {
-    return Obx(() {
-      final scale = controller.settings.fontScale.value;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
-            title: const Text('正文字号'),
-            trailing: Text('${(scale * 100).round()}%'),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Slider(
-              value: scale,
-              min: 0.8,
-              max: 1.6,
-              divisions: 8,
-              label: '${(scale * 100).round()}%',
-              onChanged: controller.settings.setFontScale,
+class _FontScaleTile extends StatelessWidget {
+  const _FontScaleTile();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (a, b) => a.fontScale != b.fontScale,
+      builder: (context, settings) {
+        final scale = settings.fontScale;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              title: const Text('正文字号'),
+              trailing: Text('${(scale * 100).round()}%'),
             ),
-          ),
-        ],
-      );
-    });
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Slider(
+                value: scale,
+                min: 0.8,
+                max: 1.6,
+                divisions: 8,
+                label: '${(scale * 100).round()}%',
+                onChanged: context.read<SettingsCubit>().setFontScale,
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
+}
 
-  Widget _expandMode() {
-    return Obx(() => SwitchListTile(
-          title: const Text('一次只展开一行'),
-          subtitle: const Text('关掉后可以同时展开多行对照'),
-          value: controller.settings.expandSingle.value,
-          onChanged: controller.settings.setExpandSingle,
-        ));
-  }
+class _ContentSourceTile extends StatelessWidget {
+  const _ContentSourceTile();
 
-  Widget _contentSource(BuildContext context) {
-    return Obx(() => ListTile(
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (a, b) => a.contentBaseUrl != b.contentBaseUrl,
+      builder: (context, settings) {
+        return ListTile(
           title: const Text('内容源'),
           subtitle: Text(
-            controller.settings.contentBaseUrl,
+            settings.contentBaseUrl,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           trailing: const Icon(Icons.edit_outlined),
-          onTap: () => _editBaseUrl(context),
-        ));
+          onTap: () => _editBaseUrl(context, settings.contentBaseUrl),
+        );
+      },
+    );
   }
 
-  Future<void> _editBaseUrl(BuildContext context) async {
-    final field = TextEditingController(text: controller.settings.contentBaseUrl);
+  Future<void> _editBaseUrl(BuildContext context, String current) async {
+    final field = TextEditingController(text: current);
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -190,86 +222,152 @@ class ProfileView extends GetView<ProfileController> {
       ),
     );
     field.dispose();
-    if (result != null) {
-      await controller.applyBaseUrl(result);
+    if (result != null && context.mounted) {
+      await context.read<ProfileCubit>().applyBaseUrl(result);
     }
   }
+}
 
-  Widget _cache(BuildContext context) {
-    return Obx(() {
-      final stats = controller.cacheStats.value;
-      final subtitle = stats == null
-          ? '统计中…'
-          : '${stats.articleCount} 篇课文 · ${stats.readableSize}'
-              '${stats.lastFetchedAt == null ? '' : ' · 最近更新 ${_formatTime(stats.lastFetchedAt!)}'}';
-      return ListTile(
-        title: const Text('离线缓存'),
-        subtitle: Text(subtitle),
-        trailing: TextButton(
-          onPressed: () => _confirmClear(context),
-          child: const Text('清除'),
-        ),
-      );
-    });
-  }
+class _CacheTile extends StatelessWidget {
+  const _CacheTile();
 
-  Widget _audioCache(BuildContext context) {
-    return Obx(() {
-      final count = controller.audioFileCount.value;
-      return ListTile(
-        title: const Text('音频缓存'),
-        subtitle: Text(
-          count == 0
-              ? '还没下载过音频，播放时会自动缓存'
-              : '$count 句 · ${controller.audioSizeText}',
-        ),
-        trailing: count == 0
-            ? null
-            : TextButton(
-                onPressed: () async {
-                  await controller.clearAudioCache();
-                  Get.snackbar('已清除', '音频缓存已清空',
-                      snackPosition: SnackPosition.BOTTOM);
-                },
-                child: const Text('清除'),
-              ),
-      );
-    });
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, state) {
+        final stats = state.cacheStats;
+        final docPart = stats == null
+            ? '课文统计中…'
+            : '${stats.articleCount} 篇课文 · ${stats.readableSize}';
+        final audioPart = state.audioFileCount == 0
+            ? '暂无音频'
+            : '${state.audioFileCount} 个音频 · ${state.audioSizeText}';
+        final timePart = stats?.lastFetchedAt == null
+            ? ''
+            : ' · 最近 ${_formatTime(stats!.lastFetchedAt!)}';
+        return ListTile(
+          title: const Text('清理缓存'),
+          subtitle: Text('$docPart · $audioPart$timePart'),
+          trailing: TextButton(
+            onPressed: () => _confirmClear(context),
+            child: const Text('清理'),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _confirmClear(BuildContext context) async {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('清除离线缓存？'),
-        content: const Text('已下载的课文会被删除，下次打开需要联网重新拉取。'),
+        title: const Text('清理全部缓存？'),
+        content: const Text(
+          '会删除本地课文数据与音频文件。下次打开将重新联网下载，便于拿到最新内容与朗读。',
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('取消')),
-          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('清除')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('取消'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('清理'),
+          ),
         ],
       ),
     );
-    if (ok == true) {
-      await controller.clearCache();
-      Get.snackbar('已清除', '本地缓存已清空并重新拉取课文列表',
-          snackPosition: SnackPosition.BOTTOM);
+    if (ok == true && context.mounted) {
+      await context.read<ProfileCubit>().clearAllCaches();
+      if (context.mounted) {
+        showAppSnackBar(context, '已清理', '缓存已清空，课文列表已重新拉取');
+      }
     }
-  }
-
-  Widget _about() {
-    return Obx(() => ListTile(
-          title: const Text('JA 日语精读'),
-          subtitle: Text(
-            controller.appVersion.isEmpty ? '版本读取中…' : '版本 ${controller.appVersion}',
-          ),
-          trailing: const Icon(Icons.info_outline),
-        ));
   }
 
   static String _formatTime(DateTime time) {
     final local = time.toLocal();
     String two(int v) => v.toString().padLeft(2, '0');
     return '${local.month}-${two(local.day)} ${two(local.hour)}:${two(local.minute)}';
+  }
+}
+
+class _AboutTile extends StatelessWidget {
+  const _AboutTile();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      buildWhen: (a, b) => a.appVersion != b.appVersion,
+      builder: (context, state) {
+        return ListTile(
+          title: const Text('JA 日语精读'),
+          subtitle: Text(
+            state.appVersion.isEmpty ? '版本读取中…' : '版本 ${state.appVersion}',
+          ),
+          trailing: const Icon(Icons.info_outline),
+        );
+      },
+    );
+  }
+}
+
+class _ProfileBanner extends StatelessWidget {
+  const _ProfileBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final top = MediaQuery.paddingOf(context).top;
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(20, top + 20, 20, 28),
+      decoration: BoxDecoration(gradient: AppColors.headerGradient(scheme)),
+      child: Row(
+        children: [
+          Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: AppColors.coverGradient(1),
+              boxShadow: const [
+                BoxShadow(
+                  color: AppColors.cardShadow,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            child: const Icon(Icons.person, color: Colors.white, size: 34),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '学习者',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: scheme.onSurface,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'JA 日语精读 · 本地学习',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -280,40 +378,53 @@ class _PhaseTwoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.insights_outlined, size: 20, color: scheme.primary),
-                const SizedBox(width: 8),
-                Text('学习画像与 AI 教练',
-                    style: theme.textTheme.titleSmall
-                        ?.copyWith(fontWeight: FontWeight.w600)),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: scheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text('二期',
-                      style: TextStyle(fontSize: 10, color: scheme.onSurfaceVariant)),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.card(scheme),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(color: AppColors.cardShadow, blurRadius: 12, offset: Offset(0, 4)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.insights_outlined, size: 20, color: AppColors.brand),
+              const SizedBox(width: 8),
+              Text(
+                '学习画像与 AI 教练',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: scheme.onSurface,
                 ),
-              ],
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.brandSoft(scheme),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: const Text(
+                  '二期',
+                  style: TextStyle(fontSize: 10, color: AppColors.brand),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '会记录阅读时长、展开过的行、反复播放的句子和标记的生词，'
+            '按语法模块号聚合出薄弱点，再由 AI 生成学习画像和下一步建议。',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: scheme.onSurfaceVariant,
+              height: 1.6,
             ),
-            const SizedBox(height: 10),
-            Text(
-              '会记录阅读时长、展开过的行、反复播放的句子和标记的生词，'
-              '按语法模块号聚合出薄弱点，再由 AI 生成学习画像和下一步建议。',
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: scheme.onSurfaceVariant, height: 1.6),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -348,7 +459,15 @@ class _Panel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.card(scheme),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(color: AppColors.cardShadow, blurRadius: 12, offset: Offset(0, 4)),
+        ],
+      ),
       clipBehavior: Clip.antiAlias,
       child: Column(children: children),
     );
