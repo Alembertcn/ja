@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/Alembertcn/ja/content/schema/article.schema.json",
   "title": "日语课文（Article）",
-  "description": "App 的课文数据契约。一篇课文由若干可逐行展开的 line 组成，每行自带读音、翻译、语法解析与生词。",
+  "description": "App 的课文数据契约。一篇课文由若干 line 组成；整篇朗读音频与句级时间轴由构建脚本注入。",
   "type": "object",
   "additionalProperties": false,
   "required": ["id", "title", "titleZh", "stage", "week", "level", "type", "updatedAt", "lines"],
@@ -56,6 +56,15 @@
       "description": "内容最后更新日期 YYYY-MM-DD",
       "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
     },
+    "audio": {
+      "type": "string",
+      "description": "整篇预生成音频的相对路径。源文件不写，由 tools/build.py 按 audio/<id>/article.mp3 注入。"
+    },
+    "cues": {
+      "type": "array",
+      "description": "句级时间轴，与 lines 顺序一致。源文件不写，由构建脚本从 audio/<id>/index.json 注入。",
+      "items": { "$ref": "#/$defs/audioCue" }
+    },
     "lines": {
       "type": "array",
       "minItems": 1,
@@ -63,6 +72,20 @@
     }
   },
   "$defs": {
+    "audioCue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "startMs", "endMs"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "对应 lines[].id",
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "startMs": { "type": "integer", "minimum": 0 },
+        "endMs": { "type": "integer", "minimum": 0 }
+      }
+    },
     "line": {
       "type": "object",
       "additionalProperties": false,
@@ -70,17 +93,17 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "篇内唯一，用作展开态与播放状态的 key",
+          "description": "篇内唯一，用作高亮与讲解页的 key",
           "pattern": "^[A-Za-z0-9_-]+$"
         },
         "speaker": {
           "type": ["string", "null"],
           "description": "对话说话人；短文为 null 或省略"
         },
-        "jp": { "type": "string", "description": "日语原文，折叠态展示", "minLength": 1 },
+        "jp": { "type": "string", "description": "日语原文", "minLength": 1 },
         "reading": {
           "type": "string",
-          "description": "整句假名读音，展开后显示在原文上方",
+          "description": "整句假名读音",
           "minLength": 1
         },
         "romaji": { "type": "string", "description": "罗马音，注音样式可切换到此" },
@@ -101,13 +124,9 @@
           "items": { "$ref": "#/$defs/vocabItem" }
         },
         "note": { "type": "string", "description": "额外补充说明" },
-        "audio": {
-          "type": "string",
-          "description": "预生成音频的相对路径。源文件不写这个字段，由 tools/build.py 在构建时按 audio/ 目录的实际内容注入。"
-        },
         "isSentenceEnd": {
           "type": "boolean",
-          "description": "是否为完整句子的结尾，决定该行是否显示播放图标。缺省视为 true。",
+          "description": "是否为完整句子的结尾。缺省视为 true。",
           "default": true
         }
       }

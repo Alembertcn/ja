@@ -1,6 +1,7 @@
 {
   "articleId": "W01-hajimemashite",
   "rate": "-10%",
+  "gapMs": 350,
   "voices": {
     "李": "ja-JP-NanamiNeural",
     "田中": "ja-JP-KeitaNeural"
@@ -21,5 +22,82 @@
     "l13": "959f6a0c46cff3ab",
     "l14": "7954f87fbb406057",
     "l15": "a4aa885464b868ce"
-  }
+  },
+  "cues": [
+    {
+      "id": "l01",
+      "startMs": 0,
+      "endMs": 2112
+    },
+    {
+      "id": "l02",
+      "startMs": 2462,
+      "endMs": 4742
+    },
+    {
+      "id": "l03",
+      "startMs": 5092,
+      "endMs": 7756
+    },
+    {
+      "id": "l04",
+      "startMs": 8106,
+      "endMs": 11490
+    },
+    {
+      "id": "l05",
+      "startMs": 11840,
+      "endMs": 13760
+    },
+    {
+      "id": "l06",
+      "startMs": 14110,
+      "endMs": 15982
+    },
+    {
+      "id": "l07",
+      "startMs": 16332,
+      "endMs": 20244
+    },
+    {
+      "id": "l08",
+      "startMs": 20594,
+      "endMs": 26042
+    },
+    {
+      "id": "l09",
+      "startMs": 26392,
+      "endMs": 28720
+    },
+    {
+      "id": "l10",
+      "startMs": 29070,
+      "endMs": 32646
+    },
+    {
+      "id": "l11",
+      "startMs": 32996,
+      "endMs": 35924
+    },
+    {
+      "id": "l12",
+      "startMs": 36274,
+      "endMs": 39010
+    },
+    {
+      "id": "l13",
+      "startMs": 39360,
+      "endMs": 44160
+    },
+    {
+      "id": "l14",
+      "startMs": 44510,
+      "endMs": 47054
+    },
+    {
+      "id": "l15",
+      "startMs": 47404,
+      "endMs": 49468
+    }
+  ]
 }
