@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ja/data/models/article.dart';
+import 'package:ja/modules/lesson/lesson_vocab.dart';
 import 'package:ja/modules/reader/widgets/furigana_text.dart';
+import 'package:ja/services/word_audio_player.dart';
 
 void main() {
   group('Article 解析', () {
@@ -163,6 +165,54 @@ void main() {
         tester.getSize(find.byType(FuriganaText)).height,
         greaterThan(oneLine * 1.5),
         reason: '窄容器里应当折成多行',
+      );
+    });
+  });
+
+  group('精讲笔记词表', () {
+    test('读音表词列改写成 ja-word 链接', () {
+      const md = '''
+| 日语 | 读音 | 中文 |
+|------|------|------|
+| こんにちは | こんにちは | 你好 |
+| 日本 | にほん／にっぽん | 日本 |
+''';
+      final out = rewriteLessonVocabLinks(md);
+      expect(out, contains('[こんにちは](ja-word:'));
+      expect(out, contains('[日本](ja-word:'));
+      expect(out, contains(Uri.encodeComponent('にほん／にっぽん')));
+      // 读音列本身不变
+      expect(out, contains('| こんにちは | 你好 |'));
+    });
+
+    test('无读音列的表不改写', () {
+      const md = '''
+| 天 | 重点 |
+|----|------|
+| Day1 | 假名 |
+''';
+      expect(rewriteLessonVocabLinks(md), md);
+    });
+
+    test('助词罗马字读音改播假名列', () {
+      const md = '''
+| 助词 | 读音 | 用法 |
+|------|------|------|
+| は | wa | 主题 |
+''';
+      final out = rewriteLessonVocabLinks(md);
+      expect(out, contains('ja-word:${Uri.encodeComponent('は')}'));
+    });
+
+    test('词音频路径与 Python text_key 一致', () {
+      // 与 tools/lesson_vocab.py text_key("こんにちは") 对齐
+      expect(
+        WordAudioPlayer.textKey('こんにちは'),
+        '50ae5df3daa73892',
+      );
+      expect(
+        WordAudioPlayer.relativePathFor('こんにちは'),
+        'audio/words/50ae5df3daa73892.mp3',
       );
     });
   });

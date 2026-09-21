@@ -12,12 +12,13 @@
 产物（入库）:
     audio/<id>/article.mp3
     audio/<id>/index.json   # 指纹 + cues[{id,startMs,endMs}]
+    audio/words/<text_key>.mp3   # 精讲笔记词表（见 lesson_tts.py）
 
 片段缓存（不入库）:
     audio/<id>/.segments/<lineId>.mp3
 
 对话类课文按说话人轮换音色。合并优先用 ffmpeg；不可用时回退为
-lame 生成静音 + MP3 字节拼接（edge-tts 输出同源编码，播放器可播）。
+    lame 生成静音 + MP3 字节拼接（edge-tts 输出同源编码，播放器可播）。
 """
 
 from __future__ import annotations
@@ -466,9 +467,20 @@ async def main() -> int:
         total_failed += failed
 
     print(
-        f"\n新合成 {total_made} 句，跳过 {total_skipped} 句（未变化），失败 {total_failed} 句"
+        f"\n课文：新合成 {total_made} 句，跳过 {total_skipped} 句（未变化），失败 {total_failed} 句"
     )
-    return 1 if total_failed else 0
+
+    # 精讲笔记词表（与 --only 无关，增量合成很便宜）
+    from lesson_tts import process_words
+
+    print("\n精讲笔记词表:")
+    w_made, w_skipped, w_failed = await process_words(
+        args.voice, args.rate, args.force
+    )
+    print(
+        f"词表：新合成 {w_made}，跳过 {w_skipped}（未变化），失败 {w_failed}"
+    )
+    return 1 if (total_failed or w_failed) else 0
 
 
 if __name__ == "__main__":

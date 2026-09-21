@@ -7,7 +7,7 @@ import '../data/remote/content_api.dart';
 
 /// 音频的本地缓存。首次播放时下载，之后完全离线可用。
 ///
-/// 目录结构与内容源一致（audio/<课文 id>/article.mp3）。
+/// 目录结构与内容源一致（`audio/<课文 id>/article.mp3`、`audio/words/<hash>.mp3`）。
 class AudioCacheService {
   AudioCacheService(this._api);
 

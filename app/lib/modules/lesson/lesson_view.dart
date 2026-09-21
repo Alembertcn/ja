@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../../app/theme.dart';
+import '../../services/word_audio_player.dart';
 import '../shared/state_views.dart';
 import 'lesson_args.dart';
 import 'lesson_cubit.dart';
+import 'lesson_vocab.dart';
 
 class LessonView extends StatelessWidget {
   const LessonView({super.key, required this.args});
@@ -47,16 +49,25 @@ class LessonView extends StatelessWidget {
               onRetry: () => context.read<LessonCubit>().load(force: true),
             );
           }
+          final display = rewriteLessonVocabLinks(md);
           return Column(
             children: [
               if (state.offlineNotice != null)
                 OfflineBanner(message: state.offlineNotice!),
               Expanded(
                 child: Markdown(
-                  data: md,
-                  selectable: true,
+                  data: display,
+                  selectable: false,
+                  onTapLink: (text, href, title) {
+                    context.read<WordAudioPlayer>().playFromHref(href);
+                  },
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
                   styleSheet: MarkdownStyleSheet.fromTheme(theme).copyWith(
+                    a: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.brand,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.none,
+                    ),
                     h1: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: scheme.onSurface,

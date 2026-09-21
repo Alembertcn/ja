@@ -14,7 +14,7 @@
 | [docs/plan/](docs/plan/) | 学习计划与知识点大纲（模块编号 `G2-E01` 等是 AI 生成课文的索引） |
 | [docs/lessons/](docs/lessons/) | 人工整理的精讲笔记（Markdown） |
 | [content/](content/) | 课文数据源（JSON），App 的内容源头 |
-| [audio/](audio/) | 整篇预生成日语音频（`article.mp3` + 时间轴），由 `tools/tts.py` 产出并入库 |
+| [audio/](audio/) | 预生成日语音频：课文 `article.mp3` + 时间轴；精讲笔记词表 `words/<hash>.mp3`。由 `tools/tts.py` / `lesson_tts.py` 产出并入库 |
 | [prompts/](prompts/) | 给 AI 的固定生成模板 |
 | [tools/](tools/) | 合成与构建脚本（Python），入口是 `publish.py` |
 | [app/](app/) | Flutter 客户端工程 |
@@ -72,6 +72,8 @@ python tools/build.py --check            # 只校验不写文件（CI 用这条�
 ## 关于朗读
 
 朗读只播 `audio/<id>/article.mp3` 整篇音频，用 `cues` 时间轴在播放进度上高亮当前句，不用手机系统 TTS。构建时 `tts.py` 仍按句调用 edge-tts（对话可换音色），再拼成一篇并写入句级 `startMs`/`endMs`。`build.py` 发现缺 `article.mp3` 或 cues 对不齐会直接报错。详情页可以把整篇音频下到本地，之后断网也能播。
+
+精讲笔记里带「读音」列的词表，点击日语词会播 `audio/words/<hash>.mp3`（同样由 edge-tts 预生成，音色与课文一致）。改笔记词表后需再跑 `python tools/tts.py`（或 `lesson_tts.py`）再发布。
 
 音频用 [edge-tts](https://github.com/rany2/edge-tts) 合成，日语可选 `ja-JP-NanamiNeural`（女声）和 `ja-JP-KeitaNeural`（男声），对话类课文按说话人自动轮换。合成按「文本 + 音色 + 语速」的 hash 做增量，改一句只重合成那一句再重新合并。
 

@@ -16,6 +16,7 @@ import 'modules/profile/profile_cubit.dart';
 import 'services/audio_cache_service.dart';
 import 'services/playback_cubit.dart';
 import 'services/settings_cubit.dart';
+import 'services/word_audio_player.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ Future<void> main() async {
   final repo = ContentRepository(api, database);
   final audioCache = await AudioCacheService(api).init();
   final playback = PlaybackCubit(audioCache, settings);
+  final wordAudio = WordAudioPlayer(audioCache, playback);
   final library = LibraryCubit(repo);
   final plan = PlanCubit(repo);
   final home = HomeCubit();
@@ -44,6 +46,7 @@ Future<void> main() async {
     repo: repo,
     audioCache: audioCache,
     playback: playback,
+    wordAudio: wordAudio,
     library: library,
     plan: plan,
     home: home,
@@ -60,6 +63,7 @@ class JaApp extends StatelessWidget {
     required this.repo,
     required this.audioCache,
     required this.playback,
+    required this.wordAudio,
     required this.library,
     required this.plan,
     required this.home,
@@ -72,6 +76,7 @@ class JaApp extends StatelessWidget {
   final ContentRepository repo;
   final AudioCacheService audioCache;
   final PlaybackCubit playback;
+  final WordAudioPlayer wordAudio;
   final LibraryCubit library;
   final PlanCubit plan;
   final HomeCubit home;
@@ -85,6 +90,7 @@ class JaApp extends StatelessWidget {
         RepositoryProvider.value(value: api),
         RepositoryProvider.value(value: repo),
         RepositoryProvider.value(value: audioCache),
+        RepositoryProvider.value(value: wordAudio),
       ],
       child: MultiBlocProvider(
         providers: [

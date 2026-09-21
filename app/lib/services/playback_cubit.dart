@@ -379,6 +379,14 @@ class PlaybackCubit extends Cubit<PlaybackState> {
     }
   }
 
+  Future<void> pauseIfPlaying() async {
+    if (state.current == null) return;
+    if (state.isPlaying && !state.isPaused) {
+      await _player.pause();
+      emit(state.copyWith(isPaused: true, isPlaying: false));
+    }
+  }
+
   Future<void> stop() async {
     _token++;
     _jumping = false;

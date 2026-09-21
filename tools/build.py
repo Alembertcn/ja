@@ -301,6 +301,39 @@ def check_audio_coverage(articles: list[tuple[Path, dict]], problems: list[Probl
             ))
 
 
+def check_lesson_word_audio(problems: list[Problem]) -> None:
+    """词表音频缺文件只警告，不挡课文发布。"""
+    if not LESSONS_DIR.is_dir():
+        return
+    try:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from lesson_vocab import (  # type: ignore
+            DEFAULT_RATE,
+            DEFAULT_VOICE,
+            extract_speak_texts,
+            text_key,
+        )
+    except Exception as e:
+        problems.append(warn("lessons", f"无法检查词表音频（{e}）"))
+        return
+
+    words_dir = AUDIO_DIR / "words"
+    missing = 0
+    total = 0
+    for path in sorted(LESSONS_DIR.glob("*.md")):
+        texts = extract_speak_texts(path.read_text(encoding="utf-8"))
+        for text in texts:
+            total += 1
+            key = text_key(text, DEFAULT_VOICE, DEFAULT_RATE)
+            if not (words_dir / f"{key}.mp3").is_file():
+                missing += 1
+    if missing:
+        problems.append(warn(
+            "lessons",
+            f"词表缺 {missing}/{total} 个音频，跑 python tools/tts.py 或 lesson_tts.py 合成",
+        ))
+
+
 def article_audio(article_id: str) -> tuple[Path | None, list[dict]]:
     """返回整篇音频路径与 cues。"""
     folder = AUDIO_DIR / article_id
@@ -475,6 +508,14 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(mp3, dest)
 
+    # 精讲笔记词表音频
+    words_src = AUDIO_DIR / "words"
+    if words_src.is_dir():
+        words_out = audio_out / "words"
+        words_out.mkdir(parents=True, exist_ok=True)
+        for mp3 in words_src.glob("*.mp3"):
+            shutil.copyfile(mp3, words_out / mp3.name)
+
     if PLAN_DIR.is_dir():
         shutil.copytree(PLAN_DIR, plan_out)
 
@@ -603,6 +644,7 @@ def main() -> int:
             seen_ids[data["id"]] = path
 
     check_audio_coverage(articles, problems)
+    check_lesson_word_audio(problems)
     validate_plan(problems)
     used_jsonschema = run_jsonschema(articles, problems)
 
@@ -634,8 +676,12 @@ def main() -> int:
     if (out_dir / "lessons").is_dir():
         n = len(list((out_dir / "lessons").glob("*.md")))
         lessons_note = f" / lessons/({n})"
+    words_note = ""
+    words_out = out_dir / "audio" / "words"
+    if words_out.is_dir():
+        words_note = f" / audio/words/({len(list(words_out.glob('*.mp3')))})"
     print(f"\n构建完成：{len(articles)} 篇 → {out_dir.relative_to(ROOT) if out_dir.is_relative_to(ROOT) else out_dir}")
-    print(f"  manifest.json / articles/*.json / index.html{plan_note}{lessons_note}，{len(warnings)} 个警告")
+    print(f"  manifest.json / articles/*.json / index.html{plan_note}{lessons_note}{words_note}，{len(warnings)} 个警告")
     return 0
 
 
