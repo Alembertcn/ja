@@ -6,6 +6,7 @@ import '../../app/routes/app_router.dart';
 import '../../app/theme.dart';
 import '../../services/settings_cubit.dart';
 import '../player/playback_settings_sheet.dart';
+import '../shared/app_surface.dart';
 import 'profile_cubit.dart';
 
 class ProfileView extends StatelessWidget {
@@ -459,16 +460,7 @@ class _Panel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.card(scheme),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(color: AppColors.cardShadow, blurRadius: 12, offset: Offset(0, 4)),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
+    return AppPanel(
       child: Column(children: children),
     );
   }

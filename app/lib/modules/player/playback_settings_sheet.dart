@@ -130,9 +130,11 @@ class _OptionChip extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Material(
       color: Colors.transparent,
+      borderRadius: AppRadii.xlAll,
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: AppRadii.xlAll,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),

@@ -4,6 +4,28 @@ import 'package:flutter/material.dart';
 /// 部分字形（直、骨、今 等）会长得不像日文。
 const Locale japaneseLocale = Locale('ja', 'JP');
 
+/// 全局圆角刻度；可点击表面请配合 [Material.borderRadius] / theme shape 使用，
+/// 否则水波纹仍会按直角画在祖先 Material 上。
+class AppRadii {
+  AppRadii._();
+
+  static const double sm = 10;
+  static const double md = 14;
+  static const double lg = 16;
+  static const double xl = 20;
+
+  static final BorderRadius smAll = BorderRadius.circular(sm);
+  static final BorderRadius mdAll = BorderRadius.circular(md);
+  static final BorderRadius lgAll = BorderRadius.circular(lg);
+  static final BorderRadius xlAll = BorderRadius.circular(xl);
+
+  static final ShapeBorder cardShape = RoundedRectangleBorder(borderRadius: lgAll);
+  static final ShapeBorder tileShape = RoundedRectangleBorder(borderRadius: mdAll);
+  static final ShapeBorder sheetShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.vertical(top: Radius.circular(xl)),
+  );
+}
+
 /// MOJi 风格品牌色与通用装饰（浅色 / 深色各一套）。
 class AppColors {
   AppColors._();
@@ -131,9 +153,18 @@ class AppTheme {
         color: AppColors.card(scheme),
         margin: EdgeInsets.zero,
         shadowColor: AppColors.cardShadow,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        clipBehavior: Clip.antiAlias,
+        shape: AppRadii.cardShape,
+      ),
+      // ExpansionTile / 底部弹层等：shape 决定水波纹裁剪轮廓。
+      expansionTileTheme: ExpansionTileThemeData(
+        shape: AppRadii.tileShape,
+        collapsedShape: AppRadii.tileShape,
+        backgroundColor: Colors.transparent,
+        collapsedBackgroundColor: Colors.transparent,
+        clipBehavior: Clip.antiAlias,
+        tilePadding: const EdgeInsets.symmetric(horizontal: 14),
+        childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 12),
       ),
       navigationBarTheme: NavigationBarThemeData(
         height: 60,
@@ -179,12 +210,16 @@ class AppTheme {
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: scheme.surface,
         surfaceTintColor: Colors.transparent,
+        shape: AppRadii.sheetShape,
+        clipBehavior: Clip.antiAlias,
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: scheme.surface,
+        shape: AppRadii.cardShape,
       ),
       popupMenuTheme: PopupMenuThemeData(
         color: scheme.surface,
+        shape: AppRadii.cardShape,
       ),
     );
   }
@@ -192,14 +227,14 @@ class AppTheme {
   /// 设置弹窗选中档位：粉字 + 粉描边。
   static BoxDecoration chipSelected(ColorScheme scheme) => BoxDecoration(
         color: AppColors.card(scheme),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: AppRadii.xlAll,
         border: Border.all(color: AppColors.brand, width: 1.2),
       );
 
   /// 设置弹窗未选中档位。
   static BoxDecoration chipPlain(ColorScheme scheme) => BoxDecoration(
         color: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: AppRadii.xlAll,
       );
 
   static TextStyle chipLabel(bool selected, ColorScheme scheme) => TextStyle(

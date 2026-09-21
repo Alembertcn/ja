@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/theme.dart';
 import '../../data/models/plan.dart';
+import '../shared/app_surface.dart';
 import '../shared/state_views.dart';
 import 'plan_cubit.dart';
 
@@ -176,80 +177,71 @@ class _WeekCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.card(scheme),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(color: AppColors.cardShadow, blurRadius: 12, offset: Offset(0, 4)),
-        ],
+    return AppInkSurface(
+      shadowed: true,
+      onTap: () => Navigator.of(context).pushNamed(
+        Routes.planWeek,
+        arguments: week,
       ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () => Navigator.of(context).pushNamed(
-          Routes.planWeek,
-          arguments: week,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(14, 14, 12, 14),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: AppColors.coverGradient(week.week),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 14, 12, 14),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                gradient: AppColors.coverGradient(week.week),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                week.id,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
                 ),
-                alignment: Alignment.center,
-                child: Text(
-                  week.id,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    week.title,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      height: 1.3,
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      week.title,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        height: 1.3,
-                      ),
+                  const SizedBox(height: 6),
+                  Text(
+                    week.modules.join(' · '),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: AppColors.brand,
+                      fontWeight: FontWeight.w500,
                     ),
-                    const SizedBox(height: 6),
+                  ),
+                  if (week.deliverable.isNotEmpty) ...[
+                    const SizedBox(height: 4),
                     Text(
-                      week.modules.join(' · '),
+                      week.deliverable,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.brand,
-                        fontWeight: FontWeight.w500,
+                        color: scheme.onSurfaceVariant,
+                        height: 1.4,
                       ),
                     ),
-                    if (week.deliverable.isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        week.deliverable,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: scheme.onSurfaceVariant,
-                          height: 1.4,
-                        ),
-                      ),
-                    ],
                   ],
-                ),
+                ],
               ),
-              Icon(Icons.chevron_right, color: scheme.outline),
-            ],
-          ),
+            ),
+            Icon(Icons.chevron_right, color: scheme.outline),
+          ],
         ),
       ),
     );

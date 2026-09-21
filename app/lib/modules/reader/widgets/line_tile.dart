@@ -47,10 +47,11 @@ class _LineTileState extends State<LineTile> {
 
     return Material(
       color: playing ? AppColors.brandSoft(scheme) : Colors.transparent,
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: AppRadii.smAll,
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: widget.onTap,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: AppRadii.smAll,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 8, 2, 8),
           child: Row(

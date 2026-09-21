@@ -81,6 +81,7 @@ class _MiniBar extends StatelessWidget {
       elevation: 6,
       shadowColor: AppColors.cardShadow,
       borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () => Navigator.of(context).pushNamed(
           Routes.reader,

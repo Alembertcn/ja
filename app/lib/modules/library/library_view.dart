@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/theme.dart';
 import '../../data/models/article.dart';
+import '../shared/app_surface.dart';
 import '../shared/state_views.dart';
 import 'library_cubit.dart';
 
@@ -183,84 +184,75 @@ class _ArticleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.card(scheme),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(color: AppColors.cardShadow, blurRadius: 12, offset: Offset(0, 4)),
-        ],
+    return AppInkSurface(
+      shadowed: true,
+      onTap: () => Navigator.of(context).pushNamed(
+        Routes.reader,
+        arguments: article,
       ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () => Navigator.of(context).pushNamed(
-          Routes.reader,
-          arguments: article,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-          child: Row(
-            children: [
-              Container(
-                width: 72,
-                height: 72,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: AppColors.coverGradient(article.week),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+        child: Row(
+          children: [
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                gradient: AppColors.coverGradient(article.week),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                'W${article.week.toString().padLeft(2, '0')}',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
                 ),
-                alignment: Alignment.center,
-                child: Text(
-                  'W${article.week.toString().padLeft(2, '0')}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    article.titleZh,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      height: 1.3,
+                      color: scheme.onSurface,
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      article.titleZh,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        height: 1.3,
-                        color: scheme.onSurface,
+                  const SizedBox(height: 3),
+                  Text(
+                    article.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                      locale: japaneseLocale,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: [
+                      _Badge(text: article.level, tone: _BadgeTone.primary),
+                      _Badge(
+                        text: article.type == 'dialogue' ? '对话' : '短文',
+                        tone: _BadgeTone.secondary,
                       ),
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      article.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: scheme.onSurfaceVariant,
-                        locale: japaneseLocale,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: [
-                        _Badge(text: article.level, tone: _BadgeTone.primary),
-                        _Badge(
-                          text: article.type == 'dialogue' ? '对话' : '短文',
-                          tone: _BadgeTone.secondary,
-                        ),
-                        _Badge(text: '${article.lineCount} 行'),
-                      ],
-                    ),
-                  ],
-                ),
+                      _Badge(text: '${article.lineCount} 行'),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
