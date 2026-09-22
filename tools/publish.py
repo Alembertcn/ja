@@ -21,8 +21,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TOOLS = ROOT / "tools"
 
-# 只有这些目录的改动才值得触发一次内容发布
-CONTENT_PATHS = ["content", "audio"]
+# 只有这些目录的改动才值得触发一次内容发布。
+# docs/lessons 会被 build.py 打进 dist/lessons，所以同属发布内容。
+CONTENT_PATHS = ["content", "audio", "docs/lessons"]
 
 
 def step(title: str) -> None:

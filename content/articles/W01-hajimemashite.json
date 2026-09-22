@@ -6,26 +6,64 @@
   "week": 1,
   "level": "N5",
   "type": "dialogue",
-  "scene": "公司入职第一天，新人小李和同事田中初次见面",
-  "grammarModules": ["G0-01", "G0-03", "G0-11", "G0-13", "G0-16", "G0-22"],
+  "scene": "公司入职第一天的早晨，新人小李和同事田中初次见面",
+  "grammarModules": ["G0", "V0", "S0"],
   "vocabTopic": "V0",
   "tags": ["寒暄", "自我介绍", "职场"],
   "source": "docs/lessons/W01_第一周_假名发音寒暄.md",
-  "updatedAt": "2026-09-20",
+  "updatedAt": "2026-09-22",
   "lines": [
     {
       "id": "l01",
       "speaker": "李",
+      "jp": "おはようございます。",
+      "reading": "おはようございます。",
+      "romaji": "ohayō gozaimasu.",
+      "furigana": [],
+      "zh": "早上好。",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "おはようございます",
+          "explain": "一天中最早的正式问候。熟人之间可缩短为「おはよう」，但对上司、同事第一天见面要用完整形。"
+        }
+      ],
+      "vocab": [
+        { "word": "おはようございます", "reading": "おはようございます", "pos": "感動詞", "zh": "早上好" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l02",
+      "speaker": "田中",
+      "jp": "おはようございます。",
+      "reading": "おはようございます。",
+      "romaji": "ohayō gozaimasu.",
+      "furigana": [],
+      "zh": "早上好。",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "寒暄应答",
+          "explain": "问候语原句奉还是最省力也最自然的回应。「おはよう」「こんにちは」「こんばんは」都是这样对答。"
+        }
+      ],
+      "vocab": [],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l03",
+      "speaker": "李",
       "jp": "はじめまして。",
-      "reading": "はじめまして",
-      "romaji": "hajimemashite",
+      "reading": "はじめまして。",
+      "romaji": "hajimemashite.",
       "furigana": [],
       "zh": "初次见面。",
       "grammar": [
         {
           "module": "S0",
           "point": "はじめまして",
-          "explain": "固定寒暄语，只用于第一次见面。来自「初めて（はじめて）」＝第一次，认识之后不再说。"
+          "explain": "固定寒暄语，只用于第一次见面。来自「初めて（はじめて）」＝第一次，认识之后就不再说。"
         }
       ],
       "vocab": [
@@ -34,22 +72,26 @@
       "isSentenceEnd": true
     },
     {
-      "id": "l02",
+      "id": "l04",
       "speaker": "李",
       "jp": "李と申します。",
-      "reading": "りともうします",
-      "romaji": "Ri to mōshimasu",
+      "reading": "りともうします。",
+      "romaji": "Ri to mōshimasu.",
       "furigana": [
         { "start": 0, "len": 1, "ruby": "り" },
         { "start": 2, "len": 1, "ruby": "もう" }
       ],
       "zh": "我叫李。／我姓李。",
       "grammar": [
-        { "module": "G0-03", "point": "と", "explain": "引用助词，接在名字后面。" },
         {
-          "module": "G0-22",
-          "point": "申します",
-          "explain": "「言う」的谦让语，比「李です」更礼貌，正式自我介绍常用。"
+          "module": "G0",
+          "point": "と",
+          "explain": "引用助词，接在名字后面。本周助词预习之一：は・の・と・から・か。"
+        },
+        {
+          "module": "S0",
+          "point": "～と申します",
+          "explain": "自我介绍套句的正式版，比「李です」更礼貌，初次见面、对客户时常用。本周整句当套话背，敬语体系到 W05 再系统学。"
         }
       ],
       "vocab": [
@@ -58,39 +100,79 @@
       "isSentenceEnd": true
     },
     {
-      "id": "l03",
+      "id": "l05",
       "speaker": "李",
       "jp": "中国から来ました。",
-      "reading": "ちゅうごくからきました",
-      "romaji": "Chūgoku kara kimashita",
+      "reading": "ちゅうごくからきました。",
+      "romaji": "Chūgoku kara kimashita.",
       "furigana": [
         { "start": 0, "len": 2, "ruby": "ちゅうごく" },
         { "start": 4, "len": 1, "ruby": "き" }
       ],
       "zh": "我从中国来。",
       "grammar": [
-        { "module": "G0-03", "point": "から", "explain": "表示起点，句型：场所＋から＋来ました。" },
-        { "module": "G0-11", "point": "来ました", "explain": "「来る（くる）」的礼貌过去式。" }
+        {
+          "module": "G0",
+          "point": "から",
+          "explain": "表示起点。句型：场所＋から＋来ました。本周助词预习之一。"
+        },
+        {
+          "module": "V0",
+          "point": "～から来ました",
+          "explain": "自我介绍固定套式，说出身国家或城市。「来ました」的动词变形规则在 W04 学，本周整块记住即可。"
+        }
       ],
       "vocab": [
         { "word": "中国", "reading": "ちゅうごく", "pos": "名詞", "zh": "中国" },
-        { "word": "来る", "reading": "くる", "pos": "動詞", "zh": "来", "note": "ます形过去：来ました" }
+        { "word": "来る", "reading": "くる", "pos": "動詞", "zh": "来", "note": "礼貌过去式：来ました" }
       ],
       "isSentenceEnd": true
     },
     {
-      "id": "l04",
+      "id": "l06",
       "speaker": "李",
-      "jp": "どうぞよろしくお願いいたします。",
-      "reading": "どうぞよろしくおねがいいたします",
-      "romaji": "dōzo yoroshiku onegai itashimasu",
+      "jp": "今日からこの会社の社員です。",
+      "reading": "きょうからこのかいしゃのしゃいんです。",
+      "romaji": "kyō kara kono kaisha no shain desu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "きょう" },
+        { "start": 6, "len": 2, "ruby": "かいしゃ" },
+        { "start": 9, "len": 2, "ruby": "しゃいん" }
+      ],
+      "zh": "从今天起我就是这家公司的员工了。",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "の",
+          "explain": "连接两个名词表所属：この会社の社員＝这家公司的员工。本周助词预习之一。"
+        },
+        {
+          "module": "G0",
+          "point": "この＋名詞",
+          "explain": "「この／その／あの」必须直接接名词，不能说「これの会社」。"
+        }
+      ],
+      "vocab": [
+        { "word": "今日", "reading": "きょう", "pos": "名詞", "zh": "今天" },
+        { "word": "会社", "reading": "かいしゃ", "pos": "名詞", "zh": "公司" },
+        { "word": "社員", "reading": "しゃいん", "pos": "名詞", "zh": "员工", "note": "「会社員（かいしゃいん）」＝公司职员" }
+      ],
+      "note": "职场实战里第一天更常说「本日からお世話になります」，等学完敬语（W05）再换用。",
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l07",
+      "speaker": "李",
+      "jp": "どうぞよろしくお願いします。",
+      "reading": "どうぞよろしくおねがいします。",
+      "romaji": "dōzo yoroshiku onegai shimasu.",
       "furigana": [{ "start": 8, "len": 1, "ruby": "ねが" }],
       "zh": "请多关照。／请多多指教。",
       "grammar": [
         {
-          "module": "G0-22",
-          "point": "お願いいたします",
-          "explain": "「いたします」是「します」的谦让语，比「よろしくお願いします」更正式。"
+          "module": "S0",
+          "point": "どうぞよろしくお願いします",
+          "explain": "自我介绍的收尾套句，必背。「どうぞ」加强礼貌，可省略。更正式的「お願いいたします」属敬语，W05 再学。"
         }
       ],
       "vocab": [
@@ -100,50 +182,54 @@
       "isSentenceEnd": true
     },
     {
-      "id": "l05",
+      "id": "l08",
       "speaker": "田中",
       "jp": "はじめまして。",
-      "reading": "はじめまして",
-      "romaji": "hajimemashite",
+      "reading": "はじめまして。",
+      "romaji": "hajimemashite.",
       "furigana": [],
       "zh": "初次见面。",
       "grammar": [
-        { "module": "S0", "point": "はじめまして", "explain": "对方也回一遍，表示双方都是第一次见面。" }
-      ],
-      "vocab": [],
-      "isSentenceEnd": true
-    },
-    {
-      "id": "l06",
-      "speaker": "田中",
-      "jp": "田中です。",
-      "reading": "たなかです",
-      "romaji": "Tanaka desu",
-      "furigana": [{ "start": 0, "len": 2, "ruby": "たなか" }],
-      "zh": "我是田中。",
-      "grammar": [
         {
-          "module": "G0-01",
-          "point": "です",
-          "explain": "礼貌断定，相当于「是」。比「と申します」稍随意，同事之间常见；对客户或上司更推荐「田中と申します」。"
+          "module": "S0",
+          "point": "はじめまして",
+          "explain": "对方也回一遍，表示双方都是第一次见面。"
         }
       ],
       "vocab": [],
       "isSentenceEnd": true
     },
     {
-      "id": "l07",
+      "id": "l09",
       "speaker": "田中",
-      "jp": "こちらこそ、よろしくお願いいたします。",
-      "reading": "こちらこそ、よろしくおねがいいたします",
-      "romaji": "kochira koso, yoroshiku onegai itashimasu",
+      "jp": "田中です。",
+      "reading": "たなかです。",
+      "romaji": "Tanaka desu.",
+      "furigana": [{ "start": 0, "len": 2, "ruby": "たなか" }],
+      "zh": "我是田中。",
+      "grammar": [
+        {
+          "module": "G0",
+          "point": "Aは Bです",
+          "explain": "礼貌断定，相当于「是」。这里省略了「わたしは」。同事之间报姓名用「田中です」就够，不必每次都用「と申します」。"
+        }
+      ],
+      "vocab": [],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l10",
+      "speaker": "田中",
+      "jp": "こちらこそ、よろしくお願いします。",
+      "reading": "こちらこそ、よろしくおねがいします。",
+      "romaji": "kochira koso, yoroshiku onegai shimasu.",
       "furigana": [{ "start": 11, "len": 1, "ruby": "ねが" }],
       "zh": "彼此彼此，请多关照。／该我才是，请多关照。",
       "grammar": [
         {
           "module": "S0",
           "point": "こちらこそ",
-          "explain": "「こちら」＝我这边，「こそ」＝正是、才是（强调）。别人说「よろしく」时用来回应。"
+          "explain": "「こちら」＝我这边，「こそ」＝正是、才是（强调）。对方先说「よろしく」时用它回应。"
         }
       ],
       "vocab": [
@@ -152,71 +238,28 @@
       "isSentenceEnd": true
     },
     {
-      "id": "l08",
-      "speaker": "李",
-      "jp": "田中さんは、この会社で何年くらい働いていますか。",
-      "reading": "たなかさんは、このかいしゃでなんねんくらいはたらいていますか",
-      "romaji": "Tanaka-san wa, kono kaisha de nannen kurai hataraite imasu ka",
-      "furigana": [
-        { "start": 0, "len": 2, "ruby": "たなか" },
-        { "start": 8, "len": 2, "ruby": "かいしゃ" },
-        { "start": 11, "len": 2, "ruby": "なんねん" },
-        { "start": 16, "len": 1, "ruby": "はたら" }
-      ],
-      "zh": "田中先生，您在这家公司工作大概多少年了？",
-      "grammar": [
-        { "module": "G0-03", "point": "は", "explain": "主题助词，「关于……」。" },
-        { "module": "G0-03", "point": "で", "explain": "表示动作发生的场所，「在……」。" },
-        {
-          "module": "G0-13",
-          "point": "～ています",
-          "explain": "て形＋います，表示正在做或状态持续。句型：～で～ていますか。"
-        },
-        { "module": "G0-22", "point": "さん", "explain": "尊称，不能加在自己名字后面。" }
-      ],
-      "vocab": [
-        { "word": "会社", "reading": "かいしゃ", "pos": "名詞", "zh": "公司" },
-        { "word": "何年", "reading": "なんねん", "pos": "名詞", "zh": "多少年" },
-        { "word": "くらい", "reading": "くらい", "pos": "副助詞", "zh": "大概、左右" },
-        { "word": "働く", "reading": "はたらく", "pos": "動詞", "zh": "工作" }
-      ],
-      "isSentenceEnd": true
-    },
-    {
-      "id": "l09",
+      "id": "l11",
       "speaker": "田中",
-      "jp": "三年になります。",
-      "reading": "さんねんになります",
-      "romaji": "sannen ni narimasu",
-      "furigana": [{ "start": 0, "len": 2, "ruby": "さんねん" }],
-      "zh": "已经三年了。／到今年是三年。",
-      "grammar": [
-        {
-          "module": "G0-03",
-          "point": "～になります",
-          "explain": "成为……、到了……。比直接说「三年です」更柔和正式，表示已经满三年。"
-        }
-      ],
-      "vocab": [
-        { "word": "年", "reading": "ねん", "pos": "接尾", "zh": "年", "note": "三年＝さんねん" }
-      ],
-      "isSentenceEnd": true
-    },
-    {
-      "id": "l10",
-      "speaker": "田中",
-      "jp": "李さんは、日本語が上手ですね。",
-      "reading": "りさんは、にほんごがじょうずですね",
-      "romaji": "Ri-san wa, Nihongo ga jōzu desu ne",
+      "jp": "李さんは日本語が上手ですね。",
+      "reading": "りさんはにほんごがじょうずですね。",
+      "romaji": "Ri-san wa Nihongo ga jōzu desu ne.",
       "furigana": [
         { "start": 0, "len": 1, "ruby": "り" },
-        { "start": 5, "len": 3, "ruby": "にほんご" },
-        { "start": 9, "len": 2, "ruby": "じょうず" }
+        { "start": 4, "len": 3, "ruby": "にほんご" },
+        { "start": 8, "len": 2, "ruby": "じょうず" }
       ],
       "zh": "小李，你的日语真好啊。",
       "grammar": [
-        { "module": "G0-03", "point": "が", "explain": "表示能力、性质的对象，如「～が上手」。" },
-        { "module": "G0-01", "point": "ね", "explain": "征求认同、缓和语气，这里带赞叹。" }
+        {
+          "module": "G0",
+          "point": "～さん",
+          "explain": "尊称，加在别人的姓名后面，绝不能加在自己名字后面。"
+        },
+        {
+          "module": "G0",
+          "point": "ね",
+          "explain": "句尾语气词，征求认同、缓和语气，这里带赞叹。"
+        }
       ],
       "vocab": [
         { "word": "日本語", "reading": "にほんご", "pos": "名詞", "zh": "日语" },
@@ -225,72 +268,55 @@
           "reading": "じょうず",
           "pos": "な形容詞",
           "zh": "擅长、做得好",
-          "note": "多用来夸别人；夸自己用「得意（とくい）」更自然"
+          "note": "只用来夸别人；说自己用「得意（とくい）」"
         }
       ],
-      "isSentenceEnd": true
-    },
-    {
-      "id": "l11",
-      "speaker": "李",
-      "jp": "いいえ、まだまだです。",
-      "reading": "いいえ、まだまだです",
-      "romaji": "iie, madamada desu",
-      "furigana": [],
-      "zh": "哪里哪里，还差得远。／还早着呢。",
-      "grammar": [
-        {
-          "module": "S0",
-          "point": "いいえ、まだまだです",
-          "explain": "被夸奖时的谦虚回应，「いいえ」这里不是生硬反驳，「まだまだ」＝还远远不够。"
-        }
-      ],
-      "vocab": [],
+      "note": "预习点：助词「が」表示能力的对象、「上手」是な形容词，分别在 W02、W03 系统学，本周整句记住即可。日本人对刚开口的外国人常这样夸，多半是客套，接谦虚回应最自然。",
       "isSentenceEnd": true
     },
     {
       "id": "l12",
       "speaker": "李",
-      "jp": "これから勉強します。",
-      "reading": "これからべんきょうします",
-      "romaji": "korekara benkyō shimasu",
-      "furigana": [{ "start": 4, "len": 2, "ruby": "べんきょう" }],
-      "zh": "今后还会继续学习。／从现在起要好好学。",
+      "jp": "いいえ、まだまだです。",
+      "reading": "いいえ、まだまだです。",
+      "romaji": "iie, madamada desu.",
+      "furigana": [],
+      "zh": "哪里哪里，还差得远。",
       "grammar": [
         {
-          "module": "G0-11",
-          "point": "勉強します",
-          "explain": "する动词：名词「勉強」＋します。常接在谦虚回应后面，表示还会努力。"
+          "module": "S0",
+          "point": "いいえ、まだまだです",
+          "explain": "被夸奖时的谦虚回应，「いいえ」在这里不是生硬反驳，「まだまだ」＝还远远不够。被夸「上手ですね」时几乎是标准答案。"
         }
       ],
       "vocab": [
-        { "word": "これから", "reading": "これから", "pos": "副詞", "zh": "从今以后、今后" },
-        { "word": "勉強", "reading": "べんきょう", "pos": "名詞", "zh": "学习" }
+        { "word": "いいえ", "reading": "いいえ", "pos": "感動詞", "zh": "不、哪里" }
       ],
       "isSentenceEnd": true
     },
     {
       "id": "l13",
       "speaker": "田中",
-      "jp": "何か分からないことがあったら、いつでも聞いてください。",
-      "reading": "なにかわからないことがあったら、いつでもきいてください",
-      "romaji": "nanika wakaranai koto ga attara, itsudemo kiite kudasai",
-      "furigana": [
-        { "start": 0, "len": 1, "ruby": "なに" },
-        { "start": 2, "len": 1, "ruby": "わ" },
-        { "start": 19, "len": 1, "ruby": "き" }
-      ],
-      "zh": "如果有什么不懂的地方，随时可以问我。",
+      "jp": "質問はいつでもどうぞ。",
+      "reading": "しつもんはいつでもどうぞ。",
+      "romaji": "shitsumon wa itsudemo dōzo.",
+      "furigana": [{ "start": 0, "len": 2, "ruby": "しつもん" }],
+      "zh": "有问题随时问我。",
       "grammar": [
-        { "module": "G0-16", "point": "～たら", "explain": "「ある」的たら形＝如果有……的话。句型：～たら、～てください。" },
-        { "module": "G0-13", "point": "～てください", "explain": "礼貌请求，请……。" },
-        { "module": "G0-11", "point": "こと", "explain": "把前面的动词变成名词性成分。" }
+        {
+          "module": "S0",
+          "point": "～はいつでもどうぞ",
+          "explain": "「どうぞ」除了「请用」，还能用来邀请对方随时行动。前辈对新人说这句，等于「随时欢迎提问」。更客气可说「ご質問はいつでもどうぞ」。"
+        },
+        {
+          "module": "G0",
+          "point": "は",
+          "explain": "主题助词，读 wa：关于提问这件事……"
+        }
       ],
       "vocab": [
-        { "word": "何か", "reading": "なにか", "pos": "代名詞", "zh": "什么（不定）" },
-        { "word": "分かる", "reading": "わかる", "pos": "動詞", "zh": "明白、懂", "note": "分からない＝不懂" },
-        { "word": "いつでも", "reading": "いつでも", "pos": "副詞", "zh": "随时" },
-        { "word": "聞く", "reading": "きく", "pos": "動詞", "zh": "问；听" }
+        { "word": "質問", "reading": "しつもん", "pos": "名詞", "zh": "提问、问题" },
+        { "word": "いつでも", "reading": "いつでも", "pos": "副詞", "zh": "随时" }
       ],
       "isSentenceEnd": true
     },
@@ -298,39 +324,39 @@
       "id": "l14",
       "speaker": "李",
       "jp": "ありがとうございます。",
-      "reading": "ありがとうございます",
-      "romaji": "arigatō gozaimasu",
+      "reading": "ありがとうございます。",
+      "romaji": "arigatō gozaimasu.",
       "furigana": [],
-      "zh": "谢谢您。／非常感谢。",
+      "zh": "谢谢您。",
       "grammar": [
         {
-          "module": "G0-22",
-          "point": "ございます",
-          "explain": "礼貌补助，整体更正式，比单说「ありがとう」更适合职场、对长辈。"
+          "module": "S0",
+          "point": "ありがとうございます",
+          "explain": "礼貌道谢。对同事、长辈用完整形；朋友之间可缩短成「ありがとう」。"
         }
       ],
       "vocab": [
-        { "word": "ありがとう", "reading": "ありがとう", "pos": "感動詞", "zh": "谢谢" }
+        { "word": "ありがとうございます", "reading": "ありがとうございます", "pos": "感動詞", "zh": "谢谢（礼貌）" }
       ],
       "isSentenceEnd": true
     },
     {
       "id": "l15",
-      "speaker": "李",
-      "jp": "助かります。",
-      "reading": "たすかります",
-      "romaji": "tasukarimasu",
-      "furigana": [{ "start": 0, "len": 1, "ruby": "たす" }],
-      "zh": "真是帮大忙了。／太感谢了（得救了）。",
+      "speaker": "田中",
+      "jp": "どういたしまして。",
+      "reading": "どういたしまして。",
+      "romaji": "dō itashimashite.",
+      "furigana": [],
+      "zh": "不客气。",
       "grammar": [
         {
-          "module": "G0-11",
-          "point": "助かります",
-          "explain": "「助かる」＝得救、得到帮助而轻松不少。比单说「ありがとう」多一层「帮到忙了」的语气，常与上一句连用。"
+          "module": "S0",
+          "point": "どういたしまして",
+          "explain": "回应「ありがとうございます」的固定说法。本周「寒暄应答型」必背的一对。"
         }
       ],
       "vocab": [
-        { "word": "助かる", "reading": "たすかる", "pos": "動詞", "zh": "得救；帮大忙" }
+        { "word": "どういたしまして", "reading": "どういたしまして", "pos": "感動詞", "zh": "不客气" }
       ],
       "isSentenceEnd": true
     }

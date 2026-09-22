@@ -7,97 +7,97 @@
     "田中": "ja-JP-KeitaNeural"
   },
   "lines": {
-    "l01": "8f910b485831a240",
-    "l02": "8dd17045b4e9c301",
-    "l03": "ca84a42061e096a6",
-    "l04": "ff98291e3995e5e3",
-    "l05": "6a722b7d242b1e37",
-    "l06": "0a3c503851767384",
-    "l07": "7aa7437fc48ae7bc",
-    "l08": "4ed33cc49f6368b2",
-    "l09": "f0e6f1c8d38bebd7",
-    "l10": "125c2875c9505136",
-    "l11": "7ac7f6a97b2191df",
-    "l12": "3c331dec1ba57c2d",
-    "l13": "959f6a0c46cff3ab",
+    "l01": "ade0af69e156427f",
+    "l02": "da929ff4c15d4459",
+    "l03": "8f910b485831a240",
+    "l04": "8dd17045b4e9c301",
+    "l05": "ca84a42061e096a6",
+    "l06": "6bd65d6d8b601262",
+    "l07": "aa4d15695b0d048f",
+    "l08": "6a722b7d242b1e37",
+    "l09": "0a3c503851767384",
+    "l10": "4d51160ea4eef4cd",
+    "l11": "8b45577e44ce728a",
+    "l12": "7ac7f6a97b2191df",
+    "l13": "7b88c6dad24d44d4",
     "l14": "7954f87fbb406057",
-    "l15": "a4aa885464b868ce"
+    "l15": "d60ae7fb9de33deb"
   },
   "cues": [
     {
       "id": "l01",
       "startMs": 0,
-      "endMs": 2112
+      "endMs": 2472
     },
     {
       "id": "l02",
-      "startMs": 2520,
-      "endMs": 4800
+      "startMs": 2880,
+      "endMs": 5208
     },
     {
       "id": "l03",
-      "startMs": 5208,
-      "endMs": 7872
+      "startMs": 5616,
+      "endMs": 7728
     },
     {
       "id": "l04",
-      "startMs": 8280,
-      "endMs": 11664
+      "startMs": 8136,
+      "endMs": 10416
     },
     {
       "id": "l05",
-      "startMs": 12072,
-      "endMs": 13992
+      "startMs": 10824,
+      "endMs": 13488
     },
     {
       "id": "l06",
-      "startMs": 14400,
-      "endMs": 16272
+      "startMs": 13896,
+      "endMs": 17376
     },
     {
       "id": "l07",
-      "startMs": 16680,
-      "endMs": 20592
+      "startMs": 17784,
+      "endMs": 20928
     },
     {
       "id": "l08",
-      "startMs": 21000,
-      "endMs": 26448
+      "startMs": 21336,
+      "endMs": 23256
     },
     {
       "id": "l09",
-      "startMs": 26856,
-      "endMs": 29184
+      "startMs": 23664,
+      "endMs": 25536
     },
     {
       "id": "l10",
-      "startMs": 29592,
-      "endMs": 33168
+      "startMs": 25944,
+      "endMs": 29640
     },
     {
       "id": "l11",
-      "startMs": 33576,
-      "endMs": 36504
+      "startMs": 30048,
+      "endMs": 33120
     },
     {
       "id": "l12",
-      "startMs": 36912,
-      "endMs": 39648
+      "startMs": 33528,
+      "endMs": 36456
     },
     {
       "id": "l13",
-      "startMs": 40056,
-      "endMs": 44856
+      "startMs": 36864,
+      "endMs": 39552
     },
     {
       "id": "l14",
-      "startMs": 45264,
-      "endMs": 47808
+      "startMs": 39960,
+      "endMs": 42504
     },
     {
       "id": "l15",
-      "startMs": 48216,
-      "endMs": 50280
+      "startMs": 42912,
+      "endMs": 45048
     }
   ]
 }
