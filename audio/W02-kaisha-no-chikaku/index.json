@@ -1,0 +1,106 @@
+{
+  "articleId": "W02-kaisha-no-chikaku",
+  "rate": "-10%",
+  "gapMs": 350,
+  "voices": {},
+  "lines": {
+    "l01": "15c5afe4fbe709cd",
+    "l02": "5dcca840310e2734",
+    "l03": "72061ded95a99916",
+    "l04": "21336d369bcb1e75",
+    "l05": "91842e96cf299ada",
+    "l06": "eaaf7c9596c97b7e",
+    "l07": "506d803f577cb374",
+    "l08": "86e25e8c25060404",
+    "l09": "282f6364bd8b2462",
+    "l10": "24326675b3446351",
+    "l11": "5d29ba933eefecc2",
+    "l12": "3454a468f567e9e7",
+    "l13": "69a5df7bfc8b9aa6",
+    "l14": "054ddc0f7b4250b4",
+    "l15": "67c6207749e9dd9a",
+    "l16": "af101892b7fb8c6e"
+  },
+  "cues": [
+    {
+      "id": "l01",
+      "startMs": 0,
+      "endMs": 4320
+    },
+    {
+      "id": "l02",
+      "startMs": 4728,
+      "endMs": 7992
+    },
+    {
+      "id": "l03",
+      "startMs": 8400,
+      "endMs": 11904
+    },
+    {
+      "id": "l04",
+      "startMs": 12312,
+      "endMs": 16512
+    },
+    {
+      "id": "l05",
+      "startMs": 16920,
+      "endMs": 20136
+    },
+    {
+      "id": "l06",
+      "startMs": 20544,
+      "endMs": 25320
+    },
+    {
+      "id": "l07",
+      "startMs": 25728,
+      "endMs": 29256
+    },
+    {
+      "id": "l08",
+      "startMs": 29664,
+      "endMs": 35040
+    },
+    {
+      "id": "l09",
+      "startMs": 35448,
+      "endMs": 38736
+    },
+    {
+      "id": "l10",
+      "startMs": 39144,
+      "endMs": 42888
+    },
+    {
+      "id": "l11",
+      "startMs": 43296,
+      "endMs": 46776
+    },
+    {
+      "id": "l12",
+      "startMs": 47184,
+      "endMs": 52392
+    },
+    {
+      "id": "l13",
+      "startMs": 52800,
+      "endMs": 58752
+    },
+    {
+      "id": "l14",
+      "startMs": 59160,
+      "endMs": 62640
+    },
+    {
+      "id": "l15",
+      "startMs": 63048,
+      "endMs": 67152
+    },
+    {
+      "id": "l16",
+      "startMs": 67560,
+      "endMs": 70752
+    }
+  ]
+}

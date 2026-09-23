@@ -19,15 +19,18 @@
       "stage": "P0",
       "week": 2,
       "title": "这是/有/在·基本助词",
-      "modules": ["G0-01～05", "V0"],
-      "deliverable": "助词填空 30 题；对话 1 篇"
+      "modules": ["G0-01～04", "V0"],
+      "deliverable": "助词填空 30 题；对话 1 篇",
+      "detailPath": "plan/W02.json",
+      "articleIds": ["W02-doko", "W02-kaisha-no-chikaku"],
+      "lessonPath": "lessons/W02_第二周_指示词存在句助词.md"
     },
     {
       "id": "W03",
       "stage": "P0",
       "week": 3,
       "title": "形容词·喜欢讨厌·存在",
-      "modules": ["G0-06～10", "V0"],
+      "modules": ["G0-05～10", "V0"],
       "deliverable": "描述人物/房间短文"
     },
     {

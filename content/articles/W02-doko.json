@@ -1,0 +1,545 @@
+{
+  "id": "W02-doko",
+  "title": "どこにありますか",
+  "titleZh": "在哪儿（公司里）",
+  "stage": "P0",
+  "week": 2,
+  "level": "N5",
+  "type": "dialogue",
+  "scene": "入职第二天，小李向同事田中打听公司里各处的位置，顺便约好一起吃午饭",
+  "grammarModules": [
+    "G0-01",
+    "G0-02",
+    "G0-03",
+    "G0-04"
+  ],
+  "vocabTopic": "V0",
+  "tags": [
+    "指示词",
+    "存在句",
+    "助词",
+    "职场",
+    "问路"
+  ],
+  "source": "docs/lessons/W02_第二周_指示词存在句助词.md",
+  "updatedAt": "2026-09-23",
+  "lines": [
+    {
+      "id": "l01",
+      "speaker": "李",
+      "jp": "田中さん、すみません。ちょっといいですか。",
+      "reading": "たなかさん、すみません。ちょっといいですか。",
+      "romaji": "Tanaka-san, sumimasen. chotto ii desu ka.",
+      "furigana": [{ "start": 0, "len": 2, "ruby": "たなか" }],
+      "zh": "田中，不好意思，现在方便吗？",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "ちょっといいですか",
+          "explain": "想占用对方一点时间时的开场白，字面是「稍微可以吗」。先说「すみません」再接这句，比直接发问礼貌。「いい」是形容词（W03 学），本周整句记住。"
+        }
+      ],
+      "vocab": [
+        { "word": "ちょっと", "reading": "ちょっと", "pos": "副詞", "zh": "一下、稍微" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l02",
+      "speaker": "田中",
+      "jp": "はい、何ですか。",
+      "reading": "はい、なんですか。",
+      "romaji": "hai, nan desu ka.",
+      "furigana": [{ "start": 3, "len": 1, "ruby": "なん" }],
+      "zh": "嗯，什么事？",
+      "grammar": [
+        {
+          "module": "G0-01",
+          "point": "何ですか",
+          "explain": "「什么事？」。被叫住时的自然回应，语气不冲，只是请对方说下去。「何」后接「です」读 なん。"
+        }
+      ],
+      "vocab": [],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l03",
+      "speaker": "李",
+      "jp": "トイレはどこですか。",
+      "reading": "といれはどこですか。",
+      "romaji": "toire wa doko desu ka.",
+      "furigana": [],
+      "zh": "洗手间在哪儿？",
+      "grammar": [
+        {
+          "module": "G0-02",
+          "point": "～はどこですか",
+          "explain": "问地点的最简句型：〔东西／地方〕は どこですか。「どこ」是「ここ／そこ／あそこ」的疑问词。问路、找东西都用它。"
+        }
+      ],
+      "vocab": [
+        { "word": "トイレ", "reading": "といれ", "pos": "名詞", "zh": "洗手间", "note": "片假名外来语，来自 toilet" },
+        { "word": "どこ", "reading": "どこ", "pos": "代名詞", "zh": "哪里" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l04",
+      "speaker": "田中",
+      "jp": "あそこです。エレベーターの隣にあります。",
+      "reading": "あそこです。えれべーたーのとなりにあります。",
+      "romaji": "asoko desu. erebētā no tonari ni arimasu.",
+      "furigana": [{ "start": 13, "len": 1, "ruby": "となり" }],
+      "zh": "在那边，电梯旁边。",
+      "grammar": [
+        {
+          "module": "G0-02",
+          "point": "ここ／そこ／あそこ",
+          "explain": "离两人都远的地方用「あそこ」。和「これ／それ／あれ」一样按说话人、听话人的距离切换。"
+        },
+        {
+          "module": "G0-04",
+          "point": "〔场所〕に あります",
+          "explain": "物品、建筑等不会自己动的东西「在」某处用「あります」，地点后加「に」。「AのB」表示 A 的某个方位：エレベーターの隣＝电梯旁边。"
+        }
+      ],
+      "vocab": [
+        { "word": "あそこ", "reading": "あそこ", "pos": "代名詞", "zh": "那里（远）" },
+        { "word": "エレベーター", "reading": "えれべーたー", "pos": "名詞", "zh": "电梯" },
+        { "word": "隣", "reading": "となり", "pos": "名詞", "zh": "旁边、隔壁" },
+        { "word": "あります", "reading": "あります", "pos": "動詞", "zh": "有、在（物）" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l05",
+      "speaker": "李",
+      "jp": "会議室もこの階にありますか。",
+      "reading": "かいぎしつもこのかいにありますか。",
+      "romaji": "kaigishitsu mo kono kai ni arimasu ka.",
+      "furigana": [
+        { "start": 0, "len": 3, "ruby": "かいぎしつ" },
+        { "start": 6, "len": 1, "ruby": "かい" }
+      ],
+      "zh": "会议室也在这一层吗？",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "も",
+          "explain": "「也」。直接替换掉「は／が」：会議室は→会議室も。不能说「会議室はも」。"
+        },
+        {
+          "module": "G0-04",
+          "point": "～にありますか",
+          "explain": "存在句的疑问：在句尾加「か」。回答用「はい、あります」或「いいえ、ありません」。"
+        }
+      ],
+      "vocab": [
+        { "word": "会議室", "reading": "かいぎしつ", "pos": "名詞", "zh": "会议室" },
+        { "word": "階", "reading": "かい", "pos": "名詞", "zh": "楼层" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l06",
+      "speaker": "田中",
+      "jp": "いいえ、会議室は三階です。",
+      "reading": "いいえ、かいぎしつはさんがいです。",
+      "romaji": "iie, kaigishitsu wa sangai desu.",
+      "furigana": [
+        { "start": 4, "len": 3, "ruby": "かいぎしつ" },
+        { "start": 8, "len": 2, "ruby": "さんがい" }
+      ],
+      "zh": "不，会议室在三楼。",
+      "grammar": [
+        {
+          "module": "G0-01",
+          "point": "〔东西〕は〔场所〕です",
+          "explain": "口语里「会議室は三階にあります」常简化成「会議室は三階です」。「です」可以代替前面说过的动词，意思不变。"
+        }
+      ],
+      "vocab": [
+        { "word": "三階", "reading": "さんがい", "pos": "名詞", "zh": "三楼", "note": "三階读 さんがい（浊化）；一階 いっかい、二階 にかい、何階 なんがい" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l07",
+      "speaker": "李",
+      "jp": "コピー機はどこにありますか。",
+      "reading": "こぴーきはどこにありますか。",
+      "romaji": "kopīki wa doko ni arimasu ka.",
+      "furigana": [{ "start": 3, "len": 1, "ruby": "き" }],
+      "zh": "复印机在哪儿？",
+      "grammar": [
+        {
+          "module": "G0-04",
+          "point": "〔东西〕は どこに ありますか",
+          "explain": "已经知道有这样东西、只问它在哪儿时，东西用「は」提出来当话题。和 l03 的「どこですか」意思相同，这个更完整。"
+        }
+      ],
+      "vocab": [
+        { "word": "コピー機", "reading": "こぴーき", "pos": "名詞", "zh": "复印机" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l08",
+      "speaker": "田中",
+      "jp": "会議室の前にあります。",
+      "reading": "かいぎしつのまえにあります。",
+      "romaji": "kaigishitsu no mae ni arimasu.",
+      "furigana": [
+        { "start": 0, "len": 3, "ruby": "かいぎしつ" },
+        { "start": 4, "len": 1, "ruby": "まえ" }
+      ],
+      "zh": "在会议室前面。",
+      "grammar": [
+        {
+          "module": "G0-04",
+          "point": "〔名詞〕の 前／後ろ／隣",
+          "explain": "方位词接在「名詞＋の」后面：会議室の前（会议室前面）、駅の近く（车站附近）。主语「コピー機は」承前省略。"
+        }
+      ],
+      "vocab": [
+        { "word": "前", "reading": "まえ", "pos": "名詞", "zh": "前面" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l09",
+      "speaker": "李",
+      "jp": "あのう、部長は今どこにいますか。",
+      "reading": "あのう、ぶちょうはいまどこにいますか。",
+      "romaji": "anō, buchō wa ima doko ni imasu ka.",
+      "furigana": [
+        { "start": 4, "len": 2, "ruby": "ぶちょう" },
+        { "start": 7, "len": 1, "ruby": "いま" }
+      ],
+      "zh": "那个……部长现在在哪儿？",
+      "grammar": [
+        {
+          "module": "G0-04",
+          "point": "います vs あります",
+          "explain": "人和动物「在」用「います」，物品、植物、建筑用「あります」。问部长在哪儿就必须是「いますか」，说成「ありますか」是典型错误。"
+        },
+        {
+          "module": "S0",
+          "point": "あのう",
+          "explain": "开口前的犹豫语，相当于「那个……」。问上司的事时带一点迟疑，显得客气。"
+        }
+      ],
+      "vocab": [
+        { "word": "部長", "reading": "ぶちょう", "pos": "名詞", "zh": "部长、部门经理" },
+        { "word": "今", "reading": "いま", "pos": "名詞", "zh": "现在" },
+        { "word": "います", "reading": "います", "pos": "動詞", "zh": "有、在（人·动物）" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l10",
+      "speaker": "田中",
+      "jp": "部長は会議室にいます。",
+      "reading": "ぶちょうはかいぎしつにいます。",
+      "romaji": "buchō wa kaigishitsu ni imasu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "ぶちょう" },
+        { "start": 3, "len": 3, "ruby": "かいぎしつ" }
+      ],
+      "zh": "部长在会议室。",
+      "grammar": [
+        {
+          "module": "G0-04",
+          "point": "〔人〕は〔场所〕に います",
+          "explain": "回答「どこにいますか」时，把「どこ」换成具体地点即可。"
+        }
+      ],
+      "vocab": [],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l11",
+      "speaker": "李",
+      "jp": "鈴木さんもいますか。",
+      "reading": "すずきさんもいますか。",
+      "romaji": "Suzuki-san mo imasu ka.",
+      "furigana": [{ "start": 0, "len": 2, "ruby": "すずき" }],
+      "zh": "铃木也在吗？",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "～も いますか",
+          "explain": "「も」承接上句：部长在会议室，那铃木「也」在吗？"
+        }
+      ],
+      "vocab": [],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l12",
+      "speaker": "田中",
+      "jp": "いいえ、鈴木さんはいません。今日は大阪です。",
+      "reading": "いいえ、すずきさんはいません。きょうはおおさかです。",
+      "romaji": "iie, Suzuki-san wa imasen. kyō wa Ōsaka desu.",
+      "furigana": [
+        { "start": 4, "len": 2, "ruby": "すずき" },
+        { "start": 14, "len": 2, "ruby": "きょう" },
+        { "start": 17, "len": 2, "ruby": "おおさか" }
+      ],
+      "zh": "不，铃木不在。他今天在大阪。",
+      "grammar": [
+        {
+          "module": "G0-04",
+          "point": "いません／ありません",
+          "explain": "存在句的否定：います→いません，あります→ありません。注意是「ありません」，不是名词句的「ではありません」。"
+        },
+        {
+          "module": "G0-01",
+          "point": "今日は大阪です",
+          "explain": "字面「今天是大阪」，实际是「今天在大阪」。日语常用「は～です」省略掉具体动词，靠语境补全。"
+        }
+      ],
+      "vocab": [
+        { "word": "大阪", "reading": "おおさか", "pos": "名詞", "zh": "大阪" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l13",
+      "speaker": "李",
+      "jp": "そうですか。この近くに郵便局はありますか。",
+      "reading": "そうですか。このちかくにゆうびんきょくはありますか。",
+      "romaji": "sō desu ka. kono chikaku ni yūbinkyoku wa arimasu ka.",
+      "furigana": [
+        { "start": 8, "len": 1, "ruby": "ちか" },
+        { "start": 11, "len": 3, "ruby": "ゆうびんきょく" }
+      ],
+      "zh": "这样啊。这附近有邮局吗？",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "そうですか",
+          "explain": "「这样啊」，听到新信息时的附和，句尾读降调。读升调就变成「真的吗？」的追问。"
+        },
+        {
+          "module": "G0-04",
+          "point": "〔场所〕に〔东西〕は ありますか",
+          "explain": "问「某处有没有某物」。这里用「は」而非「が」，是因为问的是有没有、答案可能是没有，「は」带一点对比的味道。基本型记「场所に 东西が あります」。"
+        }
+      ],
+      "vocab": [
+        { "word": "近く", "reading": "ちかく", "pos": "名詞", "zh": "附近" },
+        { "word": "郵便局", "reading": "ゆうびんきょく", "pos": "名詞", "zh": "邮局" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l14",
+      "speaker": "田中",
+      "jp": "ええ、駅の前にあります。銀行もありますよ。",
+      "reading": "ええ、えきのまえにあります。ぎんこうもありますよ。",
+      "romaji": "ē, eki no mae ni arimasu. ginkō mo arimasu yo.",
+      "furigana": [
+        { "start": 3, "len": 1, "ruby": "えき" },
+        { "start": 5, "len": 1, "ruby": "まえ" },
+        { "start": 12, "len": 2, "ruby": "ぎんこう" }
+      ],
+      "zh": "嗯，在车站前面。那儿还有银行呢。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "よ",
+          "explain": "句尾语气词，告诉对方他不知道的信息。和 W01 学的「ね」相对：「ね」求认同，「よ」是提醒、告知。"
+        },
+        {
+          "module": "V0",
+          "point": "ええ",
+          "explain": "「はい」的口语版，语气更轻松。对上司、客户正式场合仍用「はい」。"
+        }
+      ],
+      "vocab": [
+        { "word": "駅", "reading": "えき", "pos": "名詞", "zh": "车站" },
+        { "word": "銀行", "reading": "ぎんこう", "pos": "名詞", "zh": "银行" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l15",
+      "speaker": "李",
+      "jp": "田中さん、昼ごはんはいつもどこで食べますか。",
+      "reading": "たなかさん、ひるごはんはいつもどこでたべますか。",
+      "romaji": "Tanaka-san, hirugohan wa itsumo doko de tabemasu ka.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "たなか" },
+        { "start": 5, "len": 1, "ruby": "ひる" },
+        { "start": 16, "len": 1, "ruby": "た" }
+      ],
+      "zh": "田中，你午饭一般在哪儿吃？",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "で（动作场所）",
+          "explain": "「在哪里做某事」用「で」，「在哪里存在」用「に」。どこで食べますか（在哪儿吃）vs どこにありますか（在哪儿）。这是本周最重要的一组对比。"
+        },
+        {
+          "module": "G0-01",
+          "point": "～ます",
+          "explain": "动词的礼貌形。「食べます」＝吃（习惯或将来）。动词变形 W04 系统学，本周当整块记。"
+        }
+      ],
+      "vocab": [
+        { "word": "昼ごはん", "reading": "ひるごはん", "pos": "名詞", "zh": "午饭" },
+        { "word": "いつも", "reading": "いつも", "pos": "副詞", "zh": "总是、平时" },
+        { "word": "食べます", "reading": "たべます", "pos": "動詞", "zh": "吃" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l16",
+      "speaker": "田中",
+      "jp": "会社の近くの食堂で食べます。",
+      "reading": "かいしゃのちかくのしょくどうでたべます。",
+      "romaji": "kaisha no chikaku no shokudō de tabemasu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "かいしゃ" },
+        { "start": 3, "len": 1, "ruby": "ちか" },
+        { "start": 6, "len": 2, "ruby": "しょくどう" },
+        { "start": 9, "len": 1, "ruby": "た" }
+      ],
+      "zh": "在公司附近的食堂吃。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "AのBのC",
+          "explain": "「の」可以连着用：会社の近くの食堂＝公司的附近的食堂→公司附近的食堂。从后往前翻译更顺。"
+        }
+      ],
+      "vocab": [
+        { "word": "会社", "reading": "かいしゃ", "pos": "名詞", "zh": "公司" },
+        { "word": "食堂", "reading": "しょくどう", "pos": "名詞", "zh": "食堂、小饭馆" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l17",
+      "speaker": "李",
+      "jp": "何を食べますか。",
+      "reading": "なにをたべますか。",
+      "romaji": "nani o tabemasu ka.",
+      "furigana": [
+        { "start": 0, "len": 1, "ruby": "なに" },
+        { "start": 2, "len": 1, "ruby": "た" }
+      ],
+      "zh": "吃什么呢？",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "を（动作对象）",
+          "explain": "动作的直接对象用「を」，读 o。「何を」读 なにを：「何」后面接「を・が」读 なに，接「です・の」读 なん。"
+        }
+      ],
+      "vocab": [
+        { "word": "何", "reading": "なに", "pos": "代名詞", "zh": "什么" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l18",
+      "speaker": "田中",
+      "jp": "ラーメンやカレーを食べます。李さんもいっしょにどうですか。",
+      "reading": "らーめんやかれーをたべます。りさんもいっしょにどうですか。",
+      "romaji": "rāmen ya karē o tabemasu. Ri-san mo issho ni dō desu ka.",
+      "furigana": [
+        { "start": 9, "len": 1, "ruby": "た" },
+        { "start": 14, "len": 1, "ruby": "り" }
+      ],
+      "zh": "吃拉面、咖喱什么的。小李你也一起去怎么样？",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "や",
+          "explain": "「A や B」＝A 和 B 等，只举出几个代表，暗示还有别的。对比「と」：「AとB」是全部列举，就这两样。"
+        },
+        {
+          "module": "S0",
+          "point": "いっしょにどうですか",
+          "explain": "邀请对方一起做某事的轻松说法，「一起……怎么样？」。正式的邀请句型在 W04 学。"
+        }
+      ],
+      "vocab": [
+        { "word": "ラーメン", "reading": "らーめん", "pos": "名詞", "zh": "拉面" },
+        { "word": "カレー", "reading": "かれー", "pos": "名詞", "zh": "咖喱" },
+        { "word": "いっしょに", "reading": "いっしょに", "pos": "副詞", "zh": "一起" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l19",
+      "speaker": "李",
+      "jp": "ぜひ。ありがとうございます。",
+      "reading": "ぜひ。ありがとうございます。",
+      "romaji": "zehi. arigatō gozaimasu.",
+      "furigana": [],
+      "zh": "好啊，一定去。谢谢。",
+      "grammar": [
+        {
+          "module": "S0",
+          "point": "ぜひ",
+          "explain": "「务必、一定」。单独说「ぜひ」就是爽快接受邀请，比只说「はい」热情。"
+        }
+      ],
+      "vocab": [
+        { "word": "ぜひ", "reading": "ぜひ", "pos": "副詞", "zh": "务必、一定" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l20",
+      "speaker": "田中",
+      "jp": "じゃあ、十二時に一階のロビーで。",
+      "reading": "じゃあ、じゅうにじにいっかいのろびーで。",
+      "romaji": "jā, jūniji ni ikkai no robī de.",
+      "furigana": [
+        { "start": 4, "len": 3, "ruby": "じゅうにじ" },
+        { "start": 8, "len": 2, "ruby": "いっかい" }
+      ],
+      "zh": "那就十二点在一楼大厅见。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "に（时间点）",
+          "explain": "具体时刻后加「に」：十二時に。但「今日・毎朝・いつも」这类不是具体时刻的词后面不加「に」。"
+        },
+        {
+          "module": "G0-03",
+          "point": "～で。（句尾省略）",
+          "explain": "句子停在「ロビーで」，后面省略了「会いましょう（见面吧）」。约定碰头地点时很常见。"
+        }
+      ],
+      "vocab": [
+        { "word": "十二時", "reading": "じゅうにじ", "pos": "名詞", "zh": "十二点" },
+        { "word": "一階", "reading": "いっかい", "pos": "名詞", "zh": "一楼" },
+        { "word": "ロビー", "reading": "ろびー", "pos": "名詞", "zh": "大厅" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l21",
+      "speaker": "李",
+      "jp": "はい、十二時にロビーですね。",
+      "reading": "はい、じゅうにじにろびーですね。",
+      "romaji": "hai, jūniji ni robī desu ne.",
+      "furigana": [{ "start": 3, "len": 3, "ruby": "じゅうにじ" }],
+      "zh": "好的，十二点在大厅，对吧。",
+      "grammar": [
+        {
+          "module": "G0-01",
+          "point": "～ですね（确认）",
+          "explain": "复述约定内容再加「ですね」，是确认时间地点的标准做法，避免听错。"
+        }
+      ],
+      "vocab": [],
+      "isSentenceEnd": true
+    }
+  ]
+}

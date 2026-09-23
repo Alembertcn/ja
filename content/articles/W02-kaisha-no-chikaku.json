@@ -1,0 +1,430 @@
+{
+  "id": "W02-kaisha-no-chikaku",
+  "title": "会社の近く",
+  "titleZh": "公司附近",
+  "stage": "P0",
+  "week": 2,
+  "level": "N5",
+  "type": "article",
+  "scene": "小李用日语写的一篇小短文，介绍公司周围有什么、自己平时在哪儿做什么",
+  "grammarModules": [
+    "G0-01",
+    "G0-02",
+    "G0-03",
+    "G0-04"
+  ],
+  "vocabTopic": "V0",
+  "tags": [
+    "存在句",
+    "助词",
+    "场所",
+    "日常"
+  ],
+  "source": "docs/lessons/W02_第二周_指示词存在句助词.md",
+  "updatedAt": "2026-09-23",
+  "lines": [
+    {
+      "id": "l01",
+      "jp": "わたしの会社は駅の近くにあります。",
+      "reading": "わたしのかいしゃはえきのちかくにあります。",
+      "romaji": "watashi no kaisha wa eki no chikaku ni arimasu.",
+      "furigana": [
+        { "start": 4, "len": 2, "ruby": "かいしゃ" },
+        { "start": 7, "len": 1, "ruby": "えき" },
+        { "start": 9, "len": 1, "ruby": "ちか" }
+      ],
+      "zh": "我的公司在车站附近。",
+      "grammar": [
+        {
+          "module": "G0-04",
+          "point": "〔东西〕は〔场所〕に あります",
+          "explain": "介绍已知事物的位置：话题「わたしの会社」用「は」提出，地点后加「に」，建筑用「あります」。"
+        }
+      ],
+      "vocab": [
+        { "word": "近く", "reading": "ちかく", "pos": "名詞", "zh": "附近" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l02",
+      "jp": "駅から会社まで五分です。",
+      "reading": "えきからかいしゃまでごふんです。",
+      "romaji": "eki kara kaisha made gofun desu.",
+      "furigana": [
+        { "start": 0, "len": 1, "ruby": "えき" },
+        { "start": 3, "len": 2, "ruby": "かいしゃ" },
+        { "start": 7, "len": 2, "ruby": "ごふん" }
+      ],
+      "zh": "从车站到公司要五分钟。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "A から B まで",
+          "explain": "「从 A 到 B」。「から」是起点（W01 已学），「まで」是终点。地点、时间都能用：九時から五時まで（九点到五点）。"
+        }
+      ],
+      "vocab": [
+        { "word": "五分", "reading": "ごふん", "pos": "名詞", "zh": "五分钟", "note": "分的读法会变：一分 いっぷん、三分 さんぷん、五分 ごふん、十分 じゅっぷん" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l03",
+      "jp": "会社の前にコンビニがあります。",
+      "reading": "かいしゃのまえにこんびにがあります。",
+      "romaji": "kaisha no mae ni konbini ga arimasu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "かいしゃ" },
+        { "start": 3, "len": 1, "ruby": "まえ" }
+      ],
+      "zh": "公司前面有一家便利店。",
+      "grammar": [
+        {
+          "module": "G0-04",
+          "point": "〔场所〕に〔东西〕が あります",
+          "explain": "告诉对方「某处有某物」，新出现的东西用「が」。和 l01 对比：l01 是「公司在哪」，这句是「那儿有什么」，语序和助词都跟着变。"
+        }
+      ],
+      "vocab": [
+        { "word": "コンビニ", "reading": "こんびに", "pos": "名詞", "zh": "便利店", "note": "コンビニエンスストア 的缩略" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l04",
+      "jp": "わたしは毎朝そこでコーヒーを買います。",
+      "reading": "わたしはまいあさそこでこーひーをかいます。",
+      "romaji": "watashi wa maiasa soko de kōhī o kaimasu.",
+      "furigana": [
+        { "start": 4, "len": 2, "ruby": "まいあさ" },
+        { "start": 14, "len": 1, "ruby": "か" }
+      ],
+      "zh": "我每天早上在那儿买咖啡。",
+      "grammar": [
+        {
+          "module": "G0-02",
+          "point": "そこ（指前文）",
+          "explain": "文章里指代前面刚提过的地方用「そこ」，这里＝那家便利店。口语里指眼前的位置才用「ここ／あそこ」。"
+        },
+        {
+          "module": "G0-03",
+          "point": "で／を",
+          "explain": "「そこで」动作发生的场所，「コーヒーを」动作的对象。基本语序：谁は＋时间＋地点で＋东西を＋动词。「毎朝」不是具体时刻，后面不加「に」。"
+        }
+      ],
+      "vocab": [
+        { "word": "毎朝", "reading": "まいあさ", "pos": "名詞", "zh": "每天早上" },
+        { "word": "そこ", "reading": "そこ", "pos": "代名詞", "zh": "那里" },
+        { "word": "コーヒー", "reading": "こーひー", "pos": "名詞", "zh": "咖啡" },
+        { "word": "買います", "reading": "かいます", "pos": "動詞", "zh": "买" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l05",
+      "jp": "コンビニの隣は本屋です。",
+      "reading": "こんびにのとなりはほんやです。",
+      "romaji": "konbini no tonari wa hon'ya desu.",
+      "furigana": [
+        { "start": 5, "len": 1, "ruby": "となり" },
+        { "start": 7, "len": 2, "ruby": "ほんや" }
+      ],
+      "zh": "便利店旁边是书店。",
+      "grammar": [
+        {
+          "module": "G0-01",
+          "point": "〔场所〕は〔东西〕です",
+          "explain": "以位置为话题说明「那儿是什么」，用名词句即可，不必说「あります」。"
+        }
+      ],
+      "vocab": [
+        { "word": "本屋", "reading": "ほんや", "pos": "名詞", "zh": "书店", "note": "～屋（や）＝某类店：パン屋（面包店）、花屋（花店）" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l06",
+      "jp": "本屋には日本語の本や雑誌がたくさんあります。",
+      "reading": "ほんやにはにほんごのほんやざっしがたくさんあります。",
+      "romaji": "hon'ya ni wa Nihongo no hon ya zasshi ga takusan arimasu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "ほんや" },
+        { "start": 4, "len": 3, "ruby": "にほんご" },
+        { "start": 8, "len": 1, "ruby": "ほん" },
+        { "start": 10, "len": 2, "ruby": "ざっし" }
+      ],
+      "zh": "书店里有很多日语书、杂志什么的。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "には",
+          "explain": "「に」后面再加「は」，把地点提为话题：「说到书店嘛，那里有……」。助词叠用时「は」总放在最后。"
+        },
+        {
+          "module": "G0-03",
+          "point": "や",
+          "explain": "「本や雑誌」＝书、杂志等，举例式列举。"
+        }
+      ],
+      "vocab": [
+        { "word": "雑誌", "reading": "ざっし", "pos": "名詞", "zh": "杂志" },
+        { "word": "たくさん", "reading": "たくさん", "pos": "副詞", "zh": "很多" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l07",
+      "jp": "会社の中に食堂はありません。",
+      "reading": "かいしゃのなかにしょくどうはありません。",
+      "romaji": "kaisha no naka ni shokudō wa arimasen.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "かいしゃ" },
+        { "start": 3, "len": 1, "ruby": "なか" },
+        { "start": 5, "len": 2, "ruby": "しょくどう" }
+      ],
+      "zh": "公司里面没有食堂。",
+      "grammar": [
+        {
+          "module": "G0-04",
+          "point": "～は ありません",
+          "explain": "存在句的否定常把「が」换成「は」：食堂はありません。「は」在否定句里带「别的也许有，但食堂没有」的对比意味。"
+        }
+      ],
+      "vocab": [
+        { "word": "中", "reading": "なか", "pos": "名詞", "zh": "里面" },
+        { "word": "食堂", "reading": "しょくどう", "pos": "名詞", "zh": "食堂" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l08",
+      "jp": "ですから、昼ごはんはいつも近くの店で食べます。",
+      "reading": "ですから、ひるごはんはいつもちかくのみせでたべます。",
+      "romaji": "desu kara, hirugohan wa itsumo chikaku no mise de tabemasu.",
+      "furigana": [
+        { "start": 5, "len": 1, "ruby": "ひる" },
+        { "start": 13, "len": 1, "ruby": "ちか" },
+        { "start": 16, "len": 1, "ruby": "みせ" },
+        { "start": 18, "len": 1, "ruby": "た" }
+      ],
+      "zh": "所以午饭我总是在附近的店里吃。",
+      "grammar": [
+        {
+          "module": "G0-01",
+          "point": "ですから／だから",
+          "explain": "「所以」，放句首承接上句的原因。「だから」是它的普通体，朋友之间说；写礼貌文、对上司用「ですから」。"
+        }
+      ],
+      "vocab": [
+        { "word": "ですから", "reading": "ですから", "pos": "接続詞", "zh": "所以" },
+        { "word": "店", "reading": "みせ", "pos": "名詞", "zh": "店" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l09",
+      "jp": "ときどき田中さんもいっしょです。",
+      "reading": "ときどきたなかさんもいっしょです。",
+      "romaji": "tokidoki Tanaka-san mo issho desu.",
+      "furigana": [{ "start": 4, "len": 2, "ruby": "たなか" }],
+      "zh": "有时候田中也一起。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "も",
+          "explain": "「田中さんも」＝田中也（和我一起）。「いっしょです」省略了「いっしょに食べます」。"
+        }
+      ],
+      "vocab": [
+        { "word": "ときどき", "reading": "ときどき", "pos": "副詞", "zh": "有时" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l10",
+      "jp": "会社の後ろには公園もあります。",
+      "reading": "かいしゃのうしろにはこうえんもあります。",
+      "romaji": "kaisha no ushiro ni wa kōen mo arimasu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "かいしゃ" },
+        { "start": 3, "len": 1, "ruby": "うし" },
+        { "start": 7, "len": 2, "ruby": "こうえん" }
+      ],
+      "zh": "公司后面还有一个公园。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "～にも／～も",
+          "explain": "这里「も」加在「公園」上：除了便利店、书店，「公园也有」。「後ろには」把地点提为话题。"
+        }
+      ],
+      "vocab": [
+        { "word": "後ろ", "reading": "うしろ", "pos": "名詞", "zh": "后面" },
+        { "word": "公園", "reading": "こうえん", "pos": "名詞", "zh": "公园" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l11",
+      "jp": "公園にはいつも猫がいます。",
+      "reading": "こうえんにはいつもねこがいます。",
+      "romaji": "kōen ni wa itsumo neko ga imasu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "こうえん" },
+        { "start": 7, "len": 1, "ruby": "ねこ" }
+      ],
+      "zh": "公园里总有猫。",
+      "grammar": [
+        {
+          "module": "G0-04",
+          "point": "〔场所〕に〔动物〕が います",
+          "explain": "动物和人一样用「います」。猫、狗、鱼都算；植物、树却用「あります」。"
+        }
+      ],
+      "vocab": [
+        { "word": "猫", "reading": "ねこ", "pos": "名詞", "zh": "猫" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l12",
+      "jp": "昼休みに、わたしはそこのベンチで本を読みます。",
+      "reading": "ひるやすみに、わたしはそこのべんちでほんをよみます。",
+      "romaji": "hiruyasumi ni, watashi wa soko no benchi de hon o yomimasu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "ひるやす" },
+        { "start": 16, "len": 1, "ruby": "ほん" },
+        { "start": 18, "len": 1, "ruby": "よ" }
+      ],
+      "zh": "午休时，我在那儿的长椅上看书。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "に（时间）",
+          "explain": "「昼休みに」＝在午休时。「昼休み」是一个有明确范围的时段，可以加「に」；「毎朝・いつも」不加。"
+        },
+        {
+          "module": "G0-02",
+          "point": "そこの＋名詞",
+          "explain": "「そこのベンチ」＝那儿的长椅，「そこ」仍指前句的公园。「ここ／そこ／あそこ」修饰名词时要加「の」。"
+        }
+      ],
+      "vocab": [
+        { "word": "昼休み", "reading": "ひるやすみ", "pos": "名詞", "zh": "午休" },
+        { "word": "ベンチ", "reading": "べんち", "pos": "名詞", "zh": "长椅" },
+        { "word": "読みます", "reading": "よみます", "pos": "動詞", "zh": "读、看（书）" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l13",
+      "jp": "金曜日の夜は、会社の人と駅前のレストランへ行きます。",
+      "reading": "きんようびのよるは、かいしゃのひととえきまえのれすとらんへいきます。",
+      "romaji": "kin'yōbi no yoru wa, kaisha no hito to ekimae no resutoran e ikimasu.",
+      "furigana": [
+        { "start": 0, "len": 3, "ruby": "きんようび" },
+        { "start": 4, "len": 1, "ruby": "よる" },
+        { "start": 7, "len": 2, "ruby": "かいしゃ" },
+        { "start": 10, "len": 1, "ruby": "ひと" },
+        { "start": 12, "len": 2, "ruby": "えきまえ" },
+        { "start": 21, "len": 1, "ruby": "い" }
+      ],
+      "zh": "星期五晚上，我和同事去车站前的餐厅。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "と（同伴）",
+          "explain": "「〔人〕と」＝和某人一起做某事。W01 学过的「李と申します」是引用的「と」，用法不同。"
+        },
+        {
+          "module": "G0-03",
+          "point": "へ（方向）",
+          "explain": "移动的方向，读 e。「レストランへ行きます」也可以说「レストランに行きます」，意思几乎一样，「へ」更强调方向。"
+        }
+      ],
+      "vocab": [
+        { "word": "金曜日", "reading": "きんようび", "pos": "名詞", "zh": "星期五" },
+        { "word": "夜", "reading": "よる", "pos": "名詞", "zh": "晚上" },
+        { "word": "駅前", "reading": "えきまえ", "pos": "名詞", "zh": "车站前" },
+        { "word": "レストラン", "reading": "れすとらん", "pos": "名詞", "zh": "餐厅" },
+        { "word": "行きます", "reading": "いきます", "pos": "動詞", "zh": "去" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l14",
+      "jp": "土曜日と日曜日は休みです。",
+      "reading": "どようびとにちようびはやすみです。",
+      "romaji": "doyōbi to nichiyōbi wa yasumi desu.",
+      "furigana": [
+        { "start": 0, "len": 3, "ruby": "どようび" },
+        { "start": 4, "len": 3, "ruby": "にちようび" },
+        { "start": 8, "len": 1, "ruby": "やす" }
+      ],
+      "zh": "星期六和星期天休息。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "と（并列）",
+          "explain": "「AとB」＝A 和 B，全部列举。和 l06 的「や」对比：休息日就这两天，所以用「と」。"
+        }
+      ],
+      "vocab": [
+        { "word": "土曜日", "reading": "どようび", "pos": "名詞", "zh": "星期六" },
+        { "word": "日曜日", "reading": "にちようび", "pos": "名詞", "zh": "星期天" },
+        { "word": "休み", "reading": "やすみ", "pos": "名詞", "zh": "休息、假日" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l15",
+      "jp": "週末は家で日本語を勉強します。",
+      "reading": "しゅうまつはいえでにほんごをべんきょうします。",
+      "romaji": "shūmatsu wa ie de Nihongo o benkyō shimasu.",
+      "furigana": [
+        { "start": 0, "len": 2, "ruby": "しゅうまつ" },
+        { "start": 3, "len": 1, "ruby": "いえ" },
+        { "start": 5, "len": 3, "ruby": "にほんご" },
+        { "start": 9, "len": 2, "ruby": "べんきょう" }
+      ],
+      "zh": "周末我在家学日语。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "で／を 复习",
+          "explain": "「家で」动作场所、「日本語を」动作对象。和 l04 是同一个骨架：时间は＋地点で＋东西を＋动词。"
+        }
+      ],
+      "vocab": [
+        { "word": "週末", "reading": "しゅうまつ", "pos": "名詞", "zh": "周末" },
+        { "word": "家", "reading": "いえ", "pos": "名詞", "zh": "家" },
+        { "word": "勉強します", "reading": "べんきょうします", "pos": "動詞", "zh": "学习" }
+      ],
+      "isSentenceEnd": true
+    },
+    {
+      "id": "l16",
+      "jp": "わたしはこの町が好きです。",
+      "reading": "わたしはこのまちがすきです。",
+      "romaji": "watashi wa kono machi ga suki desu.",
+      "furigana": [
+        { "start": 6, "len": 1, "ruby": "まち" },
+        { "start": 8, "len": 1, "ruby": "す" }
+      ],
+      "zh": "我喜欢这个小城。",
+      "grammar": [
+        {
+          "module": "G0-03",
+          "point": "～が 好きです",
+          "explain": "喜欢的对象用「が」，不用「を」。「好き」是な形容词，W03 系统学，本周整句记住。"
+        }
+      ],
+      "vocab": [
+        { "word": "町", "reading": "まち", "pos": "名詞", "zh": "城镇、街区" },
+        { "word": "好き", "reading": "すき", "pos": "な形容詞", "zh": "喜欢" }
+      ],
+      "isSentenceEnd": true
+    }
+  ]
+}

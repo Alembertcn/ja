@@ -1,0 +1,139 @@
+{
+  "articleId": "W02-doko",
+  "rate": "-10%",
+  "gapMs": 350,
+  "voices": {
+    "李": "ja-JP-NanamiNeural",
+    "田中": "ja-JP-KeitaNeural"
+  },
+  "lines": {
+    "l01": "01320c26f923ae40",
+    "l02": "20be30850743a9b5",
+    "l03": "358ee3615f3910b3",
+    "l04": "3b91c67c0053bd40",
+    "l05": "0667dead80307d52",
+    "l06": "1e417ec9d96cf645",
+    "l07": "3083b2e785b66196",
+    "l08": "dfc24ed0faaeb9d8",
+    "l09": "8e686ea10dee6c1e",
+    "l10": "b25a2792d624fde1",
+    "l11": "c6934cdb87d1df47",
+    "l12": "ccb06bdcada819b7",
+    "l13": "ace68686548c18dc",
+    "l14": "2eb141fffff1657e",
+    "l15": "8a2739f7ecccbe4e",
+    "l16": "7891677802f2028e",
+    "l17": "64870ee063b945ce",
+    "l18": "bca524c259ab302b",
+    "l19": "9d61c325d495e03b",
+    "l20": "af95980408bf9a84",
+    "l21": "6b9f65b5bf30af87"
+  },
+  "cues": [
+    {
+      "id": "l01",
+      "startMs": 0,
+      "endMs": 5112
+    },
+    {
+      "id": "l02",
+      "startMs": 5520,
+      "endMs": 8088
+    },
+    {
+      "id": "l03",
+      "startMs": 8496,
+      "endMs": 11016
+    },
+    {
+      "id": "l04",
+      "startMs": 11424,
+      "endMs": 16224
+    },
+    {
+      "id": "l05",
+      "startMs": 16632,
+      "endMs": 20256
+    },
+    {
+      "id": "l06",
+      "startMs": 20664,
+      "endMs": 24288
+    },
+    {
+      "id": "l07",
+      "startMs": 24696,
+      "endMs": 27864
+    },
+    {
+      "id": "l08",
+      "startMs": 28272,
+      "endMs": 31008
+    },
+    {
+      "id": "l09",
+      "startMs": 31416,
+      "endMs": 35328
+    },
+    {
+      "id": "l10",
+      "startMs": 35736,
+      "endMs": 38496
+    },
+    {
+      "id": "l11",
+      "startMs": 38904,
+      "endMs": 41640
+    },
+    {
+      "id": "l12",
+      "startMs": 42048,
+      "endMs": 47592
+    },
+    {
+      "id": "l13",
+      "startMs": 48000,
+      "endMs": 53784
+    },
+    {
+      "id": "l14",
+      "startMs": 54192,
+      "endMs": 59760
+    },
+    {
+      "id": "l15",
+      "startMs": 60168,
+      "endMs": 65184
+    },
+    {
+      "id": "l16",
+      "startMs": 65592,
+      "endMs": 68928
+    },
+    {
+      "id": "l17",
+      "startMs": 69336,
+      "endMs": 71784
+    },
+    {
+      "id": "l18",
+      "startMs": 72192,
+      "endMs": 77688
+    },
+    {
+      "id": "l19",
+      "startMs": 78096,
+      "endMs": 82128
+    },
+    {
+      "id": "l20",
+      "startMs": 82536,
+      "endMs": 86256
+    },
+    {
+      "id": "l21",
+      "startMs": 86664,
+      "endMs": 90192
+    }
+  ]
+}
