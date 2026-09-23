@@ -8,6 +8,7 @@
   "hoursHint": "每天 1.5～2.5 小时 × 7 天",
   "articleIds": ["W01-hajimemashite", "W01-konbanwa"],
   "lessonPath": "lessons/W01_第一周_假名发音寒暄.md",
+  "practicePath": "exercises/W01.json",
   "days": [
     {
       "day": 1,

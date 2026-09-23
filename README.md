@@ -13,7 +13,7 @@
 | [docs/exam/](docs/exam/) | JLPT 报考流程、材料、网址与注意事项 |
 | [docs/plan/](docs/plan/) | 学习计划与知识点大纲（模块编号 `G2-E01` 等是 AI 生成课文的索引） |
 | [docs/lessons/](docs/lessons/) | 人工整理的精讲笔记（Markdown） |
-| [content/](content/) | 课文数据源（JSON），App 的内容源头 |
+| [content/](content/) | 课文、周计划、配套练习（JSON），App 的内容源头 |
 | [audio/](audio/) | 预生成日语音频：课文 `article.mp3` + 时间轴；精讲笔记词表 `words/<hash>.mp3`。由 `tools/tts.py` / `lesson_tts.py` 产出并入库 |
 | [prompts/](prompts/) | 给 AI 的固定生成模板 |
 | [tools/](tools/) | 合成与构建脚本（Python），入口是 `publish.py` |

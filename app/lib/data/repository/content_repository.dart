@@ -4,6 +4,7 @@ import '../../app/app_config.dart';
 import '../local/app_database.dart';
 import '../models/article.dart';
 import '../models/plan.dart';
+import '../models/practice.dart';
 import '../remote/content_api.dart';
 
 /// 数据来源，用于在界面上如实告诉用户看到的是不是离线内容。
@@ -37,6 +38,7 @@ const String _planWeeksKey = 'plan:weeks';
 String _articleKey(String id) => 'article:$id';
 String _planWeekKey(String id) => 'plan:week:$id';
 String _lessonKey(String path) => 'lesson:$path';
+String _practiceKey(String path) => 'practice:$path';
 
 /// 远端优先、离线回落。任何网络问题都不应该让已经缓存过的课文读不了。
 class ContentRepository {
@@ -108,6 +110,19 @@ class ContentRepository {
       path: lessonPath,
       forceRefresh: forceRefresh,
       parse: (body) => body,
+    );
+  }
+
+  /// 拉取与本周目标对应的 JLPT 四选一练习。
+  Future<ContentResult<PracticeSet>> loadPractice(
+    String practicePath, {
+    bool forceRefresh = false,
+  }) {
+    return _load(
+      key: _practiceKey(practicePath),
+      path: practicePath,
+      forceRefresh: forceRefresh,
+      parse: PracticeSet.parse,
     );
   }
 

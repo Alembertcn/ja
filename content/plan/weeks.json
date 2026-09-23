@@ -12,7 +12,8 @@
       "deliverable": "50 音表过关；自我介绍 5 句",
       "detailPath": "plan/W01.json",
       "articleIds": ["W01-hajimemashite", "W01-konbanwa"],
-      "lessonPath": "lessons/W01_第一周_假名发音寒暄.md"
+      "lessonPath": "lessons/W01_第一周_假名发音寒暄.md",
+      "practicePath": "exercises/W01.json"
     },
     {
       "id": "W02",
@@ -23,7 +24,8 @@
       "deliverable": "助词填空 30 题；对话 1 篇",
       "detailPath": "plan/W02.json",
       "articleIds": ["W02-doko", "W02-kaisha-no-chikaku"],
-      "lessonPath": "lessons/W02_第二周_指示词存在句助词.md"
+      "lessonPath": "lessons/W02_第二周_指示词存在句助词.md",
+      "practicePath": "exercises/W02.json"
     },
     {
       "id": "W03",

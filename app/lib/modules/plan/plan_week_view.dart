@@ -8,6 +8,7 @@ import '../../data/models/article.dart';
 import '../../data/models/plan.dart';
 import '../lesson/lesson_args.dart';
 import '../library/library_cubit.dart';
+import '../practice/practice_args.dart';
 import '../shared/state_views.dart';
 import 'plan_week_cubit.dart';
 
@@ -173,6 +174,17 @@ class PlanWeekView extends StatelessWidget {
             ),
           ),
         ],
+        if (_practicePath(detail, state) case final path?) ...[
+          const SizedBox(height: 12),
+          FilledButton.tonalIcon(
+            onPressed: () => _openPractice(context, detail, path),
+            icon: const Icon(Icons.quiz_outlined),
+            label: const Text('本周配套练习（N2 题型）'),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(48),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -194,6 +206,25 @@ class PlanWeekView extends StatelessWidget {
       arguments: LessonArgs(
         path: path,
         title: '${detail.id} 精讲笔记',
+      ),
+    );
+  }
+
+  String? _practicePath(PlanWeekDetail detail, PlanWeekState state) {
+    final path = detail.practicePath ?? state.summary.practicePath;
+    return path == null || path.isEmpty ? null : path;
+  }
+
+  void _openPractice(
+    BuildContext context,
+    PlanWeekDetail detail,
+    String path,
+  ) {
+    Navigator.of(context).pushNamed(
+      Routes.practice,
+      arguments: PracticeArgs(
+        path: path,
+        title: '${detail.id} 配套练习',
       ),
     );
   }

@@ -8,6 +8,7 @@
   "hoursHint": "每天 1.5～2.5 小时 × 7 天",
   "articleIds": ["W02-doko", "W02-kaisha-no-chikaku"],
   "lessonPath": "lessons/W02_第二周_指示词存在句助词.md",
+  "practicePath": "exercises/W02.json",
   "days": [
     {
       "day": 1,

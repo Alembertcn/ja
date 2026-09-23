@@ -11,6 +11,9 @@ import '../../modules/lesson/lesson_cubit.dart';
 import '../../modules/lesson/lesson_view.dart';
 import '../../modules/plan/plan_week_cubit.dart';
 import '../../modules/plan/plan_week_view.dart';
+import '../../modules/practice/practice_args.dart';
+import '../../modules/practice/practice_cubit.dart';
+import '../../modules/practice/practice_view.dart';
 import '../../modules/reader/reader_cubit.dart';
 import '../../modules/reader/reader_view.dart';
 import '../../services/audio_cache_service.dart';
@@ -82,6 +85,21 @@ class AppRouter {
               repo: ctx.read<ContentRepository>(),
             ),
             child: LessonView(args: args),
+          ),
+        );
+      case Routes.practice:
+        final args = settings.arguments;
+        if (args is! PracticeArgs) {
+          return _errorRoute('Practice 需要 PracticeArgs');
+        }
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (ctx) => PracticeCubit(
+              path: args.path,
+              repo: ctx.read<ContentRepository>(),
+            ),
+            child: PracticeView(args: args),
           ),
         );
       default:

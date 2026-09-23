@@ -23,6 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
 PLAN_DIR = ROOT / "content" / "plan"
+EXERCISES_DIR = ROOT / "content" / "exercises"
 LESSONS_DIR = ROOT / "docs" / "lessons"
 SCHEMA_PATH = ROOT / "content" / "schema" / "article.schema.json"
 # 预生成音频由 tools/tts.py 产出并入库，构建时只做搬运与注入
@@ -482,6 +483,7 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
     articles_out.mkdir(parents=True, exist_ok=True)
     audio_out = out_dir / "audio"
     plan_out = out_dir / "plan"
+    exercises_out = out_dir / "exercises"
     lessons_out = out_dir / "lessons"
 
     # 清掉上一次构建的残留，避免删了源文件但产物还挂在 Pages 上
@@ -491,6 +493,8 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
         shutil.rmtree(audio_out)
     if plan_out.exists():
         shutil.rmtree(plan_out)
+    if exercises_out.exists():
+        shutil.rmtree(exercises_out)
     if lessons_out.exists():
         shutil.rmtree(lessons_out)
 
@@ -519,6 +523,9 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
     if PLAN_DIR.is_dir():
         shutil.copytree(PLAN_DIR, plan_out)
 
+    if EXERCISES_DIR.is_dir():
+        shutil.copytree(EXERCISES_DIR, exercises_out)
+
     # 精讲笔记：docs/lessons/*.md → dist/lessons/，供 App「打开精讲笔记」拉取
     if LESSONS_DIR.is_dir():
         lessons_out.mkdir(parents=True, exist_ok=True)
@@ -541,6 +548,78 @@ def _lesson_source_path(lesson_path: str) -> Path | None:
     if not name or "/" in name or not name.endswith(".md"):
         return None
     return LESSONS_DIR / name
+
+
+def _practice_source_path(practice_path: str) -> Path | None:
+    """practicePath 形如 exercises/W01.json。"""
+    if not practice_path.startswith("exercises/") or ".." in practice_path:
+        return None
+    name = practice_path.removeprefix("exercises/")
+    if not name or "/" in name or not name.endswith(".json"):
+        return None
+    return EXERCISES_DIR / name
+
+
+def validate_exercises(problems: list[Problem]) -> None:
+    """校验练习题的四选一结构，避免坏题库发布后让 App 崩溃。"""
+    if not EXERCISES_DIR.is_dir():
+        return
+    for path in sorted(EXERCISES_DIR.glob("*.json")):
+        where = f"exercises/{path.name}"
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            problems.append(err(where, f"JSON 无法解析：{e}"))
+            continue
+        if not isinstance(data, dict):
+            problems.append(err(where, "根节点必须是对象"))
+            continue
+        if not isinstance(data.get("id"), str) or not data["id"]:
+            problems.append(err(where, "缺少 id"))
+        if not isinstance(data.get("week"), int):
+            problems.append(err(where, "week 必须是整数"))
+        sections = data.get("sections")
+        if not isinstance(sections, list) or not sections:
+            problems.append(err(where, "sections 必须是非空数组"))
+            continue
+        seen: set[str] = set()
+        for si, section in enumerate(sections):
+            tag = f"{where} sections[{si}]"
+            if not isinstance(section, dict):
+                problems.append(err(tag, "section 必须是对象"))
+                continue
+            questions = section.get("questions")
+            if not isinstance(questions, list) or not questions:
+                problems.append(err(tag, "questions 必须是非空数组"))
+                continue
+            for qi, question in enumerate(questions):
+                qtag = f"{tag} questions[{qi}]"
+                if not isinstance(question, dict):
+                    problems.append(err(qtag, "题目必须是对象"))
+                    continue
+                qid = question.get("id")
+                if not isinstance(qid, str) or not qid:
+                    problems.append(err(qtag, "缺少 id"))
+                elif qid in seen:
+                    problems.append(err(qtag, f"题目 id 重复：{qid}"))
+                else:
+                    seen.add(qid)
+                _require_str(question, "stem", qtag, problems)
+                _require_str(question, "explanation", qtag, problems)
+                options = question.get("options")
+                answer = question.get("answer")
+                if (
+                    not isinstance(options, list)
+                    or len(options) != 4
+                    or not all(isinstance(x, str) and x for x in options)
+                ):
+                    problems.append(err(qtag, "options 必须包含 4 个非空字符串"))
+                if (
+                    not isinstance(answer, int)
+                    or isinstance(answer, bool)
+                    or not 0 <= answer < 4
+                ):
+                    problems.append(err(qtag, "answer 必须是 0–3 的整数"))
 
 
 def validate_plan(problems: list[Problem]) -> None:
@@ -600,6 +679,11 @@ def validate_plan(problems: list[Problem]) -> None:
                         problems.append(err(detail, f"lessonPath 非法：{lesson}"))
                     elif not src.exists():
                         problems.append(err(detail, f"精讲笔记不存在：docs/{lesson}"))
+                _validate_practice_path(
+                    detail_data.get("practicePath") or week.get("practicePath"),
+                    detail,
+                    problems,
+                )
                 _validate_article_ids(detail_data, detail, problems)
         lesson = week.get("lessonPath")
         if isinstance(lesson, str) and lesson:
@@ -608,7 +692,18 @@ def validate_plan(problems: list[Problem]) -> None:
                 problems.append(err(where, f"lessonPath 非法：{lesson}"))
             elif not src.exists():
                 problems.append(err(where, f"精讲笔记不存在：docs/{lesson}"))
+        _validate_practice_path(week.get("practicePath"), where, problems)
         _validate_article_ids(week, where, problems)
+
+
+def _validate_practice_path(path: object, where: str, problems: list[Problem]) -> None:
+    if not isinstance(path, str) or not path:
+        return
+    src = _practice_source_path(path)
+    if src is None:
+        problems.append(err(where, f"practicePath 非法：{path}"))
+    elif not src.exists():
+        problems.append(err(where, f"练习题不存在：content/{path}"))
 
 
 def _validate_article_ids(obj: dict, where: str, problems: list[Problem]) -> None:
@@ -646,6 +741,7 @@ def main() -> int:
     check_audio_coverage(articles, problems)
     check_lesson_word_audio(problems)
     validate_plan(problems)
+    validate_exercises(problems)
     used_jsonschema = run_jsonschema(articles, problems)
 
     errors = [p for p in problems if p.level == "error"]
@@ -676,12 +772,16 @@ def main() -> int:
     if (out_dir / "lessons").is_dir():
         n = len(list((out_dir / "lessons").glob("*.md")))
         lessons_note = f" / lessons/({n})"
+    exercises_note = ""
+    if (out_dir / "exercises").is_dir():
+        n = len(list((out_dir / "exercises").glob("*.json")))
+        exercises_note = f" / exercises/({n})"
     words_note = ""
     words_out = out_dir / "audio" / "words"
     if words_out.is_dir():
         words_note = f" / audio/words/({len(list(words_out.glob('*.mp3')))})"
     print(f"\n构建完成：{len(articles)} 篇 → {out_dir.relative_to(ROOT) if out_dir.is_relative_to(ROOT) else out_dir}")
-    print(f"  manifest.json / articles/*.json / index.html{plan_note}{lessons_note}{words_note}，{len(warnings)} 个警告")
+    print(f"  manifest.json / articles/*.json / index.html{plan_note}{lessons_note}{exercises_note}{words_note}，{len(warnings)} 个警告")
     return 0
 
 

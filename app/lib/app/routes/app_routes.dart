@@ -6,4 +6,5 @@ abstract class Routes {
   static const String explain = '/explain';
   static const String planWeek = '/plan-week';
   static const String lesson = '/lesson';
+  static const String practice = '/practice';
 }
