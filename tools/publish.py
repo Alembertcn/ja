@@ -58,6 +58,13 @@ def changed_articles() -> list[str]:
     return sorted(ids)
 
 
+def has_content_changes() -> bool:
+    """content / audio / lessons 任一有改动即需要发布。"""
+    out = git("status", "--porcelain", "--", *CONTENT_PATHS, capture=True)
+    assert isinstance(out, str)
+    return bool(out.strip())
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="一条命令发布课文")
     parser.add_argument("-m", "--message", help="提交信息，默认按改动的课文自动生成")
@@ -88,13 +95,19 @@ def main() -> int:
         return 0
 
     ids = changed_articles()
-    if not ids:
-        print("\n课文和音频都没有改动，无需发布。")
+    if not has_content_changes():
+        print("\n内容源没有改动，无需发布。")
         return 0
 
-    step(f"提交并推送  涉及课文：{', '.join(ids)}")
+    step(
+        "提交并推送"
+        + (f"  涉及课文：{', '.join(ids)}" if ids else "  （词库/计划/练习等）")
+    )
     git("add", "--", *CONTENT_PATHS)
-    message = args.message or f"更新课文：{', '.join(ids)}"
+    if ids:
+        message = args.message or f"更新课文：{', '.join(ids)}"
+    else:
+        message = args.message or "更新内容源"
     if git("commit", "-m", message) != 0:
         print("提交失败，已中止。", file=sys.stderr)
         return 1

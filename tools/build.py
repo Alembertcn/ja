@@ -24,8 +24,10 @@ ROOT = Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "content" / "articles"
 PLAN_DIR = ROOT / "content" / "plan"
 EXERCISES_DIR = ROOT / "content" / "exercises"
+VOCAB_DIR = ROOT / "content" / "vocab"
 LESSONS_DIR = ROOT / "docs" / "lessons"
 SCHEMA_PATH = ROOT / "content" / "schema" / "article.schema.json"
+VOCAB_SCHEMA_PATH = ROOT / "content" / "schema" / "vocab.schema.json"
 # 预生成音频由 tools/tts.py 产出并入库，构建时只做搬运与注入
 AUDIO_DIR = ROOT / "audio"
 
@@ -34,6 +36,7 @@ MANIFEST_SCHEMA_VERSION = 1
 STAGES = ("P0", "P1", "P2", "P3")
 LEVELS = ("N5", "N4", "N3", "N2", "N1")
 TYPES = ("article", "dialogue")
+VOCAB_KINDS = ("similarity", "theme", "pattern", "function", "sound", "core")
 
 ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
 LINE_ID_RE = re.compile(r"^[A-Za-z0-9_-]+$")
@@ -484,6 +487,7 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
     audio_out = out_dir / "audio"
     plan_out = out_dir / "plan"
     exercises_out = out_dir / "exercises"
+    vocab_out = out_dir / "vocab"
     lessons_out = out_dir / "lessons"
 
     # 清掉上一次构建的残留，避免删了源文件但产物还挂在 Pages 上
@@ -495,6 +499,8 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
         shutil.rmtree(plan_out)
     if exercises_out.exists():
         shutil.rmtree(exercises_out)
+    if vocab_out.exists():
+        shutil.rmtree(vocab_out)
     if lessons_out.exists():
         shutil.rmtree(lessons_out)
 
@@ -525,6 +531,11 @@ def write_dist(out_dir: Path, articles: list[tuple[Path, dict]], manifest: dict)
 
     if EXERCISES_DIR.is_dir():
         shutil.copytree(EXERCISES_DIR, exercises_out)
+
+    if VOCAB_DIR.is_dir():
+        vocab_out.mkdir(parents=True, exist_ok=True)
+        for path in VOCAB_DIR.glob("*.json"):
+            shutil.copyfile(path, vocab_out / path.name)
 
     # 精讲笔记：docs/lessons/*.md → dist/lessons/，供 App「打开精讲笔记」拉取
     if LESSONS_DIR.is_dir():
@@ -696,6 +707,65 @@ def validate_plan(problems: list[Problem]) -> None:
         _validate_article_ids(week, where, problems)
 
 
+def validate_vocab_book(problems: list[Problem]) -> None:
+    """校验按记忆维度分组的全量词表。"""
+    if not VOCAB_DIR.is_dir():
+        return
+    for path in sorted(VOCAB_DIR.glob("*.json")):
+        where = f"vocab/{path.name}"
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            problems.append(err(where, f"JSON 无法解析：{e}"))
+            continue
+        if not isinstance(data, dict):
+            problems.append(err(where, "根节点必须是对象"))
+            continue
+        for key in ("id", "title", "titleZh", "level", "updatedAt"):
+            _require_str(data, key, where, problems)
+        level = data.get("level")
+        if isinstance(level, str) and level not in LEVELS:
+            problems.append(err(where, f"level 非法：{level}"))
+        updated = data.get("updatedAt")
+        if isinstance(updated, str) and not DATE_RE.match(updated):
+            problems.append(err(where, f"updatedAt 格式应为 YYYY-MM-DD：{updated}"))
+        groups = data.get("groups")
+        if not isinstance(groups, list) or not groups:
+            problems.append(err(where, "groups 必须是非空数组"))
+            continue
+        seen_group: set[str] = set()
+        for gi, group in enumerate(groups):
+            gtag = f"{where} groups[{gi}]"
+            if not isinstance(group, dict):
+                problems.append(err(gtag, "group 必须是对象"))
+                continue
+            gid = group.get("id")
+            if not isinstance(gid, str) or not gid:
+                problems.append(err(gtag, "缺少 id"))
+            elif gid in seen_group:
+                problems.append(err(gtag, f"group id 重复：{gid}"))
+            else:
+                seen_group.add(gid)
+            _require_str(group, "title", gtag, problems)
+            kind = group.get("kind")
+            if kind not in VOCAB_KINDS:
+                problems.append(err(gtag, f"kind 非法：{kind}"))
+            words = group.get("words")
+            if not isinstance(words, list) or not words:
+                problems.append(err(gtag, "words 必须是非空数组"))
+                continue
+            for wi, word in enumerate(words):
+                wtag = f"{gtag} words[{wi}]"
+                if not isinstance(word, dict):
+                    problems.append(err(wtag, "word 必须是对象"))
+                    continue
+                _require_str(word, "word", wtag, problems)
+                _require_str(word, "reading", wtag, problems)
+                _require_str(word, "zh", wtag, problems)
+                if "note" in word and word["note"] is not None and not isinstance(word["note"], str):
+                    problems.append(err(wtag, "note 必须是字符串"))
+
+
 def _validate_practice_path(path: object, where: str, problems: list[Problem]) -> None:
     if not isinstance(path, str) or not path:
         return
@@ -742,6 +812,7 @@ def main() -> int:
     check_lesson_word_audio(problems)
     validate_plan(problems)
     validate_exercises(problems)
+    validate_vocab_book(problems)
     used_jsonschema = run_jsonschema(articles, problems)
 
     errors = [p for p in problems if p.level == "error"]
@@ -776,12 +847,16 @@ def main() -> int:
     if (out_dir / "exercises").is_dir():
         n = len(list((out_dir / "exercises").glob("*.json")))
         exercises_note = f" / exercises/({n})"
+    vocab_note = ""
+    if (out_dir / "vocab").is_dir():
+        n = len(list((out_dir / "vocab").glob("*.json")))
+        vocab_note = f" / vocab/({n})"
     words_note = ""
     words_out = out_dir / "audio" / "words"
     if words_out.is_dir():
         words_note = f" / audio/words/({len(list(words_out.glob('*.mp3')))})"
     print(f"\n构建完成：{len(articles)} 篇 → {out_dir.relative_to(ROOT) if out_dir.is_relative_to(ROOT) else out_dir}")
-    print(f"  manifest.json / articles/*.json / index.html{plan_note}{lessons_note}{exercises_note}{words_note}，{len(warnings)} 个警告")
+    print(f"  manifest.json / articles/*.json / index.html{plan_note}{lessons_note}{exercises_note}{vocab_note}{words_note}，{len(warnings)} 个警告")
     return 0
 
 

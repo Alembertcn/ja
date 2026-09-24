@@ -5,6 +5,7 @@ import '../local/app_database.dart';
 import '../models/article.dart';
 import '../models/plan.dart';
 import '../models/practice.dart';
+import '../models/vocab.dart';
 import '../remote/content_api.dart';
 
 /// 数据来源，用于在界面上如实告诉用户看到的是不是离线内容。
@@ -34,6 +35,7 @@ class ContentResult<T> {
 
 const String _manifestKey = 'manifest';
 const String _planWeeksKey = 'plan:weeks';
+const String _vocabN2Key = 'vocab:n2';
 
 String _articleKey(String id) => 'article:$id';
 String _planWeekKey(String id) => 'plan:week:$id';
@@ -123,6 +125,18 @@ class ContentRepository {
       path: practicePath,
       forceRefresh: forceRefresh,
       parse: PracticeSet.parse,
+    );
+  }
+
+  /// 拉取 N2 全量词汇表（按记忆维度分组）。
+  Future<ContentResult<VocabBook>> loadVocabN2({
+    bool forceRefresh = false,
+  }) {
+    return _load(
+      key: _vocabN2Key,
+      path: 'vocab/n2.json',
+      forceRefresh: forceRefresh,
+      parse: VocabBook.parse,
     );
   }
 

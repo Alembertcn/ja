@@ -16,6 +16,10 @@ import '../../modules/practice/practice_cubit.dart';
 import '../../modules/practice/practice_view.dart';
 import '../../modules/reader/reader_cubit.dart';
 import '../../modules/reader/reader_view.dart';
+import '../../modules/vocab/vocab_cubit.dart';
+import '../../modules/vocab/vocab_group_args.dart';
+import '../../modules/vocab/vocab_group_view.dart';
+import '../../modules/vocab/vocab_view.dart';
 import '../../services/audio_cache_service.dart';
 import '../../services/playback_cubit.dart';
 import '../../data/repository/content_repository.dart';
@@ -101,6 +105,23 @@ class AppRouter {
             ),
             child: PracticeView(args: args),
           ),
+        );
+      case Routes.vocab:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (ctx) => VocabCubit(ctx.read<ContentRepository>()),
+            child: const VocabView(),
+          ),
+        );
+      case Routes.vocabGroup:
+        final args = settings.arguments;
+        if (args is! VocabGroupArgs) {
+          return _errorRoute('VocabGroup 需要 VocabGroupArgs');
+        }
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => VocabGroupView(args: args),
         );
       default:
         return _errorRoute('未知路由 ${settings.name}');

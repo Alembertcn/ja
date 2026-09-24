@@ -64,6 +64,8 @@ class LibraryView extends StatelessWidget {
                           ),
                         const SizedBox(height: 6),
                       ],
+                      const SizedBox(height: 8),
+                      const _VocabBookEntry(),
                     ]),
                   ),
                 ),
@@ -71,6 +73,61 @@ class LibraryView extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+/// 课文列表底部：进入 N2 全量词汇表。
+class _VocabBookEntry extends StatelessWidget {
+  const _VocabBookEntry();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return AppInkSurface(
+      shadowed: true,
+      onTap: () => Navigator.of(context).pushNamed(Routes.vocab),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 14, 12, 14),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: AppColors.brandSoft(scheme),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              alignment: Alignment.center,
+              child: const Icon(Icons.menu_book_outlined, color: AppColors.brand),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'N2 全量词汇表',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '按易混近义 · 主题 · 功能词整理，碎时间背诵',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                      height: 1.35,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: scheme.onSurfaceVariant),
+          ],
+        ),
       ),
     );
   }

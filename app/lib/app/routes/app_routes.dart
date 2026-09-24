@@ -7,4 +7,6 @@ abstract class Routes {
   static const String planWeek = '/plan-week';
   static const String lesson = '/lesson';
   static const String practice = '/practice';
+  static const String vocab = '/vocab';
+  static const String vocabGroup = '/vocab-group';
 }
